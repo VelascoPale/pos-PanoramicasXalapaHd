@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div>
+    <h3>Calcular costo de fotos</h3>
+    <span>6x9 </span><input type="number" id="_6x9" onchange="calculate_cost();" value="0">
+    <br>
+    <span>8x12 </span><input type="number" id="_8x12" onchange="calculate_cost();" value="0"> <br>
+    <span>El costo del paquete es: $</span><span id='cost_ind'></span>
+</div>
+
+<form action="/update_client/{{event}}/{{data.0}}" method="POST" name="add">
+    <h3>Actualizar pedido</h3>
+    <input type="text" name="event_selected" value="{{event}}" style="display: none;">
+    <input type="text" name="name" value="{{data.1}}"  placeholder="Ingresa el nombre del cliente">
+    <input type="number" name="id_table" value="{{data.2}}" placeholder="Ingresa el numero de mesa">
+    <input type="text" name="num_photo" value="{{data.3}}" placeholder="Ingresa el numero de foto">
+    <input type="text" name="num_6x9" value="{{data.4}}" placeholder="Cantidad 6x9" readonly="readonly">
+    <input type="text" name="num_8x12" value="{{data.5}}" placeholder="Cantidad 8x12" readonly="readonly">
+    <input type="number" name="cost" value="{{data.6}}" id="cost" placeholder="Ingresa el costo del paquete" readonly="readonly">
+    <input type="number" name="payment" value="{{data.7}}" id="payment" placeholder="Ingresa el monto del pago que recibes">
+    <button type="submit" onsubmit="validate()">Actualizar cliente</button>
+</form>
+
+<script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+{% endblock %}

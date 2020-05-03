@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<h1>Graduaciones</h1>
+<a href="#">Añadir evento</a>
+<a href="#">Seleccionar evento</a>
+<a href="/dashboard">Regresar</a>
+
+<div>
+    <h1>Añadir evento</h1>
+    <form action="/add_event" method="POST">
+        <input type="text" name="event_hall" placeholder="Ingresa el nombre del salon">
+        <input type="text" name="school_name" placeholder="Ingresa el codigo de la escuela">
+        <button type="submit"> Crear evento </button>
+    </form>
+</div>
+
+<div>
+    <h1>Lista de eventos</h1>
+    <form action="/go_event" method="post">
+        Selecciona el evento
+        <select name="event_selected">
+            {% for place in places %}
+            <option value="{{place.0}}">{{place.0}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Ir al evento</button>
+    </form>
+</div>
+
+{% endblock %}
