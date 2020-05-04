@@ -30,5 +30,5 @@ function calculate_cost() {
         }
     
     //replace value in cost
-    document.getElementById('cost_ind').innerHTML = "El costo del paquete es: $ " + final_cost;
+    document.getElementById('cost_ind').innerHTML = "El costo total es de: $ " + final_cost;
 }

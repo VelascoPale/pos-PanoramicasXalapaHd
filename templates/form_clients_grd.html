@@ -1,71 +1,149 @@
 {% extends 'layout.html' %}
+
+{% block menu %}
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+        <a class="nav-link" href="/escuelas"> Escuelas <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/graduaciones"> Graduaciones </a>
+    </li>
+</ul>
+{% endblock %}
+
 {% block body %}
 
-<a href="/graduaciones">Regresar</a>
-<br>
-<h2 class="text-center">{{event}}</h2>
+<h2 class="text-center mt-4">{{event}}</h2>
 
-<div class="row mt-4 justify-content-center">
-    <div class="card card-body bg-white col-10">
-        <h3 class="text-center">Calcular costo de fotos</h3>
-        <div class="row form-group">
-
-            <div class="form-group col">
-                <label for="formGroupExampleInput">6x9</label>
-                <input type="number" id="_6x9" value="0" onchange="calculate_cost();"
-                    class="form-control form-control-sm" id="formGroupExampleInput">
-            </div>
-
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">@</span>
+<!-- form calculate cost  -->
+<div class="row justify-content-center">
+    <!-- create form to calculate cost-->
+    <div class="mt-4 col-lg-3 row justify-content-center ">
+        <div class="card card-body bg-primary col-10">
+            <h3 class="text-center">Costo del paquete</h3>
+            <div class="row justify-content-center">
+                <div class="col-5 col-lg-10 mt-3">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">6x9</span>
+                        </div>
+                        <input type="number" id="_6x9" value="0" onchange="calculate_cost();" class="form-control"
+                            placeholder="Cantidad de fotos">
+                    </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
+                <div class="col-6 col-lg-12 mt-3">
+                    <div class="input-group mb-3 col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">8x12</span>
+                        </div>
+                        <input type="number" id="_8x12" value="0" onchange="calculate_cost();" class="form-control"
+                            placeholder="Cantidad de fotos">
+                    </div>
+                </div>
 
-            <div class="form-group col">
-                <label for="formGroupExampleInput">8x12</label>
-                <input type="number" id="_8x12" value="0" onchange="calculate_cost();"
-                    class="form-control form-control-sm" id="formGroupExampleInput">
+            </div>
+
+            <div class="col mt-2">
+                <h5 class="text-center" id="cost_ind">El costo total es de: $ 0</h5>
             </div>
 
         </div>
-        <div class="col">
-            <h6 class="text-center" id="cost_ind">El costo del paquete es: $ 0</h6>
-        </div>
+    </div>
 
+    <!-- create form to add client -->
+    <div class="mt-4 col-lg-6 row justify-content-center">
+        <div class="card card-body bg-primary col-10">
+            <form action="/add_client" method="POST" name="add">
+                <h3 class="text-center">Agregar nuevo pedido</h3>
+
+                <input type="text" name="event_selected" value="{{event}}" style="display: none;">
+
+                <div class="row">
+                    <div class="input-group mb-3 col-lg-12">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"> Nombre </span>
+                        </div>
+                        <input type="text" name="name" class="form-control" placeholder="Ingresa el nombre del cliente">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"> # Mesa </span>
+                            </div>
+                            <input type="text" name="id_table" class="form-control" placeholder="Mesa">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"> # Foto </span>
+                            </div>
+                            <input type="text" name="num_photo" class="form-control" placeholder="Fotografia">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"> # 6x9 </span>
+                            </div>
+                            <input type="text" name="num_6x9" readonly="readonly" class="form-control"
+                                placeholder="Cantidad">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" readonly="readonly" id="basic-addon1"> # 8x12 </span>
+                            </div>
+                            <input type="text" name="num_8x12" class="form-control" placeholder="Cantidad">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"> Costo $ </span>
+                            </div>
+                            <input type="text" name="cost" id="cost" readonly="readonly" class="form-control"
+                                placeholder="Cantidad">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"> Pago $ </span>
+                            </div>
+                            <input type="text" name="payment" id="payment" class="form-control" placeholder="Cantidad">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark btn-block mb-3" onsubmit="validate()">Agregar pedido</button>
+            </form>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{message}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
     </div>
 </div>
-
-<div class="row mt-4 justify-content-center">
-    <div class="card card-body col-10">
-        <form action="/add_client" method="POST" name="add">
-            <h3 class="text-center">Agregar nuevo pedido</h3>
-            <input type="text" name="event_selected" value="{{event}}" style="display: none;">
-            <input type="text" name="name" placeholder="Ingresa el nombre del cliente">
-            <input type="number" name="id_table" placeholder="Ingresa el numero de mesa">
-            <input type="text" name="num_photo" placeholder="Ingresa el numero de foto">
-            <input type="text" name="num_6x9" placeholder="Cantidad 6x9" readonly="readonly">
-            <input type="text" name="num_8x12" placeholder="Cantidad 8x12" readonly="readonly">
-            <input type="number" name="cost" id="cost" placeholder="Ingresa el costo del paquete" readonly="readonly">
-            <input type="number" name="payment" id="payment" placeholder="Ingresa el monto del pago que recibes"> <br>
-            <button type="submit" onsubmit="validate()">Agregar pedido</button>
-        </form>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            {{message}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-    </div>
-</div>
-
+<!-- create table -->
 <div class="row mt-4 justify-content-center">
     <table class="table table-striped table-active table-bordered table-sm text-center col-10">
         <thead>
@@ -100,6 +178,7 @@
     </table>
 </div>
 
+<!-- scripts -->
 <script src="{{url_for('static', filename='js/main.js')}}"></script>
 
 {% endblock %}

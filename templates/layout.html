@@ -9,43 +9,44 @@
         href="https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_location_on_48px-512.png"
         type="image/x-icon">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/font-awesome-4.7.0/css/font-awesome.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/css/animate.css')}}"> 
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/css/hamburgers.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/css/select2.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/css/util.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/css/main.css')}}">
-
-
     <title>Panoramicas Xalapa HD</title>
 </head>
 
 <body>
 
+<!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <a class="navbar-brand" href="/dashboard">
+            <img src="{{url_for('static', filename = 'img/icon.png')}}" width="30" height="30"
+                class="d-inline-block align-top mr-1" alt="">
+            Panoramicas Xalapa HD
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
+            aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            {% block menu %}
+            {% endblock %}
+            <a href="/close" class="btn btn-primary btn-sm""> Cerrar sesion </a>
+        </div>
+    </nav>
+
     {% block body %}
     {% endblock %}
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-
-    <script src="{{url_for('static',filename='all_login/js/popper.js')}}"></script>
-    <script src="{{url_for('static',filename='all_login/js/bootstrap.min.js')}}"></script>
-    <script src="{{url_for('static',filename='all_login/js/select2.min.js')}}"></script>
-    <script src="{{url_for('static',filename='all_login/js/tilt.jquery.min.js')}}"></script>
-    <script >
-        $('.js-tilt').tilt({
-            scale: 1.1
-        })
-    </script>
-    <script src="{{url_for('static',filename='all_login/js/main.js')}}"></script>
+    <script src=" https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+                crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                    crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+                    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                    crossorigin="anonymous"></script>
 
 </body>
 

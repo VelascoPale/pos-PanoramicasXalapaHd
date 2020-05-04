@@ -1,26 +1,64 @@
 {% extends 'layout.html' %}
 {% block body %}
 
-<div>
-    <h3>Calcular costo de fotos</h3>
-    <span>6x9 </span><input type="number" id="_6x9" onchange="calculate_cost();" value="0">
-    <br>
-    <span>8x12 </span><input type="number" id="_8x12" onchange="calculate_cost();" value="0"> <br>
-    <span>El costo del paquete es: $</span><span id='cost_ind'></span>
+<!-- create form to add client -->
+<div class="row mt-4 justify-content-center">
+    <div class="card card-body col-10"> 
+        <form action="/update_client/{{event}}/{{data.0}}" method="POST" name="add">
+            <h3>Actualizar pedido</h3>
+            <input type="text" name="event_selected" value="{{event}}" style="display: none;">
+            <input type="text" name="name" value="{{data.1}}"  placeholder="Ingresa el nombre del cliente">
+            <input type="number" name="id_table" value="{{data.2}}" placeholder="Ingresa el numero de mesa">
+            <input type="text" name="num_photo" value="{{data.3}}" placeholder="Ingresa el numero de foto">
+            <input type="text" name="num_6x9" value="{{data.4}}" placeholder="Cantidad 6x9" readonly="readonly">
+            <input type="text" name="num_8x12" value="{{data.5}}" placeholder="Cantidad 8x12" readonly="readonly">
+            <input type="number" name="cost" value="{{data.6}}" id="cost" placeholder="Ingresa el costo del paquete" readonly="readonly">
+            <input type="number" name="payment" value="{{data.7}}" id="payment" placeholder="Ingresa el monto del pago que recibes">
+            <button type="submit" onsubmit="validate()">Actualizar cliente</button>
+        </form>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
 </div>
 
-<form action="/update_client/{{event}}/{{data.0}}" method="POST" name="add">
-    <h3>Actualizar pedido</h3>
-    <input type="text" name="event_selected" value="{{event}}" style="display: none;">
-    <input type="text" name="name" value="{{data.1}}"  placeholder="Ingresa el nombre del cliente">
-    <input type="number" name="id_table" value="{{data.2}}" placeholder="Ingresa el numero de mesa">
-    <input type="text" name="num_photo" value="{{data.3}}" placeholder="Ingresa el numero de foto">
-    <input type="text" name="num_6x9" value="{{data.4}}" placeholder="Cantidad 6x9" readonly="readonly">
-    <input type="text" name="num_8x12" value="{{data.5}}" placeholder="Cantidad 8x12" readonly="readonly">
-    <input type="number" name="cost" value="{{data.6}}" id="cost" placeholder="Ingresa el costo del paquete" readonly="readonly">
-    <input type="number" name="payment" value="{{data.7}}" id="payment" placeholder="Ingresa el monto del pago que recibes">
-    <button type="submit" onsubmit="validate()">Actualizar cliente</button>
-</form>
+<!-- create form to calculate cost-->
+<div class="row mt-4 justify-content-center">
+    <div class="card card-body bg-primary col-10">
+        <h3 class="text-center">Costo del paquete</h3>
+        <div class="row form-group mt-3">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"> # 6x9</span>
+                </div>
+                <input type="number" id="_6x9" value="0" onchange="calculate_cost();" class="form-control" placeholder="Cantidad de fotos">
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"># 8x12</span>
+                </div>
+                <input type="number" id="_8x12" value="0" onchange="calculate_cost();" class="form-control" placeholder="Cantidad de fotos">
+              </div>
+
+        </div>
+
+        <div class="col">
+            <h5 class="text-center" id="cost_ind">El costo total es de: $ 0</h5>
+        </div>
+
+    </div>
+</div>
 
 <script src="{{url_for('static', filename='js/main.js')}}"></script>
 
