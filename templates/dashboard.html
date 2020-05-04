@@ -1,9 +1,25 @@
 {% extends 'layout.html' %}
+
+{% block menu %}
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+        <a class="nav-link" href="/escuelas"> Escuelas <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/graduaciones"> Graduaciones </a>
+    </li>
+</ul>
+{% endblock %}
+
 {% block body %}
 
-<h1>Session</h1>
-<a href="/escuelas">Escuelas</a>
-<a href="/graduaciones">Graduaciones</a>
-<a href="/close">Cerrar sesion</a>
+<h1 class="text-center mt-4"> Dashboard </h1>
+
+<div class="jumbotron mt-4">
+    <h1 class="display-4">En construccion...</h1>
+    <p class="lead">La siguiente pagina se encuentra en construccion</p>
+    <hr class="my-4">
+    <p>Favor de visitarla mas tarde</p>
+</div>
 
 {% endblock %}

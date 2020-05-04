@@ -9,11 +9,10 @@ app = Flask(__name__)
 app.secret_key = 'panosTeamXALAPA'
 
 # config_mysql
-app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'regis_clients_pano'
-
 sql = MySQL(app)
 
 # home page
@@ -115,7 +114,8 @@ def add_event():
         6x9 TINYINT,
         8x12 TINYINT,
         cost SMALLINT,
-        payment SMALLINT 
+        payment SMALLINT,
+        seller VARCHAR(50)
         )"""
     cur.execute(consult_sql.format(name_table))
     cur.close()
@@ -146,6 +146,7 @@ def form_clients_grd():
 # function add_client > form_clients-grd
 @app.route('/add_client', methods = ['POST'])
 def add_client():
+    seller = (session['name']).upper()
     event = request.form['event_selected']
     name = (request.form['name']).upper()
     id_table = request.form['id_table']
@@ -158,9 +159,9 @@ def add_client():
         if int(id_table) <= 125:
             if not int(payment) > int(cost):
                 cur = sql.connection.cursor()
-                consult_sql = """INSERT INTO {0}(`id`, `name`, `id_table`, `num_photo`, `6x9`, `8x12`, `cost`, `payment`) 
-                VALUES (NULL,'{1}','{2}','{3}','{4}','{5}','{6}','{7}')"""
-                cur.execute(consult_sql.format(event,name,id_table,num_photo,num_6x9,num_8x12, cost, payment))
+                consult_sql = """INSERT INTO {0}(`id`, `name`, `id_table`, `num_photo`, `6x9`, `8x12`, `cost`, `payment`, `seller`) 
+                VALUES (NULL,'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')"""
+                cur.execute(consult_sql.format(event,name,id_table,num_photo,num_6x9,num_8x12, cost, payment,seller))
                 cur.close()
                 flash('Cliente registrado correctamente')
             else:
