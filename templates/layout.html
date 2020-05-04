@@ -9,6 +9,15 @@
         href="https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_location_on_48px-512.png"
         type="image/x-icon">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/animate.css')}}"> 
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/hamburgers.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/select2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/util.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='all_login/main.css')}}">
+
+
     <title>Panoramicas Xalapa HD</title>
 </head>
 
@@ -26,6 +35,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+
+    <script src="{{url_for('static',filename='all_login/popper.js')}}"></script>
+    <script src="{{url_for('static',filename='all_login/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='all_login/select2.min.js')}}"></script>
+    <script src="{{url_for('static',filename='all_login/tilt.jquery.min.js')}}"></script>
+    <script >
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+    <script src="{{url_for('static',filename='all_login/main.js')}}"></script>
 
 </body>
 
