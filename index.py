@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL
 from datetime import timedelta, datetime
 
 app = Flask(__name__)
-# app.permanent_session_lifetime = timedelta(minutes = 15)  close session after 15 minutes
+# app.permanent_session_lifetime = timedelta(minutes = 30)  # close session after 15 minutes
 
 # key-secret
 app.secret_key = 'panosTeamXALAPA'
@@ -191,6 +191,7 @@ def edit_client(event, id):
     print(data[0])
     return render_template('edit_client_grd.html', data = data[0], event = event)
 
+# function update_client
 @app.route('/update_client/<event>/<id>', methods = ['POST'])
 def update_client(event, id):
     event = request.form['event_selected']

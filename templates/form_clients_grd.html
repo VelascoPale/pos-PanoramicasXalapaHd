@@ -15,12 +15,13 @@
 
 <h2 class="text-center mt-4">{{event}}</h2>
 
-<!-- form calculate cost  -->
+<!-- form calculate cost and add client  -->
 <div class="row justify-content-center">
+
     <!-- create form to calculate cost-->
     <div class="mt-4 col-lg-3 row justify-content-center ">
         <div class="card card-body bg-primary col-10">
-            <h3 class="text-center">Costo del paquete</h3>
+            <h3 class="text-center">Calcular costo</h3>
             <div class="row justify-content-center">
                 <div class="col-5 col-lg-10 mt-3">
                     <div class="input-group mb-3">
@@ -54,7 +55,7 @@
     <div class="mt-4 col-lg-6 row justify-content-center">
         <div class="card card-body bg-primary col-10">
             <form action="/add_client" method="POST" name="add">
-                <h3 class="text-center">Agregar nuevo pedido</h3>
+                <h3 class="text-center mb-3">Datos del cliente </h3>
 
                 <input type="text" name="event_selected" value="{{event}}" style="display: none;">
 

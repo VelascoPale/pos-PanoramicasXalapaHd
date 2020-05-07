@@ -9,34 +9,53 @@
         href="https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_location_on_48px-512.png"
         type="image/x-icon">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main2.css')}}">
     <title>Panoramicas Xalapa HD</title>
 </head>
 
 <body>
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="{{url_for('static',filename='images/img-01.png')}}" alt="IMG">
+                </div>
+                <form action="/login" method="POST" class="login100-form validate-form">
+                    <span class="login100-form-title">
+                        Iniciar sesión
+                    </span>
 
-    <div class="row align-items-center justify-content-center">
-        <div class="col-5 mt-10"> 
-            <form action="/login" method="POST">
-                <input type="text" name="adress" placeholder="Correo electronico"> <br>
-                <input type="password" name="password" placeholder="Contraseña">
-                <br>
-                <button type="submit">Ingresar</button>
-            </form>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        <input class="input100" type="text" name="adress" placeholder="Correo electronico">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <input class="input100" type="password" name="password" placeholder="Contraseña">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <button type="submit" class="login100-form-btn">Ingresar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-danger" role="alert">
-        {{message}}
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-    <hr>
-
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -46,6 +65,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+    <script src="{{url_for('static',filename='js/tilt.jquery.min.js')}}"></script>
 
 </body>
 
