@@ -9,53 +9,40 @@
         href="https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_location_on_48px-512.png"
         type="image/x-icon">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/main2.css')}}">
     <title>Panoramicas Xalapa HD</title>
 </head>
 
-<body>
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <div class="login100-pic js-tilt" data-tilt>
-                    <img src="{{url_for('static',filename='images/img-01.png')}}" alt="IMG">
+<body style="overflow-y: hidden;">
+
+    <div class="row align-items-center vh-100 justify-content-center text-center">
+        <div class="col-10 col-lg-4 card card-body bg-secondary" style="border-radius: 10px;">
+            <form action="/login" method="POST" class="form-signin ">
+                <div>
+                    <img class="mb-4" src="{{url_for('static', filename = 'img/icon.png')}}" alt="PXHD"
+                        width="100" height="100">
+                    <h1 class="h3 mb-3 font-weight-normal">Iniciar sesion</h1>
+                    <label for="inputEmail" class="sr-only">Correo electronico</label>
+                    <input type="email" name="adress" id="inputEmail" class="form-control"
+                        placeholder="Correo electronico" required autofocus>
+                    <label for="inputPassword" class="sr-only">Contraseña</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control mt-2"
+                        placeholder="Contraseña" required>
+                    <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Ingresar</button>
                 </div>
-                <form action="/login" method="POST" class="login100-form validate-form">
-                    <span class="login100-form-title">
-                        Iniciar sesión
-                    </span>
-
-                    {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-danger" role="alert">
-                        {{message}}
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                    {% endwith %}
-
-                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input class="input100" type="text" name="adress" placeholder="Correo electronico">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa fa-envelope" aria-hidden="true"></i>
-                        </span>
-                    </div>
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" type="password" name="password" placeholder="Contraseña">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                        </span>
-                    </div>
-                    <div class="container-login100-form-btn">
-                        <button type="submit" class="login100-form-btn">Ingresar</button>
-                    </div>
-                </form>
+            </form>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger mt-2" role="alert">
+                {{message}}
             </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <p class="mb-3 mt-4 text-muted">Panoramicas Xalapa HD 2020</p>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -65,7 +52,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-    <script src="{{url_for('static',filename='js/tilt.jquery.min.js')}}"></script>
 
 </body>
 

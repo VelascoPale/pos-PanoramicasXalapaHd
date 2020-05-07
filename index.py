@@ -191,7 +191,7 @@ def edit_client(event, id):
     print(data[0])
     return render_template('edit_client_grd.html', data = data[0], event = event)
 
-# function update_client
+# function update_client > edit_client_grd 
 @app.route('/update_client/<event>/<id>', methods = ['POST'])
 def update_client(event, id):
     event = request.form['event_selected']
@@ -223,4 +223,4 @@ def update_client(event, id):
 
 # run server
 if __name__ == "__main__":
-    app.run(port = "3000", debug = True)
+    app.run(host="192.168.1.100", port = "3000", debug = True)
