@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 from flask_mysqldb import MySQL
 from datetime import timedelta, datetime
+import bcrypt
 
 app = Flask(__name__)
 # app.permanent_session_lifetime = timedelta(minutes = 30)  # close session after 15 minutes
 
 # key-secret
 app.secret_key = 'panosTeamXALAPA'
+
+# salt for encrypt
+salt = bcrypt.gensalt()
 
 # config_mysql
 app.config['MYSQL_HOST'] = 'localhost'
@@ -29,7 +33,7 @@ def homepage():
 def login():
     if request.method == 'POST':
         adress = request.form['adress']
-        password = request.form['password']
+        password = request.form['password'].encode('utf-8')
         cur = sql.connection.cursor()
         consult_sql = 'SELECT * FROM users WHERE adress = %s'
         cur.execute(consult_sql, [adress])
@@ -38,18 +42,15 @@ def login():
         
         #test session
         if session_data:
-            session_psw = session_data[0][3]
-            print(session_data)
-            if session_psw == password:
+            session_psw = session_data[0][4].encode()
+            if (bcrypt.checkpw(password,session_psw)):
                 session['name'] = session_data[0][1]
-                session['adress'] = session_data[0][2]
+                session['adress'] = session_data[0][3]
                 return redirect(url_for('dashboard'))
             else:
-                print("Contraseña incorrecta")
                 flash("Contraseña incorrecta, intentalo de nuevo")
                 return redirect(url_for('homepage'))
         else:
-            print("Correo incorrecto")
             flash("Correo incorrecto, intentalo de nuevo")
             return redirect(url_for('homepage'))
     else:
@@ -91,7 +92,6 @@ def graduaciones():
         cur.execute(consult_sql)
         events = cur.fetchall()
         cur.close()
-        print(events)
         return render_template('graduaciones.html', places = events)
     else:
         return redirect(url_for('homepage'))
@@ -188,7 +188,6 @@ def edit_client(event, id):
     consult_sql = 'SELECT * FROM {0} WHERE id={1}'
     cur.execute(consult_sql.format(event,id))
     data = cur.fetchall()
-    print(data[0])
     return render_template('edit_client_grd.html', data = data[0], event = event)
 
 # function update_client > edit_client_grd 
@@ -220,7 +219,38 @@ def update_client(event, id):
                 flash('Cliente actualizado correctamente')
     return redirect(url_for('form_clients_grd', event = event))
 
+# function register_members
+@app.route('/register_members', methods=['POST','GET'])
+def register_members():
+    if 'name' in session:
+        if request.method == 'POST':
+            username = (request.form['username']).upper()
+            lastnames = (request.form['lastnames']).upper()
+            adress = (request.form['adress']).lower()
+            password = request.form['password'].encode('utf-8')
+            level = 'SELLER'
+            password = bcrypt.hashpw(password,salt)
+            if username != '' and lastnames != '' and adress != '' and password != '':
+                cur = sql.connection.cursor()
+                consult_sql = """SELECT * FROM users WHERE adress='{0}' OR username='{1}' OR lastnames='{2}'"""
+                cur.execute(consult_sql.format(adress, username, lastnames))
+                data_user = cur.fetchone()
+                print(data_user)
+                if not (data_user[3] == adress or data_user[1] == username or data_user[2] == lastnames):
+                    cur = sql.connection.cursor()
+                    consult_sql = """INSERT INTO  users(id,username,lastnames,adress,pass,level) VALUES (NULL,%s,%s,%s,%s,%s)"""
+                    cur.execute(consult_sql,(username,lastnames,adress,password,level))
+                    cur.close()
+                    flash('Usuario creado satisfactoriamente')
+                else:
+                    flash('Este usuario ya ha sido creado')
+            else:
+                flash('No has llenado todos los campos, intentalo de nuevo')
+        return render_template('register_members.html')
+    else:
+        return redirect(url_for('homepage'))
+    return render_template('register_members.html')
 
 # run server
 if __name__ == "__main__":
-    app.run(host="192.168.1.100", port = "3000", debug = True)
+    app.run(port = "3000", debug = True)
