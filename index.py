@@ -163,13 +163,13 @@ def add_client():
                 VALUES (NULL,'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')"""
                 cur.execute(consult_sql.format(event,name,id_table,num_photo,num_6x9,num_8x12, cost, payment,seller))
                 cur.close()
-                flash('Cliente registrado correctamente')
+                flash('Cliente registrado correctamente', 'alert-success')
             else:
-                flash('El pago registrado es mayor al costo')
+                flash('El pago registrado es mayor al costo', 'alert-warning')
         else:
-            flash('Número de mesa demasiado grande')
+            flash('Número de mesa demasiado grande', 'alert-warning')
     else:
-        flash('No se han registrado todos los datos')
+        flash('No se han registrado todos los datos', 'alert-warning')
     return redirect(url_for('form_clients_grd', event = event))
 
 # function delete_client > form_clients_grd
@@ -216,7 +216,7 @@ def update_client(event, id):
                 WHERE id = '{8}'"""
                 cur.execute(consult_sql.format(event,name,id_table,num_photo,num_6x9,num_8x12, cost, payment, id))
                 cur.close()
-                flash('Cliente actualizado correctamente')
+                flash('Cliente actualizado correctamente', 'alert-success')
     return redirect(url_for('form_clients_grd', event = event))
 
 # function register_members
@@ -236,20 +236,67 @@ def register_members():
                 cur.execute(consult_sql.format(adress, username, lastnames))
                 data_user = cur.fetchone()
                 print(data_user)
-                if not (data_user[3] == adress or data_user[1] == username or data_user[2] == lastnames):
+                if data_user:
+                    flash('Este usuario ya ha sido creado', 'alert-danger')
+                else:
                     cur = sql.connection.cursor()
                     consult_sql = """INSERT INTO  users(id,username,lastnames,adress,pass,level) VALUES (NULL,%s,%s,%s,%s,%s)"""
                     cur.execute(consult_sql,(username,lastnames,adress,password,level))
                     cur.close()
-                    flash('Usuario creado satisfactoriamente')
-                else:
-                    flash('Este usuario ya ha sido creado')
+                    flash('Usuario creado satisfactoriamente','alert-success') 
             else:
-                flash('No has llenado todos los campos, intentalo de nuevo')
-        return render_template('register_members.html')
+                flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
+        cur = sql.connection.cursor()
+        consult_sql = 'SELECT * FROM users WHERE 1'
+        cur.execute(consult_sql)
+        users = cur.fetchall()
+        cur.close()
+        return render_template('register_members.html', users = users)
     else:
         return redirect(url_for('homepage'))
     return render_template('register_members.html')
+
+# function add_members > register member
+@app.route('/update_member/<id>', methods = ['POST'])
+def update_member(id):
+    username = (request.form['username']).upper()
+    lastnames = (request.form['lastname']).upper()
+    adress = (request.form['adress']).lower()
+    password = request.form['password']
+    level = request.form['level']
+    cur = sql.connection.cursor()
+    if not password == '':
+        password = password.encode('utf-8')
+        password = bcrypt.hashpw(password,salt)
+        consult_sql = """UPDATE users SET 
+        username=%s,
+        lastnames=%s,
+        adress=%s,
+        pass=%s,
+        level=%s
+        WHERE id = %s"""
+        cur.execute(consult_sql,(username, lastnames, adress, password, level, id))
+        cur.close()
+    else:
+        consult_sql = """UPDATE users SET 
+        username='{1}',
+        lastnames='{2}',
+        adress='{3}',
+        level='{5}'
+        WHERE id = {0}"""
+        cur.execute(consult_sql.format(id, username,lastnames,adress,password,level))
+        cur.close()
+    flash('Usuario actualizado satisfactoriamente', 'alert-success')
+    return redirect(url_for('register_members'))
+
+# function delete_member > register_member
+@app.route('/delete_member/<id>', methods = ['POST'])
+def delete_member(id):
+    cur = sql.connection.cursor()
+    consult_sql = """ DELETE FROM users WHERE id= %s """
+    cur.execute(consult_sql, [id])
+    cur.close()
+    return redirect(url_for('register_members'))
 
 # run server
 if __name__ == "__main__":
