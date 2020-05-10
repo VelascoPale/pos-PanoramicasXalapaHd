@@ -3,7 +3,10 @@
 {% block menu %}
 <ul class="navbar-nav mr-auto">
     <li class="nav-item active">
-        <a class="nav-link" href="#"> <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/escuelas"> Escuelas <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/graduaciones"> Graduaciones </a>
     </li>
 </ul>
 {% endblock %}
@@ -56,9 +59,9 @@
             <thead>
                 <tr>
                     <td>Nombre(s)</td>
-                    <td>Apellidos</td>
-                    <td>Correo</td>
-                    <td>Cargo</td>
+                    <td class="no_visible">Apellidos</td>
+                    <td class="no_visible">Correo</td>
+                    <td class="no_visible">Cargo</td>
                     <td>Acciones</td>
                 </tr>
             </thead>
@@ -66,11 +69,11 @@
                 {% for user in users %}
                 <tr>
                     <td>{{ user.1 }}</td>
-                    <td>{{ user.2 }}</td>
-                    <td>{{ user.3 }}</td>
-                    <td>{{ user.5 }}</td>
+                    <td class="no_visible">{{ user.2 }}</td>
+                    <td class="no_visible">{{ user.3 }}</td>
+                    <td class="no_visible">{{ user.5 }}</td>
                     <td>
-                        <!-- Button trigger modal -->
+
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
                             onclick="edit_user('{{ user.0 }}','{{ user.1 }}','{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')">
@@ -123,88 +126,34 @@
 
                     <div class="form-group">
                         <label for="exampleInputPassword1">Contraseña</label>
-                        <input type="password" id="idpassword" placeholder="Contraseña" name="password" class="form-control">
+                        <input type="password" id="idpassword" placeholder="Contraseña" name="password"
+                            class="form-control">
                     </div>
 
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="level" id="idseller" value="SELLER">
-                        <label class="form-check-label h6" for="idseller">Vendedor</label>
+                    <p>Permisos del usuario</p>
+
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="idseller" value="SELLER" name="level" class="custom-control-input" checked="">
+                        <label class="custom-control-label h6" for="idseller">Vendedor</label>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="level" id="idadmin" value="ADMIN">
-                        <label class="form-check-label h6" for="idadmin">Administrador</label>
+
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="idadmin" value="ADMIN" name="level" class="custom-control-input" checked="">
+                        <label class="custom-control-label h6" for="idadmin">Administrador</label>
                     </div>
-                    <br>
+
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit"  id="btn_form" class="btn btn-primary"> Actualizar </button>
+                <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
             </div>
             </form>
         </div>
     </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-    });
-
-    function edit_user(id, name, lastname, adress, level) {
-
-        // change title of window
-        $("#title_window").html('Editar usuario')
-
-        // update data in form 
-        $("#idname").val(name)
-        $("#idlastname").val(lastname)
-        $("#idadress").val(adress)
-
-        // check radius 
-        if (level == 'SELLER') {
-            // change propierties
-            $("#idseller").prop("checked", true)
-        } else {
-            $("#idadmin").prop("checked", true)
-        }
-
-        // change url of form
-        $("#form_update").attr('action', '/update_member/' + id)
-
-
-    }
-
-    function delete_user(id, name, lastname, adress, level) {
-
-        // change title of window
-        $("#title_window").html('Eliminar usuario')
-        $("#btn_form").html('Eliminar')
-
-        // update data in form 
-        $("#idname").val(name)
-        $("#idlastname").val(lastname)
-        $("#idadress").val(adress)
-
-        // desactivate inputs
-        $("#idname").prop( "disabled", true)
-        $("#idlastname").prop( "disabled", true)
-        $("#idadress").prop( "disabled", true)
-        $("#idpassword").prop( "disabled", true)
-        $("#idseller").prop( "disabled", true)
-        $("#idadmin").prop( "disabled", true)
-
-        // check radius 
-        if (level == 'SELLER') {
-            // change propierties
-            $("#idseller").prop("checked", true)
-        } else {
-            $("#idadmin").prop("checked", true)
-        }
-
-        // change url of form
-        $("#form_update").attr('action', '/delete_member/' + id)
-
-    }
-</script>
+<!-- scripts -->
+<script src="{{url_for('static', filename='js/main.js')}}"></script>
 
 {% endblock %}

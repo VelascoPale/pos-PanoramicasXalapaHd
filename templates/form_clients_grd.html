@@ -155,7 +155,7 @@
                 <td class="no_visible"># de Foto</td>
                 <td class="no_visible">6x9</td>
                 <td class="no_visible">8x12</td>
-                <td>Costo</td>
+                <td class="no_visible">Costo</td>
                 <td>Pagado</td>
                 <td>Acciones</td>
             </tr>
@@ -165,19 +165,96 @@
             <tr>
                 <td>{{ client.1 }}</td>
                 <td>{{ client.2 }}</td>
-                <td>{{ client.3 }}</td>
+                <td class="no_visible">{{ client.3 }}</td>
                 <td class="no_visible">{{ client.4 }}</td>
                 <td class="no_visible">{{ client.5 }}</td>
                 <td class="no_visible">{{ client.6 }}</td>
                 <td>{{ client.7 }}</td>
                 <td>
-                    <a href="/edit_client/{{event}}/{{client.0}}" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="/delete_client/{{event}}/{{client.0}}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                        data-target="#exampleModalScrollable"
+                        onclick="edit_client_grd('{{ client.0 }}','{{ client.1 }}','{{ client.2 }}','{{ client.3 }}','{{ client.4 }}','{{ client.5 }}','{{ client.6 }}','{{ client.7 }}','{{ event }}')">
+                        Editar
+                    </button>
+
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        data-target="#exampleModalScrollable"
+                        onclick="delete_client_grd('{{ client.0 }}','{{ client.1 }}','{{ client.2 }}','{{ client.3 }}','{{ client.4 }}','{{ client.5 }}','{{ client.6 }}','{{ client.7 }}','{{ event }}')">
+                        Eliminar
+                    </button>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="exampleModalScrollable" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title_window"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="form_update">
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nombre</label>
+                        <input type="text" class="form-control" placeholder="Nombre del cliente" name="name"
+                            id="id_name">
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="exampleInputEmail1">Numero de Mesa</label>
+                            <input type="number" class="form-control" placeholder="Numero de mesa" name="id_table"
+                                id="id_mesa">
+                        </div>
+                        <div class="form-group col">
+                            <label for="exampleInputEmail1">Codigo de fotografia</label>
+                            <input type="text" class="form-control" placeholder="Numero de fotografia" name="num_photo"
+                                id="id_foto">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="exampleInputEmail1">6x9</label>
+                            <input type="number" class="form-control" placeholder="Cantidad de fotos" name="num_6x9"
+                                id="id_6x9">
+                        </div>
+                        <div class="form-group col">
+                            <label for="exampleInputEmail1">8x12</label>
+                            <input type="number" class="form-control" placeholder="Cantidad fotos" name="num_8x12"
+                                id="id_8x12">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="exampleInputEmail1">Costo total</label>
+                            <input type="number" class="form-control" placeholder="Numero de fotografia" name="cost"
+                                id="id_cost">
+                        </div>
+                        <div class="form-group col">
+                            <label for="exampleInputEmail1">Pago realizado</label>
+                            <input type="number" class="form-control" placeholder="Numero de fotografia" name="payment"
+                                id="id_payment">
+                        </div>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
+            </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- scripts -->

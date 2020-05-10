@@ -173,37 +173,28 @@ def add_client():
     return redirect(url_for('form_clients_grd', event = event))
 
 # function delete_client > form_clients_grd
-@app.route('/delete_client/<event>/<id>')
+@app.route('/delete_client/<event>/<id>', methods = ['POST'])
 def delete_client(event, id):
     cur = sql.connection.cursor()
     consult_sql = 'DELETE FROM {0} WHERE id={1}'
     cur.execute(consult_sql.format(event,id))
     cur.close()
+    flash('Cliente eliminado satisfactoriamente', 'alert-success')
     return redirect(url_for('form_clients_grd', event = event))
     
-# function edit_client > form_clients_grd
-@app.route('/edit_client/<event>/<id>')
-def edit_client(event, id):
-    cur = sql.connection.cursor()
-    consult_sql = 'SELECT * FROM {0} WHERE id={1}'
-    cur.execute(consult_sql.format(event,id))
-    data = cur.fetchall()
-    return render_template('edit_client_grd.html', data = data[0], event = event)
-
 # function update_client > edit_client_grd 
 @app.route('/update_client/<event>/<id>', methods = ['POST'])
 def update_client(event, id):
-    event = request.form['event_selected']
     name = (request.form['name']).upper()
     id_table = request.form['id_table']
-    num_photo = (request.form['num_photo']).upper()
+    num_photo = request.form['num_photo']
     num_6x9 = request.form['num_6x9']
     num_8x12 = request.form['num_8x12']
     cost = request.form['cost']
     payment = request.form['payment']
     if event != '' and name != '' and id_table != '' and num_photo != '' and num_6x9 != '' and num_8x12 != ''  and cost != '' and payment != '':
         if int(id_table) <= 125:
-            if not int(payment) > int(cost):
+            if not (int(payment) > int(cost)):
                 cur = sql.connection.cursor()
                 consult_sql = """UPDATE {0} SET 
                 name='{1}',
@@ -217,6 +208,8 @@ def update_client(event, id):
                 cur.execute(consult_sql.format(event,name,id_table,num_photo,num_6x9,num_8x12, cost, payment, id))
                 cur.close()
                 flash('Cliente actualizado correctamente', 'alert-success')
+            else:
+                flash('El pago exede el costo del paquete', 'alert-warning')
     return redirect(url_for('form_clients_grd', event = event))
 
 # function register_members
@@ -300,4 +293,4 @@ def delete_member(id):
 
 # run server
 if __name__ == "__main__":
-    app.run(port = "3000", debug = True)
+    app.run(host="192.168.1.100", port = "3000", debug = True)

@@ -1,3 +1,6 @@
+$(document).ready(function () {
+});
+
 function calculate_cost() {
     var _6x9 = parseInt(document.getElementById('_6x9').value);
     var _8x12 = parseInt(document.getElementById('_8x12').value);
@@ -5,30 +8,125 @@ function calculate_cost() {
     var cost_8x12 = 200;
     var final_cost = 0;
 
-        // calculate final_cost
-        if(_6x9 > 0 || _8x12 > 0){
-            if(_8x12 == 1 && _6x9 > 0){
-                final_cost = ((_6x9*(cost_6x9 - 30)) + (_8x12 * (cost_8x12)))
-            }else if(_8x12 >= 2 && _6x9 > 0){
-                final_cost = ((_6x9*(cost_6x9 - 30)) + (_8x12 * (cost_8x12 - 50)))
-            }else if(_8x12> 0 || _6x9 > 0){
-                final_cost = (cost_6x9 * _6x9) + (cost_8x12 * _8x12);
-            }
-        }else{
-            final_cost = 0;
+    // calculate final_cost
+    if (_6x9 > 0 || _8x12 > 0) {
+        if (_8x12 == 1 && _6x9 > 0) {
+            final_cost = ((_6x9 * (cost_6x9 - 30)) + (_8x12 * (cost_8x12)))
+        } else if (_8x12 >= 2 && _6x9 > 0) {
+            final_cost = ((_6x9 * (cost_6x9 - 30)) + (_8x12 * (cost_8x12 - 50)))
+        } else if (_8x12 > 0 || _6x9 > 0) {
+            final_cost = (cost_6x9 * _6x9) + (cost_8x12 * _8x12);
         }
+    } else {
+        final_cost = 0;
+    }
 
-        //print values in form
-        if(_6x9 > 0 || _8x12 > 0){
-            document.add.num_8x12.value = _8x12;
-            document.add.num_6x9.value = _6x9;
-            document.add.cost.value = final_cost;
-        }else{
-            document.add.num_8x12.value = '';
-            document.add.num_6x9.value = '';
-            document.add.cost.value = '';
-        }
-    
+    //print values in form
+    if (_6x9 > 0 || _8x12 > 0) {
+        document.add.num_8x12.value = _8x12;
+        document.add.num_6x9.value = _6x9;
+        document.add.cost.value = final_cost;
+    } else {
+        document.add.num_8x12.value = '';
+        document.add.num_6x9.value = '';
+        document.add.cost.value = '';
+    }
+
     //replace value in cost
     document.getElementById('cost_ind').innerHTML = "El costo total es de: $ " + final_cost;
+}
+
+function edit_user(id, name, lastname, adress, level) {
+
+    // change title of window
+    $("#title_window").html('Editar usuario')
+
+    // update data in form 
+    $("#idname").val(name)
+    $("#idlastname").val(lastname)
+    $("#idadress").val(adress)
+
+    // check radius 
+    if (level == 'SELLER') {
+        // change propierties
+        $("#idseller").prop("checked", true)
+    } else {
+        $("#idadmin").prop("checked", true)
+    }
+
+    // change url of form
+    $("#form_update").attr('action', '/update_member/' + id)
+
+
+}
+
+function delete_user(id, name, lastname, adress, level) {
+
+    // change title of window
+    $("#title_window").html('Eliminar usuario')
+    $("#btn_form").html('Eliminar')
+
+    // update data in form 
+    $("#idname").val(name)
+    $("#idlastname").val(lastname)
+    $("#idadress").val(adress)
+
+    // desactivate inputs
+    $("#idname").prop("disabled", true)
+    $("#idlastname").prop("disabled", true)
+    $("#idadress").prop("disabled", true)
+    $("#idpassword").prop("disabled", true)
+    $("#idseller").prop("disabled", true)
+    $("#idadmin").prop("disabled", true)
+
+    // check radius 
+    if (level == 'SELLER') {
+        // change propierties
+        $("#idseller").prop("checked", true)
+    } else {
+        $("#idadmin").prop("checked", true)
+    }
+
+    // change url of form
+    $("#form_update").attr('action', '/delete_member/' + id)
+
+}
+
+function edit_client_grd(id, name, id_table, num_photo, _6x9, _8x12, cost, payment, event) {
+
+    // change title of window
+    $("#title_window").html('Editar cliente')
+
+    // update data in form 
+    $("#id_name").val(name)
+    $("#id_mesa").val(id_table)
+    $("#id_foto").val(num_photo)
+    $("#id_6x9").val(_6x9)
+    $("#id_8x12").val(_8x12)
+    $("#id_cost").val(cost)
+    $("#id_payment").val(payment)
+
+    // change url of form
+    $("#form_update").attr('action', '/update_client/' + event + '/' + id)
+
+}
+
+function delete_client_grd(id, name, id_table, num_photo, _6x9, _8x12, cost, payment, event) {
+
+    // change title of window
+    $("#title_window").html('Eliminar cliente')
+    $("#btn_form").html('Eliminar')
+
+    // update data in form 
+    $("#id_name").val(name)
+    $("#id_mesa").val(id_table)
+    $("#id_foto").val(num_photo)
+    $("#id_6x9").val(_6x9)
+    $("#id_8x12").val(_8x12)
+    $("#id_cost").val(cost)
+    $("#id_payment").val(payment)
+
+    // change url of form
+    $("#form_update").attr('action', '/delete_client/' + event + '/' + id)
+
 }
