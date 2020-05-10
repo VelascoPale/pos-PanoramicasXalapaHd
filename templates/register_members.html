@@ -9,42 +9,202 @@
 {% endblock %}
 
 {% block body %}
+<h1 class="text-center mt-4">Registrar usuarios</h1>
+<div class="row justify-content-center">
 
-<div class="row align-items-center vh-100 justify-content-center text-center">
-    <div class="col-10 col-lg-4 card card-body bg-secondary" style="border-radius: 10px;">
-        <form action="/register_members" method="POST" class="form-signin ">
-            <div class="">
+    <!-- create form for add members -->
+    <div class="col-10 col-lg-4 row mt-4 justify-content-center text-center">
+        <div class="card card-body bg-secondary" style="border-radius: 10px;">
+            <form action="/register_members" method="POST" class="form-signin ">
+                <div>
 
-                <h1 class="h3 mb-3 font-weight-normal">Registrar usuarios</h1>
+                    <h1 class="h3 mb-3 font-weight-normal">Datos del usuario</h1>
 
-                <input type="text" name="username" id="inputName" class="form-control" placeholder="Nombre(s)"
-                    required autofocus>
-                <input type="text" name="lastnames" id="inputLastnames" class="form-control mt-3" placeholder="Apellidos"
-                    required autofocus>
+                    <input type="text" name="username" id="inputName" class="form-control" placeholder="Nombre(s)"
+                        required autofocus>
+                    <input type="text" name="lastnames" id="inputLastnames" class="form-control mt-3"
+                        placeholder="Apellidos" required autofocus>
 
-                <input type="email" name="adress" id="inputEmail" class="form-control mt-3"
-                    placeholder="Correo electronico" required autofocus>
+                    <input type="email" name="adress" id="inputEmail" class="form-control mt-3"
+                        placeholder="Correo electronico" required autofocus>
 
-                <input type="password" name="password" id="inputPassword" class="form-control mt-3"
-                    placeholder="Contraseña" required>
+                    <input type="password" name="password" id="inputPassword" class="form-control mt-3"
+                        placeholder="Contraseña" required>
 
-                <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
-            </div>
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info alert-dismissible fade show mt-3" role="alert">
-                {{message}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
+                </div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert {{category}} alert-dismissible fade show mt-3" role="alert">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <p class="mb-3 mt-4 text-muted">Panoramicas Xalapa HD 2020</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- create table -->
+    <div class="col-10 col-lg-7 mt-4 justify-content-center">
+        <table class="table table-striped table-active table-bordered table-sm text-center">
+            <thead>
+                <tr>
+                    <td>Nombre(s)</td>
+                    <td>Apellidos</td>
+                    <td>Correo</td>
+                    <td>Cargo</td>
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.1 }}</td>
+                    <td>{{ user.2 }}</td>
+                    <td>{{ user.3 }}</td>
+                    <td>{{ user.5 }}</td>
+                    <td>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                            data-target="#exampleModalScrollable"
+                            onclick="edit_user('{{ user.0 }}','{{ user.1 }}','{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')">
+                            Editar
+                        </button>
+
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                            data-target="#exampleModalScrollable"
+                            onclick="delete_user('{{ user.0 }}','{{ user.1 }}','{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="exampleModalScrollable" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title_window"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <p class="mb-3 mt-4 text-muted">Panoramicas Xalapa HD 2020</p>
-        </form>
+            <div class="modal-body">
+                <form action="/update_member" method="POST" id="form_update">
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nombre</label>
+                        <input type="text" class="form-control" placeholder="Nombre(s)" name="username" id="idname"
+                            aria-describedby="emailHelp">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Apellido</label>
+                        <input type="text" class="form-control" placeholder="Apellidos" name="lastname" id="idlastname"
+                            aria-describedby="emailHelp">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Correo electronico</label>
+                        <input type="email" class="form-control" placeholder="Correo electronico" name="adress"
+                            id="idadress" aria-describedby="emailHelp">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Contraseña</label>
+                        <input type="password" id="idpassword" placeholder="Contraseña" name="password" class="form-control">
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="level" id="idseller" value="SELLER">
+                        <label class="form-check-label h6" for="idseller">Vendedor</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="level" id="idadmin" value="ADMIN">
+                        <label class="form-check-label h6" for="idadmin">Administrador</label>
+                    </div>
+                    <br>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit"  id="btn_form" class="btn btn-primary"> Actualizar </button>
+            </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+
+    function edit_user(id, name, lastname, adress, level) {
+
+        // change title of window
+        $("#title_window").html('Editar usuario')
+
+        // update data in form 
+        $("#idname").val(name)
+        $("#idlastname").val(lastname)
+        $("#idadress").val(adress)
+
+        // check radius 
+        if (level == 'SELLER') {
+            // change propierties
+            $("#idseller").prop("checked", true)
+        } else {
+            $("#idadmin").prop("checked", true)
+        }
+
+        // change url of form
+        $("#form_update").attr('action', '/update_member/' + id)
+
+
+    }
+
+    function delete_user(id, name, lastname, adress, level) {
+
+        // change title of window
+        $("#title_window").html('Eliminar usuario')
+        $("#btn_form").html('Eliminar')
+
+        // update data in form 
+        $("#idname").val(name)
+        $("#idlastname").val(lastname)
+        $("#idadress").val(adress)
+
+        // desactivate inputs
+        $("#idname").prop( "disabled", true)
+        $("#idlastname").prop( "disabled", true)
+        $("#idadress").prop( "disabled", true)
+        $("#idpassword").prop( "disabled", true)
+        $("#idseller").prop( "disabled", true)
+        $("#idadmin").prop( "disabled", true)
+
+        // check radius 
+        if (level == 'SELLER') {
+            // change propierties
+            $("#idseller").prop("checked", true)
+        } else {
+            $("#idadmin").prop("checked", true)
+        }
+
+        // change url of form
+        $("#form_update").attr('action', '/delete_member/' + id)
+
+    }
+</script>
 
 {% endblock %}
