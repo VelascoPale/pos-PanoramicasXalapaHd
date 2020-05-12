@@ -21,6 +21,18 @@
         Agregar nuevo pedido
     </button>
 </div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert {{category}} alert-dismissible fade show mt-3" role="alert">
+    {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
 <!-- create table -->
 <div class="row mt-4 justify-content-center">
@@ -95,20 +107,20 @@
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Nombre</label>
-                                <input type="text" class="form-control" autocomplete="off" placeholder="Nombre del cliente" name="name"
-                                    id="id_name">
+                                <input type="text" class="form-control" autocomplete="off"
+                                    placeholder="Nombre del cliente" name="name" id="id_name">
                             </div>
 
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Numero de Mesa</label>
-                                    <input type="number" class="form-control" autocomplete="off" placeholder="Numero de mesa"
-                                        name="id_table" id="id_mesa">
+                                    <input type="number" class="form-control" autocomplete="off"
+                                        placeholder="Numero de mesa" name="id_table" id="id_mesa">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Codigo de fotografia</label>
-                                    <input type="text" class="form-control" autocomplete="off" placeholder="Numero de fotografia"
-                                        name="num_photo" id="id_foto">
+                                    <input type="text" class="form-control" autocomplete="off"
+                                        placeholder="Numero de fotografia" name="num_photo" id="id_foto">
                                 </div>
                             </div>
 
@@ -133,12 +145,13 @@
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Pago realizado</label>
-                                    <input type="number" class="form-control" autocomplete="off" placeholder="Numero de fotografia"
-                                        name="payment" id="id_payment">
+                                    <input type="number" class="form-control" autocomplete="off"
+                                        placeholder="Numero de fotografia" name="payment" id="id_payment">
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="reset_cost();">Cancelar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    onclick="reset_cost();">Cancelar</button>
                                 <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
                             </div>
                         </form>

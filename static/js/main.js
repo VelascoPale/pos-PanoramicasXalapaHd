@@ -122,9 +122,9 @@ function add_client_grd(event) {
     document.getElementById('id_payment').value = '';
 
     // disable inputs
-    document.getElementById('id_6x9').disabled = true;
-    document.getElementById('id_8x12').disabled = true;
-    document.getElementById('id_cost').disabled = true;
+    document.getElementById('id_6x9').setAttribute('readonly','readonly');
+    document.getElementById('id_8x12').setAttribute('readonly','readonly');
+    document.getElementById('id_cost').setAttribute('readonly','readonly');
 
     // change url of form
     document.getElementById('form_update').setAttribute('action', '/add_client/' + event)
@@ -147,9 +147,9 @@ function edit_client_grd(id, name, id_table, num_photo, _6x9, _8x12, cost, payme
     document.getElementById('id_payment').value = payment;
 
     // disable inputs
-    document.getElementById('id_6x9').disabled = true;
-    document.getElementById('id_8x12').disabled = true;
-    document.getElementById('id_cost').disabled = true;
+    document.getElementById('id_6x9').setAttribute('readonly','readonly');
+    document.getElementById('id_8x12').setAttribute('readonly','readonly');
+    document.getElementById('id_cost').setAttribute('readonly','readonly');
 
     // change url of form
     document.getElementById('form_update').setAttribute('action', '/update_client/' + event + '/' + id)

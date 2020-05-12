@@ -195,7 +195,7 @@ def update_client(event, id):
         if int(id_table) <= 125:
             if not (int(payment) > int(cost)):
                 cur = sql.connection.cursor()
-                consult_sql = """UPDATE {0} SET 
+                consult_sql = """UPDATE {0} SET  
                 name='{1}',
                 id_table='{2}',
                 num_photo='{3}',
@@ -293,4 +293,4 @@ def delete_member(id):
 
 # run server
 if __name__ == "__main__":
-    app.run(host="192.168.1.100", port = "3000", debug = True)
+    app.run(port = "3000", debug = True)

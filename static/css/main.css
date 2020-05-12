@@ -8,6 +8,12 @@ body{
     overflow-x: hidden;
 }
 
+.card_index{
+    background-image: url('../img/background.svg');
+    background-size: cover;
+    opacity: 80%;
+}
+
 @media screen and ( max-width:960px ){
 
     .no_visible{
