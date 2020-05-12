@@ -144,10 +144,9 @@ def form_clients_grd():
     return render_template('form_clients_grd.html')
 
 # function add_client > form_clients-grd
-@app.route('/add_client', methods = ['POST'])
-def add_client():
+@app.route('/add_client/<event>', methods = ['POST'])
+def add_client(event):
     seller = (session['name']).upper()
-    event = request.form['event_selected']
     name = (request.form['name']).upper()
     id_table = request.form['id_table']
     num_photo = (request.form['num_photo']).upper()
@@ -289,6 +288,7 @@ def delete_member(id):
     consult_sql = """ DELETE FROM users WHERE id= %s """
     cur.execute(consult_sql, [id])
     cur.close()
+    flash('Usuario eliminado satisfactoriamente', 'alert-success')
     return redirect(url_for('register_members'))
 
 # run server
