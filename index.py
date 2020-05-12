@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect, url_for
+from flask import Flask, render_template, request, flash, session, redirect, url_for,jsonify
 from flask_mysqldb import MySQL
 from datetime import timedelta, datetime
 import bcrypt
@@ -142,6 +142,18 @@ def form_clients_grd():
     else:
         return redirect(url_for('homepage'))
     return render_template('form_clients_grd.html')
+
+
+@app.route('/search',methods=['Get','POST'])
+def search():
+    search = request.form.get('text')
+    cur = sql.connection.cursor()
+    consult_sql = 'SELECT * FROM {0} WHERE 1'
+    cur.execute(consult_sql.format(search))
+    data = cur.fetchall()
+    cur.close()
+    return render_template('form_clients_grd',jsonify(data))
+
 
 # function add_client > form_clients-grd
 @app.route('/add_client', methods = ['POST'])
