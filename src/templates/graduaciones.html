@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block menu %}
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+        <a class="nav-link" href="#"><span class="sr-only">(current)</span></a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center mt-4 mb-4">Graduaciones</h1>
+
+<div class="row justify-content-center">
+    
+    <!-- card select-event -->
+    <div class="card card-body bg-secondary col-lg-4 col-11" style="border-radius: 15px;">
+        <h1 class="text-center">Lista de eventos</h1>
+        <form action="/go_event" method="post">
+            Selecciona el evento
+            <select name="event_selected" class="form-control">
+                {% for place in places %}
+                <option value="{{place.0}}">{{place.0}}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-primary mt-4" type="submit">Ir al evento</button>
+        </form>
+    </div>
+
+    <div class="col-lg-1"> <br> </div>
+
+    <!-- card add_event -->
+    <div class="card card-body bg-secondary col-lg-4 col-11" style="border-radius: 15px;">
+        <h1 class="text-center">Añadir evento</h1>
+        <form action="/add_event" method="POST">
+            Ingresa el nombre del salon
+            <input type="text" class="form-control" autocomplete="off" name="event_hall" placeholder="Nombre del salon" required>
+            Ingresa el codigo de la escuela
+            <input type="text" class="form-control mt" autocomplete="off" name="school_name" placeholder="Codigo de la escuela" required>
+            <button class="btn btn-primary mt-4" type="submit"> Crear evento </button>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}
