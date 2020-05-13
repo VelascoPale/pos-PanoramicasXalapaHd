@@ -11,8 +11,6 @@
 </ul>
 {% endblock %}
 
-
-
 {% block body %}
 
 <h2 class="text-center mt-4">{{event}}</h2>
@@ -23,24 +21,6 @@
         Agregar nuevo pedido
     </button>
 </div>
-
-<div class="row  justify-content-center">
-    <div class="col-10">
-        <div class="active-orange-4 mb-4">
-            <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search_client" id="search_client" style="border-radius: 10px;" >
-        </div>
-    </div>
-</div>
-
-<div class="row  justify-content-center">
-    <div class="row">
-        <div class="col-10">
-        
-          <div id="result" ><h1>hola</h1></div>      
-        </div>
-    </div>
-</div>
-
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
@@ -54,6 +34,9 @@
 {% endif %}
 {% endwith %}
 
+
+<input type="text" id="search">
+<p id="result"></p>
 
 <!-- create table -->
 <div class="row mt-4 justify-content-center">
@@ -206,27 +189,35 @@
     </div>
 </div>
 
-
-
-
 {% endblock %}
 
 {% block javascript %}
+
 <!-- scripts -->
+<script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <script>
-   $(document).ready(function(){
-        $("#search_client").on("input",function(){
+
+    var search = document.getElementById('search').value;
+    var event = '{{ event }}';
+
+    $(document).ready(function () {
+        $("#search").on("input", function () {
             $("#result").empty();
             $.ajax({
-                method:"post",
-                url:"/search",
-                data:{text:$('#search_client').val()},
-                success:function(res){
+                method: "GET",
+                url: "/search_client/" + event,
+                data: { text: document.getElementById('search').value},
+                success: function (res) {
                     $('#result').html(res);
+                    console.log(res);
                 }
             });
         });
     });
+
 </script>
 
 {% endblock %}
