@@ -129,10 +129,11 @@ def go_event():
     return redirect(url_for('form_clients_grd', event = table))
 
 # form_client_grd page
-@app.route('/form_clients_grd')
+@app.route('/form_clients_grd',methods=['POST','GET'])
 def form_clients_grd():
     if 'name' in session:
         table = request.args.get('event')
+        search = request.args.get('data')
         cur = sql.connection.cursor()
         consult_sql = 'SELECT * FROM {0} WHERE 1'
         cur.execute(consult_sql.format(table))
@@ -144,15 +145,12 @@ def form_clients_grd():
     return render_template('form_clients_grd.html')
 
 
-@app.route('/search',methods=['Get','POST'])
+@app.route('/search',methods=['POST','GET'])
 def search():
-    search = request.form.get('text')
-    cur = sql.connection.cursor()
-    consult_sql = 'SELECT * FROM {0} WHERE 1'
-    cur.execute(consult_sql.format(search))
-    data = cur.fetchall()
-    cur.close()
-    return render_template('form_clients_grd',jsonify(data))
+    search = request.args.get("search")
+    table = request.args.get("event")
+    print(table, search)
+    return render_template('form_clients_grd', event = table, data = search)
 
 
 # function add_client > form_clients-grd

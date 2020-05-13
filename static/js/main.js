@@ -184,3 +184,5 @@ function delete_client_grd(id, name, id_table, num_photo, _6x9, _8x12, cost, pay
     document.getElementById('form_update').setAttribute('action', '/delete_client/' + event + '/' + id)
 
 }
+
+
