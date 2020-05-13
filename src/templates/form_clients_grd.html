@@ -35,8 +35,25 @@
 {% endwith %}
 
 
-<input type="text" id="search">
-<p id="result"></p>
+<div class="row  justify-content-center">
+    <div class="col-10">
+        <div class="active-orange-4 mb-4">
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search_client" id="search" style="border-radius: 10px;">
+        </div>
+    </div>
+</div>
+
+<div class="row  justify-content-center">
+    <div class="row">
+        <div class="col-10">
+        
+          <div id="result" ><h1></h1></div>      
+        </div>
+    </div>
+</div>
+
+
+
 
 <!-- create table -->
 <div class="row mt-4 justify-content-center">
@@ -212,7 +229,7 @@
                 data: { text: document.getElementById('search').value},
                 success: function (res) {
                     $('#result').html(res);
-                    console.log(res);
+                    
                 }
             });
         });
