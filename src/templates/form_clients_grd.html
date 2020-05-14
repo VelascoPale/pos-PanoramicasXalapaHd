@@ -71,7 +71,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for client in data %}
+            {% for client in url_for('search_client', data_uno = data_uno , event= event)%}
             <tr>
                 <td>{{ client.1 }}</td>
                 <td class="no_visible">{{ client.2 }}</td>
@@ -221,6 +221,11 @@
     var event = '{{ event }}';
 
     $(document).ready(function () {
+
+         load_data();
+
+         function load_data(text)
+         {
         $("#search").on("input", function () {
             $("#result").empty();
             $.ajax({
@@ -229,10 +234,22 @@
                 data: { text: document.getElementById('search').value},
                 success: function (res) {
                     $('#result').html(res);
-                    
+                    console.log(res);
                 }
             });
         });
+    }
+        $('#search').keyup(function(){
+          var search = $(this).val();
+          if(search != '')
+          {
+           load_data(search);
+          }
+          else
+          {
+           load_data();
+          }
+         });
     });
 
 </script>

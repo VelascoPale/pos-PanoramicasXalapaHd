@@ -152,10 +152,10 @@ def search_client(event):
     cur = sql.connection.cursor()
     consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' "
     cur.execute(consult_sql.format(event, search))
-    data = cur.fetchall()
+    data_uno = cur.fetchall()
     cur.close()
-    print(data)
-    return jsonify(data)
+    print(data_uno)
+    return jsonify(data_uno)
 
 
 
