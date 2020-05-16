@@ -177,13 +177,17 @@
                         <div class="row mt-3">
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">6x9</label>
-                                <input type="number" class="form-control" placeholder="Cantidad de fotos" id="_6x9"
-                                    value="0" onchange="calculate_cost();">
+                                <input type="text" class="form-control" placeholder="Cantidad de fotos" id="_6x9"
+                                    value="0" onchange="calculate_cost();" readonly>
+                                <button type="button" onclick="rest_6x9();" class="btn btn-danger btn-sm ml-1" id="button_restar_6x9" >-</button>
+                                <button type="button" onclick="sum_6x9();" class="btn btn-info btn-sm" id="button_sumar_6x9">+</button>
                             </div>
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">8x12</label>
                                 <input type="number" class="form-control" placeholder="Cantidad fotos" id="_8x12"
-                                    value="0" onchange="calculate_cost();">
+                                    value="0" onchange="calculate_cost();" readonly>
+                                <button type="button" onclick="rest_8x12();" class="btn btn-danger btn-sm ml-1" id="button_restar_8x12">-</button>
+                                <button type="button" onclick="sum_8x12();" class="btn btn-info btn-sm"  id="button_sumar_8x12">+</button>
                             </div>
                         </div>
 
@@ -243,6 +247,41 @@
             });
         });
     });
+
+
+    function sum_6x9(){
+        var num_6x9 = parseInt(document.getElementById('_6x9').value);
+        num_6x9 += 1;
+        document.getElementById('_6x9').value = num_6x9;
+        calculate_cost();
+    }
+
+    function rest_6x9(){
+        var num_6x9 = parseInt(document.getElementById('_6x9').value);
+        num_6x9 -= 1;
+         if (num_6x9 < 0){
+            num_6x9=0;
+        }
+        document.getElementById('_6x9').value = num_6x9;
+        calculate_cost();
+    }
+    
+    function sum_8x12(){
+        var num_8x12 = parseInt(document.getElementById('_8x12').value);
+        num_8x12 += 1;
+        document.getElementById('_8x12').value = num_8x12;
+        calculate_cost();
+    }
+
+    function rest_8x12(){
+        var num_8x12 = parseInt(document.getElementById('_8x12').value);
+        num_8x12 -= 1;
+         if (num_8x12 < 0){
+            num_8x12=0;
+        }
+        document.getElementById('_8x12').value = num_8x12;
+        calculate_cost();
+    }
 
 </script>
 

@@ -237,7 +237,7 @@ def update_client(event, id):
 # function register_members
 @app.route('/register_members', methods=['POST','GET'])
 def register_members():
-    if 'name' in session:
+    if 'name' in session and session['level'] == 'ADMIN':
         if request.method == 'POST':
             username = (request.form['username']).upper()
             lastnames = (request.form['lastnames']).upper()
@@ -279,6 +279,7 @@ def update_member(id):
     adress = (request.form['adress']).lower()
     password = request.form['password']
     level = request.form['level']
+    session['level'] = level
     cur = sql.connection.cursor()
     if not password == '':
         password = password.encode('utf-8')
