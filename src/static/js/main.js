@@ -1,3 +1,4 @@
+
 // functions of support
 function calculate_cost() {
     var _6x9 = parseInt(document.getElementById('_6x9').value);
@@ -39,6 +40,40 @@ function reset_cost() {
     document.getElementById('_6x9').value = 0;
     document.getElementById('_8x12').value = 0;
     document.getElementById('cost_ind').innerHTML = 'El costo total es de: $ 0';
+}
+
+function sum_6x9(){
+    var num_6x9 = parseInt(document.getElementById('_6x9').value);
+    num_6x9 += 1;
+    document.getElementById('_6x9').value = num_6x9;
+    calculate_cost();
+}
+
+function rest_6x9(){
+    var num_6x9 = parseInt(document.getElementById('_6x9').value);
+    num_6x9 -= 1;
+     if (num_6x9 < 0){
+        num_6x9=0;
+    }
+    document.getElementById('_6x9').value = num_6x9;
+    calculate_cost();
+}
+
+function sum_8x12(){
+    var num_8x12 = parseInt(document.getElementById('_8x12').value);
+    num_8x12 += 1;
+    document.getElementById('_8x12').value = num_8x12;
+    calculate_cost();
+}
+
+function rest_8x12(){
+    var num_8x12 = parseInt(document.getElementById('_8x12').value);
+    num_8x12 -= 1;
+     if (num_8x12 < 0){
+        num_8x12=0;
+    }
+    document.getElementById('_8x12').value = num_8x12;
+    calculate_cost();
 }
 
 // funcions for register_members page

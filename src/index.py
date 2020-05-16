@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, flash, session, redirect, url_for, jsonify
 from flask_mysqldb import MySQL
 from datetime import timedelta, datetime
@@ -136,7 +137,7 @@ def form_clients_grd():
     if 'name' in session:
         table = request.args.get('event')
         cur = sql.connection.cursor()
-        consult_sql = 'SELECT * FROM {0} WHERE 1'
+        consult_sql =  " SELECT * FROM {0} WHERE 1 "
         cur.execute(consult_sql.format(table))
         data = cur.fetchall()
         cur.close()
@@ -152,7 +153,7 @@ def search_client(event):
     print(search)
     if search != '':
         cur = sql.connection.cursor()
-        consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' "
+        consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' OR id_table = '{1}' OR num_photo = '{1}'  "
         cur.execute(consult_sql.format(event, search))
         data = cur.fetchall()
         cur.close()
@@ -163,6 +164,7 @@ def search_client(event):
         data = cur.fetchall()
         cur.close()
     return jsonify(data)
+
 
 # function add_client > form_clients-grd
 @app.route('/add_client/<event>', methods = ['POST'])
@@ -235,7 +237,7 @@ def update_client(event, id):
 # function register_members
 @app.route('/register_members', methods=['POST','GET'])
 def register_members():
-    if 'name' in session:
+    if 'name' in session and session['level'] == 'ADMIN':
         if request.method == 'POST':
             username = (request.form['username']).upper()
             lastnames = (request.form['lastnames']).upper()
@@ -277,6 +279,7 @@ def update_member(id):
     adress = (request.form['adress']).lower()
     password = request.form['password']
     level = request.form['level']
+    session['level'] = level
     cur = sql.connection.cursor()
     if not password == '':
         password = password.encode('utf-8')

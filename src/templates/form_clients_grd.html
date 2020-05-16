@@ -29,20 +29,19 @@
 <h2 class="text-center mt-4">{{event}}</h2>
 
 <!-- options -->
-<div class="row justify-content-center form-inline">
+<div class="row justify-content-center form-inline col-12 mt-4">
 
-    <div class="col-7 col-lg-5 my-1">
-        <div class="input-group">
+    <div class="col-9 col-lg-5 my-1">
+        <div class="input-group input-group-sm">
             <div class="input-group-prepend">
                 <div class="input-group-text">Buscar</div>
             </div>
-            <input type="text" autocomplete="off" class="form-control" id="search" placeholder="Nombre del cliente">
+            <input type="text" autocomplete="off" class="form-control" id="search" placeholder="Ingresa datos para la busqueda">
         </div>
     </div>
 
-    <button type="button" class="col-3 col-lg-1 btn btn-info btn-md m-4" data-toggle="modal"
-        data-target="#exampleModalScrollable" onclick="add_client_grd('{{ event }}')">
-        Agregar
+    <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal"
+        data-target="#exampleModalScrollable" onclick="add_client_grd('{{ event }}')">Agregar
     </button>
 
 </div>
@@ -104,7 +103,7 @@
             </div>
             <div class="modal-body">
 
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs nav-justified mb-3">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#data">Datos</a>
                     </li>
@@ -177,13 +176,27 @@
                         <div class="row mt-3">
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">6x9</label>
-                                <input type="number" class="form-control" placeholder="Cantidad de fotos" id="_6x9"
-                                    value="0" onchange="calculate_cost();">
+                                <input type="text" class="form-control" placeholder="Cantidad de fotos" id="_6x9"
+                                    value="0" onchange="calculate_cost();" readonly>
+                                <div class="btn-group mt-4 col-12" role="group" aria-label="Basic example">
+                                    <button type="button" onclick="rest_6x9();"
+                                        class="btn btn-warning btn-md col"><strong>-</strong></button>
+                                    <button type="button" onclick="sum_6x9();"
+                                        class="btn btn-success btn-md col"><strong>+</strong></button>
+                                </div>
+
                             </div>
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">8x12</label>
                                 <input type="number" class="form-control" placeholder="Cantidad fotos" id="_8x12"
-                                    value="0" onchange="calculate_cost();">
+                                    value="0" onchange="calculate_cost();" readonly>
+                                <div class="btn-group mt-4 col-12" role="group" aria-label="Basic example">
+                                    <button type="button" onclick="rest_8x12();" class="btn col btn-warning btn-md"
+                                        id="button_restar_8x12"><strong>-</strong></button>
+                                    <button type="button" onclick="sum_8x12();" class="btn col btn-success btn-md"
+                                        id="button_sumar_8x12"><strong>+</strong></button>
+                                </div>
+
                             </div>
                         </div>
 
