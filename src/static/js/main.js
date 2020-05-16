@@ -1,3 +1,4 @@
+
 // functions of support
 function calculate_cost() {
     var _6x9 = parseInt(document.getElementById('_6x9').value);
