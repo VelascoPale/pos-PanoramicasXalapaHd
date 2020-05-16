@@ -13,18 +13,10 @@
 
 {% block body %}
 
-<h2 class="text-center mt-4">{{event}}</h2>
-
-<div class="row justify-content-center">
-    <button type="button" class="btn btn-info btn-lg m-4" data-toggle="modal" data-target="#exampleModalScrollable"
-        onclick="add_client_grd('{{ event }}')">
-        Agregar nuevo pedido
-    </button>
-</div>
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
-<div class="alert {{category}} alert-dismissible fade show mt-3" role="alert">
+<div class="alert {{category}} alert-dismissible fade show mt-3 col-12" role="alert">
     {{message}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -34,27 +26,26 @@
 {% endif %}
 {% endwith %}
 
+<h2 class="text-center mt-4">{{event}}</h2>
 
-<div class="row  justify-content-center">
-    <div class="col-10">
-        <div class="active-orange-4 mb-4">
-            <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search_client" id="search" style="border-radius: 10px;">
+<!-- options -->
+<div class="row justify-content-center form-inline">
+
+    <div class="col-7 col-lg-5 my-1">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Buscar</div>
+            </div>
+            <input type="text" autocomplete="off" class="form-control" id="search" placeholder="Nombre del cliente">
         </div>
     </div>
+
+    <button type="button" class="col-3 col-lg-1 btn btn-info btn-md m-4" data-toggle="modal"
+        data-target="#exampleModalScrollable" onclick="add_client_grd('{{ event }}')">
+        Agregar
+    </button>
+
 </div>
-
-<div class="row  justify-content-center">
-    <div class="row">
-        <div class="col-10">
-         <div class="active-orange-4 mb-4">
-          <div id="result" ><h1></h1></div>
-          </div>      
-        </div>
-    </div>
-</div>
-
-
-
 
 <!-- create table -->
 <div class="row mt-4 justify-content-center">
@@ -71,8 +62,9 @@
                 <td class="medium-display">Acciones</td>
             </tr>
         </thead>
-        <tbody>
-            {% for client in data_uno %}
+        <tbody id="table">
+
+            {% for client in data %}
             <tr>
                 <td>{{ client.1 }}</td>
                 <td class="no_visible">{{ client.2 }}</td>
@@ -88,7 +80,7 @@
                         Editar
                     </button>
 
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                    <button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal"
                         data-target="#exampleModalScrollable"
                         onclick="delete_client_grd('{{ client.0 }}','{{ client.1 }}','{{ client.2 }}','{{ client.3 }}','{{ client.4 }}','{{ client.5 }}','{{ client.6 }}','{{ client.7 }}','{{ event }}')">
                         Eliminar
@@ -214,23 +206,39 @@
 <!-- scripts -->
 <script src="{{url_for('static', filename='js/main.js')}}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script>
-
-    var search = document.getElementById('search').value;
     var event = '{{ event }}';
+    var table_initial = document.getElementById('table_initial');
+    var new_table = document.getElementById('new_table');
 
-    $(document).ready(function () {      
-        $("#search").on("input", function () {
-            $("#result").empty();
+    $(document).ready(function () {
+        $("#search").keyup(function () {
+            $("#table").html('');
+            var search = document.getElementById('search').value;
             $.ajax({
                 method: "GET",
                 url: "/search_client/" + event,
-                data: { text: document.getElementById('search').value},
-                success: function (res) {
-                    $('#result').html(res);
-                    console.log(res);
+                data: { text: document.getElementById('search').value },
+                success: function (clients) {
+                    var output;
+                    clients.forEach(client => {
+                        output += "<tr>";
+                        output += "<td>" + client[1] + "</td>";
+                        output += "<td class='no_visible'>" + client[2] + "</td>";
+                        output += "<td class='no_visible'>" + client[3] + "</td>";
+                        output += "<td class='no_visible'>" + client[4] + "</td>";
+                        output += "<td class='no_visible'>" + client[5] + "</td>";
+                        output += "<td class='no_visible'>" + client[6] + "</td>";
+                        output += "<td class='no_visible'>" + client[7] + "</td>";
+                        output += "<td>";
+                        output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#exampleModalScrollable' onclick='edit_client_grd("${client[0]}","${client[1]}","${client[2]}","${client[3]}","${client[4]}","${client[5]}","${client[6]}","${client[7]}","${event}")'>Editar</button>`;
+                        output += `<button type='button' class='btn btn-danger btn-sm ml-1' data-toggle='modal' data-target='#exampleModalScrollable' onclick='delete_client_grd("${client[0]}","${client[1]}","${client[2]}","${client[3]}","${client[4]}","${client[5]}","${client[6]}","${client[7]}","${event}")'>Eliminar</button>`;
+                        output += "</td>";
+                        output += "</tr>";
+                    });
+                    $('#table').html(output);
                 }
             });
         });

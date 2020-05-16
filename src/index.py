@@ -47,6 +47,7 @@ def login():
             if (bcrypt.checkpw(password,session_psw)):
                 session['name'] = session_data[0][1]
                 session['adress'] = session_data[0][3]
+                session['level'] = session_data[0][5]
                 return redirect(url_for('dashboard'))
             else:
                 flash("Contraseña incorrecta, intentalo de nuevo")
@@ -70,10 +71,11 @@ def close():
 @app.route('/dashboard')
 def dashboard():
     if 'name' in session:
-        return render_template('dashboard.html')
+        level = session['level']
+        return render_template('dashboard.html', level = level)
     else:
         return redirect(url_for('homepage'))
-    return render_template('dashboard.html')
+    return render_template('dashboard.html', level = level)
 
 # escuelas page
 @app.route('/escuelas')
@@ -112,8 +114,8 @@ def add_event():
         name VARCHAR(50),
         id_table TINYINT,
         num_photo VARCHAR(10), 
-        6x9 TINYINT,
-        8x12 TINYINT,
+        _6x9 TINYINT,
+        _8x12 TINYINT,
         cost SMALLINT,
         payment SMALLINT,
         seller VARCHAR(50)
@@ -149,14 +151,19 @@ def form_clients_grd():
 def search_client(event):
     search = request.args.get('text')
     print(search)
-    cur = sql.connection.cursor()
-    consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' "
-    cur.execute(consult_sql.format(event,search))
-    data_uno = cur.fetchall()
-    cur.close()
-    print(data_uno)
-    return jsonify(event = search,data_uno = data_uno)
-
+    if search != '':
+        cur = sql.connection.cursor()
+        consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' "
+        cur.execute(consult_sql.format(event, search))
+        data = cur.fetchall()
+        cur.close()
+    else:
+        cur = sql.connection.cursor()
+        consult_sql = " SELECT * FROM {0}"
+        cur.execute(consult_sql.format(event))
+        data = cur.fetchall()
+        cur.close()
+    return jsonify(data)
 
 
 # function add_client > form_clients-grd
@@ -174,7 +181,7 @@ def add_client(event):
         if int(id_table) <= 125:
             if not int(payment) > int(cost):
                 cur = sql.connection.cursor()
-                consult_sql = """INSERT INTO {0}(`id`, `name`, `id_table`, `num_photo`, `6x9`, `8x12`, `cost`, `payment`, `seller`) 
+                consult_sql = """INSERT INTO {0}(`id`, `name`, `id_table`, `num_photo`, `_6x9`, `_8x12`, `cost`, `payment`, `seller`) 
                 VALUES (NULL,'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')"""
                 cur.execute(consult_sql.format(event,name,id_table,num_photo,num_6x9,num_8x12, cost, payment,seller))
                 cur.close()
@@ -215,8 +222,8 @@ def update_client(event, id):
                 name='{1}',
                 id_table='{2}',
                 num_photo='{3}',
-                6x9='{4}',
-                8x12='{5}',
+                _6x9='{4}',
+                _8x12='{5}',
                 cost='{6}',
                 payment='{7}' 
                 WHERE id = '{8}'"""
