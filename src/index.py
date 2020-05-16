@@ -314,4 +314,4 @@ def delete_member(id):
 
 # run server
 if __name__ == "__main__":
-    app.run(port = "3000", debug = True)
+    app.run(host="192.168.1.100", port = "3000", debug = True)
