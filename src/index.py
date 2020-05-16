@@ -135,7 +135,7 @@ def form_clients_grd():
     if 'name' in session:
         table = request.args.get('event')
         cur = sql.connection.cursor()
-        consult_sql = 'SELECT * FROM {0} WHERE 1'
+        consult_sql =  " SELECT * FROM {0} WHERE 1 "
         cur.execute(consult_sql.format(table))
         data = cur.fetchall()
         cur.close()
@@ -151,11 +151,11 @@ def search_client(event):
     print(search)
     cur = sql.connection.cursor()
     consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' "
-    cur.execute(consult_sql.format(event, search))
+    cur.execute(consult_sql.format(event,search))
     data_uno = cur.fetchall()
     cur.close()
     print(data_uno)
-    return jsonify(data_uno)
+    return jsonify(event = search,data_uno = data_uno)
 
 
 

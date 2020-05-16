@@ -46,8 +46,9 @@
 <div class="row  justify-content-center">
     <div class="row">
         <div class="col-10">
-        
-          <div id="result" ><h1></h1></div>      
+         <div class="active-orange-4 mb-4">
+          <div id="result" ><h1></h1></div>
+          </div>      
         </div>
     </div>
 </div>
@@ -71,7 +72,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for client in url_for('search_client', data_uno = data_uno , event= event)%}
+            {% for client in data_uno %}
             <tr>
                 <td>{{ client.1 }}</td>
                 <td class="no_visible">{{ client.2 }}</td>
@@ -220,12 +221,7 @@
     var search = document.getElementById('search').value;
     var event = '{{ event }}';
 
-    $(document).ready(function () {
-
-         load_data();
-
-         function load_data(text)
-         {
+    $(document).ready(function () {      
         $("#search").on("input", function () {
             $("#result").empty();
             $.ajax({
@@ -238,18 +234,6 @@
                 }
             });
         });
-    }
-        $('#search').keyup(function(){
-          var search = $(this).val();
-          if(search != '')
-          {
-           load_data(search);
-          }
-          else
-          {
-           load_data();
-          }
-         });
     });
 
 </script>
