@@ -46,6 +46,7 @@ def login():
             if (bcrypt.checkpw(password,session_psw)):
                 session['name'] = session_data[0][1]
                 session['adress'] = session_data[0][3]
+                session['level'] = session_data[0][5]
                 return redirect(url_for('dashboard'))
             else:
                 flash("Contraseña incorrecta, intentalo de nuevo")
@@ -69,10 +70,11 @@ def close():
 @app.route('/dashboard')
 def dashboard():
     if 'name' in session:
-        return render_template('dashboard.html')
+        level = session['level']
+        return render_template('dashboard.html', level = level)
     else:
         return redirect(url_for('homepage'))
-    return render_template('dashboard.html')
+    return render_template('dashboard.html', level = level)
 
 # escuelas page
 @app.route('/escuelas')
