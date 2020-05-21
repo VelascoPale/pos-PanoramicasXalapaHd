@@ -1,17 +1,20 @@
-
 from flask import Flask, render_template, request, flash, session, redirect, url_for, jsonify
 from flask_mysqldb import MySQL
+from flask_wtf import CsrfProtect
 from datetime import timedelta, datetime
 import bcrypt
 
+from config import Config, ConfigDevelopment
+ 
 app = Flask(__name__)
+app.config.from_object(ConfigDevelopment)
 # app.permanent_session_lifetime = timedelta(minutes = 30)  # close session after 15 minutes
-
-# key-secret
-app.secret_key = 'panosTeamXALAPA'
 
 # salt for encrypt
 salt = bcrypt.gensalt()
+
+# csrf
+csrf = CsrfProtect()
 
 # config_mysql
 app.config['MYSQL_HOST'] = 'localhost'
@@ -22,14 +25,14 @@ sql = MySQL(app)
 
 # home page
 @app.route('/')
-def homepage():
+def page_login():
     if 'name' in session:
         return redirect(url_for('dashboard'))
     else:
-        return render_template('index.html')
-    return render_template('index.html')
+        return render_template('login.html')
+    return render_template('login.html')
 
-# user_login page and function
+# function validate login
 @app.route('/login', methods = ['POST'])
 def login():
     if request.method == 'POST':
@@ -51,30 +54,30 @@ def login():
                 return redirect(url_for('dashboard'))
             else:
                 flash("Contraseña incorrecta, intentalo de nuevo")
-                return redirect(url_for('homepage'))
+                return redirect(url_for('page_login'))
         else:
             flash("Correo incorrecto, intentalo de nuevo")
-            return redirect(url_for('homepage'))
+            return redirect(url_for('page_login'))
     else:
         if 'name' in session:
             return redirect(url_for('dashboard'))
         else:
-            return redirect(url_for('homepage'))
+            return redirect(url_for('page_login'))
 
 # function exit > all
 @app.route('/close')
 def close():
     session.clear()
-    return redirect(url_for('homepage'))
+    return redirect(url_for('page_login'))
 
 # dashboard page
 @app.route('/dashboard')
 def dashboard():
     if 'name' in session:
         level = session['level']
-        return render_template('dashboard.html', level = level)
+        return render_template('dashboard.html', level = level, username= session['name'])
     else:
-        return redirect(url_for('homepage'))
+        return redirect(url_for('page_login'))
     return render_template('dashboard.html', level = level)
 
 # escuelas page
@@ -83,7 +86,7 @@ def escuelas():
     if 'name' in session:
         return render_template('escuelas.html')
     else:
-        return redirect(url_for('homepage'))
+        return redirect(url_for('page_login'))
     return render_template('escuelas.html')
 
 # graduaciones page
@@ -97,7 +100,7 @@ def graduaciones():
         cur.close()
         return render_template('graduaciones.html', places = events)
     else:
-        return redirect(url_for('homepage'))
+        return redirect(url_for('page_login'))
     return render_template('graduaciones.html')
 
 # function add_event > graduaciones
@@ -143,7 +146,7 @@ def form_clients_grd():
         cur.close()
         return render_template('form_clients_grd.html', event = table, data = data)
     else:
-        return redirect(url_for('homepage'))
+        return redirect(url_for('page_login'))
     return render_template('form_clients_grd.html')
 
 # function search_client > form_client_grd
@@ -164,7 +167,6 @@ def search_client(event):
         data = cur.fetchall()
         cur.close()
     return jsonify(data)
-
 
 # function add_client > form_clients-grd
 @app.route('/add_client/<event>', methods = ['POST'])
@@ -268,7 +270,7 @@ def register_members():
         cur.close()
         return render_template('register_members.html', users = users)
     else:
-        return redirect(url_for('homepage'))
+        return redirect(url_for('page_login'))
     return render_template('register_members.html')
 
 # function add_members > register member
@@ -279,7 +281,6 @@ def update_member(id):
     adress = (request.form['adress']).lower()
     password = request.form['password']
     level = request.form['level']
-    session['level'] = level
     cur = sql.connection.cursor()
     if not password == '':
         password = password.encode('utf-8')
@@ -317,4 +318,5 @@ def delete_member(id):
 
 # run server
 if __name__ == "__main__":
-    app.run(host="192.168.1.100", port = "3000", debug = True)
+    csrf.init_app(app)
+    app.run(port = "3000")

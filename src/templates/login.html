@@ -21,10 +21,9 @@
             <div class="col-11 col-lg-4 card card-body" style="border-radius: 10px;background-color: #c2d2e8;">
                 <form action="/login" method="POST" class="form-signin ">
                     <div>
-                        
                         <img class="mb-4" src="{{url_for('static', filename = 'img/icon.svg')}}" alt="PXHD" width="200"
                             height="200">
-                        
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <label for="inputEmail" class="sr-only">Correo electronico</label>
                         <input type="email" name="adress" id="inputEmail" class="form-control"
                             placeholder="Correo electronico" required autofocus autocomplete="off">

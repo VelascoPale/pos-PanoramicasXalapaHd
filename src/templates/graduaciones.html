@@ -19,6 +19,7 @@
         <h1 class="text-center">Lista de eventos</h1>
         <form action="/go_event" method="post">
             Selecciona el evento
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <select name="event_selected" class="form-control">
                 {% for place in places %}
                 <option value="{{place.0}}">{{place.0}}</option>
@@ -34,6 +35,7 @@
     <div class="card card-body bg-secondary col-lg-4 col-11" style="border-radius: 15px;">
         <h1 class="text-center">Añadir evento</h1>
         <form action="/add_event" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             Ingresa el nombre del salon
             <input type="text" class="form-control" autocomplete="off" name="event_hall" placeholder="Nombre del salon" required>
             Ingresa el codigo de la escuela
