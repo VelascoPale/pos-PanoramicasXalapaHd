@@ -1,0 +1,31 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.card_index{
+    background-image: url('../img/background.svg');
+    background-size: cover;
+    opacity: 80%;
+}
+
+.dont_show{
+    display: none;
+}
+
+@media screen and ( max-width:960px ){
+
+    .no_visible{
+        display: none;
+    }
+
+    .medium-display{
+        width: 50%;;
+    }
+
+}

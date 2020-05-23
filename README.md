@@ -1,3 +1,3 @@
-create env variable as SECRET_KEY
+create en variable as SECRET_KEY
 
-SET SECRET_KEY
+SETX SECRET_KEY
