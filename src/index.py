@@ -14,7 +14,7 @@ app.secret_key = 'panosTeamXALAPA'
 salt = bcrypt.gensalt()
 
 # config_mysql
-app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'regis_clients_pano'
@@ -72,7 +72,8 @@ def close():
 def dashboard():
     if 'name' in session:
         level = session['level']
-        return render_template('dashboard.html', level = level)
+        seller = (session['name']).upper()
+        return render_template('dashboard.html', level = level, seller = seller)
     else:
         return redirect(url_for('homepage'))
     return render_template('dashboard.html', level = level)

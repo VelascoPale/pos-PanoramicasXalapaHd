@@ -28,6 +28,8 @@
 {% block body %}
 
 <h1 class="text-center mt-4"> Dashboard </h1>
+<h2>{{seller}}</h2>
+<h2 id="venta_total"></h2>
 <div class="row justify-content-center">
     <div class="jumbotron mt-4 col-lg-12">
         <h1 class="display-4">En construccion...</h1>
@@ -36,5 +38,20 @@
         <p>Favor de visitarla mas tarde</p>
     </div>
 </div>
+
+{% endblock %}
+
+{% block javascript %}
+    
+<script type="text/javascript">
+    function calcular_ventas(){
+        var acumulador;
+       var total = parseInt(document.getElementById('id_payment').value);
+       acumulador += total;
+       document.getElementById('venta_total').value = acumulador;
+
+    }
+
+</script>
 
 {% endblock %}
