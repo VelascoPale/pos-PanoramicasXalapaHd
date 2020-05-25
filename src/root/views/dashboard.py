@@ -1,7 +1,9 @@
-from flask import Blueprint, session, render_template, redirect, url_for
+from flask import Blueprint, session, render_template, redirect, url_for, request
+from flask_mysqldb import MySQL
 
 dashboard = Blueprint("dashboard",__name__)
  
+sql = MySQL()
 # dashboard page
 @dashboard.route('/dashboard')
 def render_dashboard():

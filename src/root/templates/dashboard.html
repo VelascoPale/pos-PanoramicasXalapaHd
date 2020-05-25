@@ -33,16 +33,16 @@
         <h1 class="display-4 h4">Bienvenido de nuevo {{username.title()}} </h1>
         <p class="lead">Tus ventas en graduaciones han sido las siguientes: </p>
         <hr class="my-4">
-
+       
         <div class="row justify-content-left">
             <img src="{{url_for('static', filename='img/_8x12.svg')}}" alt="_8x12" class="rounded float-left"
                 style="height: 11em;margin-left: 30px;">
-            <span style="font-size: 6em;margin-right: 60px;">= 1</span>
+            <span style="font-size: 6em;margin-right: 60px;" id="ventas_8x12">= </span>
             <img src="{{url_for('static', filename='img/_6x9.svg')}}" alt="_6x9" class="rounded float-center"
                 style="height: 9em;">
             <span style="font-size: 6em;">= 1</span>
         </div>
-
+        
     </div>
 </div>
 
@@ -51,13 +51,20 @@
 {% block javascript %}
     
 <script type="text/javascript">
-    function calcular_ventas(){
-        var acumulador;
-       var total = parseInt(document.getElementById('id_payment').value);
-       acumulador += total;
-       document.getElementById('venta_total').value = acumulador;
+   //function ajax for search clients in grd
+    $(document).ready(function () {
+            $("#ventas_8x12").html('');
+            $.ajax({
+                method: "GET",
+                url: "/ventas_dashboard/",
+                data: { text: document.getElementById('search').value },
+                success: function () {
 
-    }
+                    $('#table').html(output);
+
+                }
+        });
+    });
 </script>
 
 {% endblock %}
