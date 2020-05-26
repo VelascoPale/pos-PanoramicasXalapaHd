@@ -21,12 +21,13 @@ def form_graduaciones():
 
 @graduaciones.route('/ventas_dashboard/<event>', methods= ['GET'])
 def ventas_dashboard(event):
-    ventas = request.args('event')
+    ventas = request.args('ventas')
     cur = sql.connection.cursor()
     consult_sql = " SELECT `_6x9`, `_8x12`, `seller` FROM {0} WHERE 1"
-    cur.execute(consult_sql.format(ventas))
+    cur.execute(consult_sql.format(event,ventas))
     data = cur.fetchall()
     cur.close()
+    print(data)
     return jsonify(data)
 
 # function search_client > form_client_grd
