@@ -33,7 +33,7 @@ def validate():
                 session['name'] = session_data[0][1]
                 session['adress'] = session_data[0][3]
                 session['level'] = session_data[0][5]
-                return redirect(url_for('dashboard.dashboard'))
+                return redirect(url_for('dashboard.render_dashboard'))
             else:
                 flash("Contraseña incorrecta, intentalo de nuevo")
                 return redirect(url_for('login.page_login'))

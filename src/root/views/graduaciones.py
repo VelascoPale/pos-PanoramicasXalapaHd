@@ -10,7 +10,7 @@ def form_graduaciones():
     if 'name' in session:
         table = request.args.get('event')
         cur = sql.connection.cursor()
-        consult_sql =  " SELECT * FROM {0} WHERE 1 "
+        consult_sql =  " SELECT * FROM {0} WHERE 1 ORDER BY name ASC"
         cur.execute(consult_sql.format(table))
         data = cur.fetchall()
         cur.close()
@@ -18,6 +18,17 @@ def form_graduaciones():
     else:
         return redirect(url_for('login.page_login'))
     return render_template('form_graduaciones.html')
+
+@graduaciones.route('/ventas_dashboard/<event>', methods= ['GET'])
+def ventas_dashboard(event):
+    ventas = request.args('ventas')
+    cur = sql.connection.cursor()
+    consult_sql = " SELECT `_6x9`, `_8x12`, `seller` FROM {0} WHERE 1"
+    cur.execute(consult_sql.format(event,ventas))
+    data = cur.fetchall()
+    cur.close()
+    print(data)
+    return jsonify(data)
 
 # function search_client > form_client_grd
 @graduaciones.route('/search_client/<event>', methods = ['GET'])
