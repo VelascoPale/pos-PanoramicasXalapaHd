@@ -9,7 +9,7 @@ sql = MySQL()
 @login.route('/')
 def page_login():
     if 'name' in session:
-        return redirect(url_for('dashboard.dashboard'))
+        return redirect(url_for('dashboard.render_dashboard'))
     else:
         return render_template('login.html')
     return render_template('login.html')
@@ -42,7 +42,7 @@ def validate():
             return redirect(url_for('login.page_login'))
     else:
         if 'name' in session:
-            return redirect(url_for('dashboard.dashboard'))
+            return redirect(url_for('dashboard.render_dashboard'))
         else:
             return redirect(url_for('login.page_login'))
 
