@@ -2,6 +2,9 @@ from flask import Blueprint, session, redirect, render_template, request, url_fo
 from flask_mysqldb import MySQL
 import bcrypt
 
+from ..models.users import User
+from ..schemas import user_schema, users_schema
+
 login = Blueprint("login",__name__)
 sql = MySQL()
 
