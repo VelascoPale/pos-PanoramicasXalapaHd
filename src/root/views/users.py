@@ -2,13 +2,13 @@ from flask import Blueprint, session, request, url_for, flash, render_template, 
 from flask_mysqldb import MySQL
 import bcrypt
 
-users = Blueprint("users",__name__)
+users = Blueprint("users",__name__, url_prefix='/register_members')
 salt = bcrypt.gensalt()
 sql = MySQL()
 
 
 # function register_members
-@users.route('/register_members', methods=['POST','GET'])
+@users.route('/', methods=['POST','GET'])
 def register_members():
     if 'name' in session and session['level'] == 'ADMIN':
         if request.method == 'POST':
@@ -45,7 +45,7 @@ def register_members():
     return render_template('register_members.html')
 
 # function add_members > register member
-@users.route('/update_member/<id>', methods = ['POST'])
+@users.route('/patch/<id>', methods = ['POST'])
 def update_member(id):
     username = (request.form['username']).upper()
     lastnames = (request.form['lastname']).upper()
@@ -78,7 +78,7 @@ def update_member(id):
     return redirect(url_for('users.register_members'))
 
 # function delete_member > register_member
-@users.route('/delete_member/<id>', methods = ['POST'])
+@users.route('/delete/<id>', methods = ['POST'])
 def delete_member(id):
     cur = sql.connection.cursor()
     consult_sql = """ DELETE FROM users WHERE id= %s """

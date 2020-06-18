@@ -1,12 +1,12 @@
 from flask import Blueprint, session, redirect, render_template, request, url_for, flash
-from flask_mysqldb import MySQL
+#from flask_mysqldb import MySQL
 import bcrypt
 
 from ..models.users import User
 from ..schemas import user_schema, users_schema
 
 login = Blueprint("login",__name__)
-sql = MySQL()
+#sql = MySQL()
 
 # home page
 @login.route('/')
@@ -23,19 +23,20 @@ def validate():
     if request.method == 'POST':
         adress = request.form['adress']
         password = request.form['password'].encode('utf-8')
-        cur = sql.connection.cursor()
-        consult_sql = 'SELECT * FROM users WHERE adress = %s'
-        cur.execute(consult_sql, [adress])
-        session_data = cur.fetchall()
-        cur.close()
+        session_data = User.query.filter_by(adress=adress).first_or_404()
+        #cur = sql.connection.cursor()
+        #consult_sql = 'SELECT * FROM users WHERE adress = %s'
+        #cur.execute(consult_sql, [adress])
+        #session_data = cur.fetchall()
+        #cur.close()
         
         #test session
-        if session_data:
-            session_psw = session_data[0][4].encode()
+        if session_data is not None:
+            session_psw = session_data.hashpsw.encode()
             if (bcrypt.checkpw(password,session_psw)):
-                session['name'] = session_data[0][1]
-                session['adress'] = session_data[0][3]
-                session['level'] = session_data[0][5]
+                session['name'] = session_data.lastnames
+                session['adress'] = session_data.lastnames
+                session['level'] = session_data.level
                 return redirect(url_for('dashboard.render_dashboard'))
             else:
                 flash("Contraseña incorrecta, intentalo de nuevo")

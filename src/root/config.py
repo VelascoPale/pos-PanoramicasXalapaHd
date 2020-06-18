@@ -10,7 +10,7 @@ class Config(object):
 
 class ConfigDevelopment(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@127.0.0.1/regis_clients_pano'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/regis_clients_pano'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 config ={

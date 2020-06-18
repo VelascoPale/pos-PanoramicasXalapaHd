@@ -1,3 +1,4 @@
+import pymysql
 from root import create_app
 from root.config import config
 

@@ -2,11 +2,11 @@ from flask import Blueprint, render_template, redirect, url_for, session, reques
 from datetime import timedelta, datetime
 from flask_mysqldb import MySQL
 
-events = Blueprint("events",__name__)
+events = Blueprint("events",__name__, url_prefix='/graduaciones')
 sql = MySQL()
 
 # graduaciones page
-@events.route('/graduaciones')
+@events.route('/')
 def graduaciones():
     if 'name' in session:
         cur = sql.connection.cursor()
@@ -26,21 +26,21 @@ def add_event():
     school_name = request.form['school_name']
     year = str(datetime.now().year)
     name_table = ('grd' + "_" + school_name + "_" + event_hall + "_" + year).lower()
-    cur = sql.connection.cursor()
-    consult_sql = """
-    CREATE TABLE IF NOT EXISTS {0}(
-        id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-        name VARCHAR(50),
-        id_table TINYINT,
-        num_photo VARCHAR(10), 
-        _6x9 TINYINT,
-        _8x12 TINYINT,
-        cost SMALLINT,
-        payment SMALLINT,
-        seller VARCHAR(50)
-        )"""
-    cur.execute(consult_sql.format(name_table))
-    cur.close()
+    #cur = sql.connection.cursor()
+    #consult_sql = """
+    #CREATE TABLE IF NOT EXISTS {0}(
+        #id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+        #name VARCHAR(50),
+        #id_table TINYINT,
+        #num_photo VARCHAR(10), 
+        #_6x9 TINYINT,
+        #_8x12 TINYINT,
+        #cost SMALLINT,
+        #payment SMALLINT,
+        #seller VARCHAR(50)
+        #)"""
+    #cur.execute(consult_sql.format(name_table))
+    #cur.close()
     return redirect(url_for('events.graduaciones'))
 
 # function go_event > graduados
