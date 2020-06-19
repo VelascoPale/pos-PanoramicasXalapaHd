@@ -10,7 +10,7 @@ sql = MySQL()
 # function register_members
 @users.route('/', methods=['POST','GET'])
 def register_members():
-    if 'name' in session and session['level'] == 'ADMIN':
+    if 'name' in session and session['permissions'] == 'ADMIN':
         if request.method == 'POST':
             username = (request.form['username']).upper()
             lastnames = (request.form['lastnames']).upper()
