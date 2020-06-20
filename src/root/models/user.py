@@ -10,9 +10,9 @@ class User(db.Model):
     hashpsw = db.Column(db.String(255), nullable=False)
     permissions = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, name, lastanames, email, hashpsw, permissions):
+    def __init__(self, name, lastname, email, hashpsw, permissions):
         self.name = name
-        self.lastaname = lastaname
+        self.lastname = lastname
         self.email = email
         self.hashpsw = hashpsw
         self.permissions = permissions

@@ -57,7 +57,7 @@ function delete_user(id, name, lastname, adress, level) {
     }
 
     // change url of form
-    document.getElementById('form_update').setAttribute('action', '/register_members/delete/' + id);
+    document.getElementById('form_update').setAttribute('action', '/delete/' + id);
 }
 
 

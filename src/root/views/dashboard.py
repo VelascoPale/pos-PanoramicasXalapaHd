@@ -8,8 +8,8 @@ sql = MySQL()
 @dashboard.route('/dashboard')
 def render_dashboard():
     if 'name' in session:
-        level = session['permissions']
-        return render_template('dashboard.html', level = level, username= session['name'])
+    	level = session['permissions']
+    	return render_template('dashboard.html', level = level, username= session['name'])
     else:
         return redirect(url_for('login.page_login'))
     return render_template('dashboard.html', level = level)
