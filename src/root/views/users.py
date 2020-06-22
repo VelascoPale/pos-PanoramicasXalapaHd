@@ -1,17 +1,17 @@
 from flask import Blueprint, session, request, url_for, flash, render_template, redirect
 from flask_mysqldb import MySQL
 import bcrypt
+
 from ..models import db
 from ..models.user import User
 from ..schemas.schemas import user_schema, users_schema
 
-users = Blueprint("users",__name__)
+users = Blueprint("users",__name__, url_prefix='/register_members')
 salt = bcrypt.gensalt()
 sql = MySQL()
 
-
 # function register_members
-@users.route('/register_members', methods=['POST','GET'])
+@users.route('/', methods=['POST','GET'])
 def register_members():
     if 'name' in session and session['permissions'] == 'ADMIN':
         if request.method == 'POST':
@@ -53,7 +53,7 @@ def update_member(id):
     lastname = (request.form['lastname']).upper()
     email = (request.form['adress']).lower()
     password = request.form['password']
-    level = request.form['level']
+    permissions = request.form['level']
     cur = sql.connection.cursor()
     if not password == '':
         password = password.encode('utf-8')
@@ -65,16 +65,16 @@ def update_member(id):
         hashpsw=%s,
         permissions=%s
         WHERE id = %s"""
-        cur.execute(consult_sql,(name, lastname, email, password, level, id))
+        cur.execute(consult_sql,(name, lastname, email, password, permissions, id))
         cur.close()
     else:
         consult_sql = """UPDATE users SET 
         name='{1}',
         lastname='{2}',
         email='{3}',
-        permissions='{5}'
-        WHERE id = {0}"""
-        cur.execute(consult_sql.format(id, username,lastnames,adress,password,level))
+        permissions='{4}'
+        WHERE idSeller = {0}"""
+        cur.execute(consult_sql.format(id, name, lastname, email, permissions))
         cur.close()
     flash('Usuario actualizado satisfactoriamente', 'alert-success')
     return redirect(url_for('users.register_members'))
