@@ -34,7 +34,7 @@ def register_members():
                     flash('Usuario creado satisfactoriamente','alert-success') 
             else:
                 flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
-        users = User.query.all()
+        users = User.query.order_by(User.name).all()
         return render_template('register_members.html', users = users)
     else:
         return redirect(url_for('login.page_login'))
@@ -43,9 +43,9 @@ def register_members():
 # function add_members > register member
 @users.route('/patch/<id>', methods = ['POST'])
 def update_member(id):
-    name = (request.form['username']).upper()
+    name = (request.form['name']).upper()
     lastname = (request.form['lastname']).upper()
-    email = (request.form['adress']).lower()
+    email = (request.form['email']).lower()
     password = request.form['password']
     permissions = request.form['level']
     if not password == '':
@@ -57,6 +57,7 @@ def update_member(id):
         user_update.email=email
         user_update.hashpsw=password
         user_update.permissions=permissions
+        db.session.commit()
     else:
         user_update = User.query.get(id)
         user_update.name=name
