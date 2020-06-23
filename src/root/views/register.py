@@ -4,8 +4,12 @@ import bcrypt
 from sqlalchemy import update
 
 from ..models import db
+
 from ..models.user import User
 from ..schemas.user import user_schema, users_schema
+
+from ..models.school import School
+from ..schemas.school import school_schema, schools_schema
 
 register = Blueprint("register",__name__, url_prefix='/register')
 salt = bcrypt.gensalt()
@@ -34,10 +38,10 @@ def register_members():
             else:
                 flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
         users = User.query.all()
-        return render_template('register_members.html', users = users)
+        return render_template('register_users.html', users = users)
     else:
         return redirect(url_for('login.page_login'))
-    return render_template('register_members.html')
+    return render_template('register_users.html')
 
 # function add_members > register member
 @register.route('user/patch/<id>', methods = ['POST'])
@@ -69,9 +73,24 @@ def update_member(id):
 
 # function delete_member > register_member
 @register.route('user/delete/<id>', methods=['GET','POST'])
-def delete(id):
+def delete_member(id):
     user_delete = User.query.filter_by(idSeller = int(id)).first()
     db.session.delete(user_delete)
     db.session.commit()
     flash('Usuario eliminado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_members'))
+
+@register.route('/school', methods=['POST', 'GET'])
+def register_schools():
+    if 'name' in session and session['permissions'] == 'ADMIN':
+        return render_template('register_schools.html')
+
+@register.route('/event', methods=['POST', 'GET'])
+def register_events():
+    if 'name' in session and session['permissions'] == 'ADMIN':
+        return render_template('register_events.html')
+
+@register.route('/client', methods=['POST', 'GET'])
+def register_clients():
+    if 'name' in session and session['permissions'] == 'ADMIN':
+        return render_template('register_clients.html')

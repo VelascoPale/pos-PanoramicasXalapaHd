@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert {{category}} alert-dismissible fade show mt-3" role="alert">
+    {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<h1 class="text-center mt-4">Registrar eventos</h1>
+
+<div class="row justify-content-center">
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+<!-- scripts -->
+<script src="{{url_for('static', filename='js/register.js')}}"></script>
+
+{% endblock %}
