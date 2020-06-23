@@ -3,6 +3,12 @@ from flask_wtf import CSRFProtect
 from flask_mysqldb import MySQL
 
 from .models import db
+from .models.client import Client 
+from .models.event import Event
+from .models.order_graduation import OrderGraduation
+from .models.school import School
+from .models.user import User
+
 from .views import events, login, users, graduaciones, escuelas, dashboard
 
 app = Flask(__name__)
