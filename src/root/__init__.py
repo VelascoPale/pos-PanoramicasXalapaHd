@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_wtf import CsrfProtect
+from flask_wtf import CSRFProtect
 from flask_mysqldb import MySQL
 
 from .models import db
@@ -9,7 +9,7 @@ app = Flask(__name__)
 # app.permanent_session_lifetime = timedelta(minutes = 30)  # close session after 15 minutes
 
 # csrf
-csrf = CsrfProtect()
+csrf = CSRFProtect()
 
 # config_mysql
 app.config['MYSQL_HOST'] = '127.0.0.1'

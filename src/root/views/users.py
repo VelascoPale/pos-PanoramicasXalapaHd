@@ -24,7 +24,6 @@ def register_members():
             password = bcrypt.hashpw(password,salt)
             if name != '' and lastname != '' and email != '' and password != '':
                 data_user = User.query.filter_by(name = name , lastname = lastname, email = email).first()
-    
                 if data_user:
                     flash('Este usuario ya ha sido creado', 'alert-danger')
                 else:
