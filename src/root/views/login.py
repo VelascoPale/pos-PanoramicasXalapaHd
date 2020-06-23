@@ -23,7 +23,7 @@ def validate():
     if request.method == 'POST':
         email = request.form['adress']
         password = request.form['password'].encode('utf-8')
-        session_data = User.query.filter_by(email=email).first_or_404()
+        session_data = User.query.filter_by(email=email).first()
         #cur = sql.connection.cursor()
         #consult_sql = 'SELECT * FROM users WHERE adress = %s'
         #cur.execute(consult_sql, [adress])
