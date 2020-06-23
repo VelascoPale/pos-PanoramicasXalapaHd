@@ -1,10 +1,11 @@
 from flask import Blueprint, session, request, url_for, flash, render_template, redirect
 from flask_mysqldb import MySQL
 import bcrypt
+from sqlalchemy import update
 
 from ..models import db
 from ..models.user import User
-from ..schemas.schemas import user_schema, users_schema
+from ..schemas.user import user_schema, users_schema
 
 users = Blueprint("users",__name__, url_prefix='/register_members')
 salt = bcrypt.gensalt()
@@ -22,11 +23,8 @@ def register_members():
             level = 'SELLER'
             password = bcrypt.hashpw(password,salt)
             if name != '' and lastname != '' and email != '' and password != '':
-                cur = sql.connection.cursor()
-                consult_sql = """SELECT * FROM users WHERE email='{0}' OR name='{1}' OR lastname='{2}'"""
-                cur.execute(consult_sql.format(email, name, lastname))
-                data_user = cur.fetchone()
-                print(data_user)
+                data_user = User.query.filter_by(name = name , lastname = lastname, email = email).first()
+    
                 if data_user:
                     flash('Este usuario ya ha sido creado', 'alert-danger')
                 else:
@@ -36,11 +34,7 @@ def register_members():
                     flash('Usuario creado satisfactoriamente','alert-success') 
             else:
                 flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
-        cur = sql.connection.cursor()
-        consult_sql = 'SELECT * FROM users WHERE 1'
-        cur.execute(consult_sql)
-        users = cur.fetchall()
-        cur.close()
+        users = User.query.all()
         return render_template('register_members.html', users = users)
     else:
         return redirect(url_for('login.page_login'))
@@ -54,28 +48,22 @@ def update_member(id):
     email = (request.form['adress']).lower()
     password = request.form['password']
     permissions = request.form['level']
-    cur = sql.connection.cursor()
     if not password == '':
         password = password.encode('utf-8')
         password = bcrypt.hashpw(password,salt)
-        consult_sql = """UPDATE users SET 
-        name=%s,
-        lastname=%s,
-        email=%s,
-        hashpsw=%s,
-        permissions=%s
-        WHERE id = %s"""
-        cur.execute(consult_sql,(name, lastname, email, password, permissions, id))
-        cur.close()
+        user_update = User.query.get(id)
+        user_update.name=name
+        user_update.lastname=lastname
+        user_update.email=email
+        user_update.hashpsw=password
+        user_update.permissions=permissions
     else:
-        consult_sql = """UPDATE users SET 
-        name='{1}',
-        lastname='{2}',
-        email='{3}',
-        permissions='{4}'
-        WHERE idSeller = {0}"""
-        cur.execute(consult_sql.format(id, name, lastname, email, permissions))
-        cur.close()
+        user_update = User.query.get(id)
+        user_update.name=name
+        user_update.lastname=lastname
+        user_update.email=email
+        user_update.permissions=permissions
+        db.session.commit()
     flash('Usuario actualizado satisfactoriamente', 'alert-success')
     return redirect(url_for('users.register_members'))
 

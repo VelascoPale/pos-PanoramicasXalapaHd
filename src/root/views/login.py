@@ -3,7 +3,7 @@ from flask import Blueprint, session, redirect, render_template, request, url_fo
 import bcrypt
 
 from ..models.user import User
-from ..schemas.schemas import user_schema, users_schema
+from ..schemas.user import user_schema, users_schema
 
 login = Blueprint("login",__name__)
 #sql = MySQL()
