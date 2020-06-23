@@ -1,14 +1,6 @@
 {% extends 'layout.html' %}
 
 {% block menu %}
-<ul class="navbar-nav mr-auto">
-    <li class="nav-item active">
-        <a class="nav-link" href="/escuelas"> Escuelas <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/graduaciones"> Graduaciones </a>
-    </li>
-</ul>
 {% endblock %}
 
 {% block body %}
@@ -32,7 +24,7 @@
     <!-- create form for add members -->
     <div class="col-11 col-lg-4 row mt-4 justify-content-center text-center">
         <div class="card card-body bg-secondary" style="border-radius: 10px;">
-            <form action="/register_members/" method="POST" class="form-signin ">
+            <form action="" method="POST" class="form-signin ">
                 <div>
 
                     <h1 class="h3 mb-3 font-weight-normal">Datos del usuario</h1>
@@ -151,8 +143,6 @@
                             checked="">
                         <label class="custom-control-label h6" for="idadmin">Administrador</label>
                     </div>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -168,6 +158,6 @@
 {% block javascript %}
 
 <!-- scripts -->
-<script src="{{url_for('static', filename='js/users.js')}}"></script>
+<script src="{{url_for('static', filename='js/register.js')}}"></script>
 
 {% endblock %}

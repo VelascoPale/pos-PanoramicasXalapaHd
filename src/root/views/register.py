@@ -4,15 +4,19 @@ import bcrypt
 from sqlalchemy import update
 
 from ..models import db
+
 from ..models.user import User
 from ..schemas.user import user_schema, users_schema
 
-users = Blueprint("users",__name__, url_prefix='/register_members')
+from ..models.school import School
+from ..schemas.school import school_schema, schools_schema
+
+register = Blueprint("register",__name__, url_prefix='/register')
 salt = bcrypt.gensalt()
 sql = MySQL()
 
 # function register_members
-@users.route('/', methods=['POST','GET'])
+@register.route('/user', methods=['POST','GET'])
 def register_members():
     if 'name' in session and session['permissions'] == 'ADMIN':
         if request.method == 'POST':
@@ -37,10 +41,10 @@ def register_members():
         return render_template('register_members.html', users = users)
     else:
         return redirect(url_for('login.page_login'))
-    return render_template('register_members.html')
+    return render_template('register_users.html')
 
 # function add_members > register member
-@users.route('/patch/<id>', methods = ['POST'])
+@register.route('user/patch/<id>', methods = ['POST'])
 def update_member(id):
     name = (request.form['name']).upper()
     lastname = (request.form['lastname']).upper()
@@ -65,13 +69,28 @@ def update_member(id):
         user_update.permissions=permissions
         db.session.commit()
     flash('Usuario actualizado satisfactoriamente', 'alert-success')
-    return redirect(url_for('users.register_members'))
+    return redirect(url_for('register.register_members'))
 
 # function delete_member > register_member
-@users.route('/delete/<id>', methods=['GET','POST'])
-def delete(id):
+@register.route('user/delete/<id>', methods=['GET','POST'])
+def delete_member(id):
     user_delete = User.query.filter_by(idSeller = int(id)).first()
     db.session.delete(user_delete)
     db.session.commit()
     flash('Usuario eliminado satisfactoriamente', 'alert-success')
-    return redirect(url_for('users.register_members'))
+    return redirect(url_for('register.register_members'))
+
+@register.route('/school', methods=['POST', 'GET'])
+def register_schools():
+    if 'name' in session and session['permissions'] == 'ADMIN':
+        return render_template('register_schools.html')
+
+@register.route('/event', methods=['POST', 'GET'])
+def register_events():
+    if 'name' in session and session['permissions'] == 'ADMIN':
+        return render_template('register_events.html')
+
+@register.route('/client', methods=['POST', 'GET'])
+def register_clients():
+    if 'name' in session and session['permissions'] == 'ADMIN':
+        return render_template('register_clients.html')

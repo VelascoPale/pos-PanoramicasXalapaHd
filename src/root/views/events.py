@@ -20,12 +20,12 @@ def graduaciones():
     return render_template('graduaciones.html')
 
 # function add_event > graduaciones
-@events.route('/add_event', methods = ['POST'])
-def add_event():
-    event_hall = request.form['event_hall']
-    school_name = request.form['school_name']
-    year = str(datetime.now().year)
-    name_table = ('grd' + "_" + school_name + "_" + event_hall + "_" + year).lower()
+#@events.route('/add_event', methods = ['POST'])
+#def add_event():
+    #event_hall = request.form['event_hall']
+    #school_name = request.form['school_name']
+    #year = str(datetime.now().year)
+    #name_table = ('grd' + "_" + school_name + "_" + event_hall + "_" + year).lower()
     #cur = sql.connection.cursor()
     #consult_sql = """
     #CREATE TABLE IF NOT EXISTS {0}(
@@ -41,7 +41,7 @@ def add_event():
         #)"""
     #cur.execute(consult_sql.format(name_table))
     #cur.close()
-    return redirect(url_for('events.graduaciones'))
+   #return redirect(url_for('events.graduaciones'))
 
 # function go_event > graduados
 @events.route('/go_event', methods = ['POST'])
