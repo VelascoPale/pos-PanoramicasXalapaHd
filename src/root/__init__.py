@@ -9,7 +9,7 @@ from .models.order_graduation import OrderGraduation
 from .models.school import School
 from .models.user import User
 
-from .views import events, login, users, graduaciones, escuelas, dashboard
+from .views import events, login, register, graduaciones, escuelas, dashboard
 
 app = Flask(__name__)
 # app.permanent_session_lifetime = timedelta(minutes = 30)  # close session after 15 minutes
@@ -29,7 +29,7 @@ def create_app(environment):
 
     app.register_blueprint(events)
     app.register_blueprint(login)
-    app.register_blueprint(users)
+    app.register_blueprint(register)
     app.register_blueprint(graduaciones)
     app.register_blueprint(escuelas)
     app.register_blueprint(dashboard)

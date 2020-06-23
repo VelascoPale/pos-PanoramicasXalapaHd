@@ -26,7 +26,7 @@ function edit_user(id, name, lastname, adress, level) {
     document.getElementById('idadmin').disabled = false;
 
     // change url of form
-    document.getElementById('form_update').setAttribute('action', '/register_members/patch/' + id);
+    document.getElementById('form_update').setAttribute('action', '/register/user/patch/' + id);
 }
 
 function delete_user(id, name, lastname, adress, level) {
@@ -57,7 +57,7 @@ function delete_user(id, name, lastname, adress, level) {
     }
 
     // change url of form
-    document.getElementById('form_update').setAttribute('action', '/register_members/delete/' + id);
+    document.getElementById('form_update').setAttribute('action', '/register/user/delete/' + id);
 }
 
 
