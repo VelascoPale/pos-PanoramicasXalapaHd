@@ -24,7 +24,6 @@ def register_members():
             password = bcrypt.hashpw(password,salt)
             if name != '' and lastname != '' and email != '' and password != '':
                 data_user = User.query.filter_by(name = name , lastname = lastname, email = email).first()
-    
                 if data_user:
                     flash('Este usuario ya ha sido creado', 'alert-danger')
                 else:
@@ -57,6 +56,7 @@ def update_member(id):
         user_update.email=email
         user_update.hashpsw=password
         user_update.permissions=permissions
+        db.session.commit()
     else:
         user_update = User.query.get(id)
         user_update.name=name

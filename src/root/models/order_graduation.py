@@ -3,7 +3,7 @@ from . import db
 class OrderGraduation(db.model):
     __tablename__ = 'ordersGraduations'
 
-    idOrderGraduation = db.Column(db.Integer, primary_key=True)
+    idOrderGraduation = db.Column(db.Integer, primary_key=True, autoincrement=True)
     idClient = db.Column(db.Integer, nullable=False)
     idSeller = db.Column(db.Integer, nullable=False)
     idEvent = db.Column(db.Integer, nullable=False)
