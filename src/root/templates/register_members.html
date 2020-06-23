@@ -32,7 +32,7 @@
     <!-- create form for add members -->
     <div class="col-11 col-lg-4 row mt-4 justify-content-center text-center">
         <div class="card card-body bg-secondary" style="border-radius: 10px;">
-            <form action="/register_members" method="POST" class="form-signin ">
+            <form action="/register_members/" method="POST" class="form-signin ">
                 <div>
 
                     <h1 class="h3 mb-3 font-weight-normal">Datos del usuario</h1>
@@ -73,21 +73,21 @@
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td>{{ user.1 }}</td>
-                    <td class="no_visible">{{ user.2 }}</td>
-                    <td class="no_visible">{{ user.3 }}</td>
-                    <td class="no_visible">{{ user.5 }}</td>
+                    <td>{{ user.name }}</td>
+                    <td class="no_visible">{{ user.lastname }}</td>
+                    <td class="no_visible">{{ user.email }}</td>
+                    <td class="no_visible">{{ user.permissions }}</td>
                     <td>
 
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="edit_user('{{ user.0 }}','{{ user.1 }}','{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')">
+                            onclick="edit_user('{{ user.idSeller }}','{{ user.name }}','{{ user.lastname }}','{{ user.email }}','{{ user.permissions }}')">
                             Editar
                         </button>
 
                         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="delete_user('{{ user.0 }}','{{ user.1 }}','{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')">
+                            onclick="delete_user('{{ user.idSeller }}','{{ user.name }}','{{ user.lastname }}','{{ user.email }}','{{ user.permissions }}')">
                             Eliminar
                         </button>
                     </td>

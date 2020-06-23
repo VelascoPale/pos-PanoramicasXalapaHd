@@ -8,7 +8,7 @@ class UserSchema(Schema):
 
 class ParmsUserSchema(Schema):
     name = fields.Str(required=True, validate=Length(max=50))
-    lastaname = fields.Str(required=True, validate=Length(max=50))
+    lastname = fields.Str(required=True, validate=Length(max=50))
     email = fields.Email(required=True, validate=Length(max=50))
     hashpsw = fields.Str(required=True, validate=Length(max=255))
     permissions = fields.Str(required=True, validate=Length(50))
