@@ -8,6 +8,7 @@ class School(db.Model):
     shift = db.Column(db.String(10), nullable=False) #turn of school
     generation  = db.Column(db.String(10), nullable=False)
     code  = db.Column(db.String(10), nullable=False) #code defined for panoramicas xalapa hd
+    
     event = db.relationship('Event',backref='idschool')
     client = db.relationship('Client',backref='idschool')
 
