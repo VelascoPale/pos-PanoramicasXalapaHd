@@ -38,7 +38,7 @@ def register_members():
             else:
                 flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
         users = User.query.order_by(User.name).all()
-        return render_template('register_members.html', users = users)
+        return render_template('register_users.html', users = users)
     else:
         return redirect(url_for('login.page_login'))
     return render_template('register_users.html')
