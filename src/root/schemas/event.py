@@ -8,3 +8,6 @@ class EventSchema(Schema):
 class ParamsEventSchema(Schema):
     idSchool = fields.Int(required=True)
     codeHall = fields.Str(required=True, validate=Length(10))
+
+event_schema = EventSchema()
+events_schema = EventSchema(many=True)
