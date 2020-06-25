@@ -1,12 +1,12 @@
 from . import db
 
 class OrderGraduation(db.Model):
-    #__tablename__ = 'orderGraduation'
+    __tablename__ = 'orderGraduation'
 
     idOrderGraduation = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    idClient = db.Column(db.Integer,db.ForeignKey('client.idClient'), nullable=False)
-    idSeller = db.Column(db.Integer,db.ForeignKey('user.idSeller'),nullable=False)
-    idEvent = db.Column(db.Integer,db.ForeignKey('event.idEvent'), nullable=False)
+    idClient = db.Column(db.Integer,db.ForeignKey('clients.idClient'), nullable=False)
+    idSeller = db.Column(db.Integer,db.ForeignKey('users.idSeller'),nullable=False)
+    idEvent = db.Column(db.Integer,db.ForeignKey('events.idEvent'), nullable=False)
     numTable = db.Column(db.String(10), nullable=False)
     numPhoto = db.Column(db.String(10), nullable=False)
     _6x9 = db.Column(db.Integer, nullable=False)
