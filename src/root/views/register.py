@@ -96,7 +96,7 @@ def register_schools():
                 if data_school is not None:
                     flash('Esta escuela ya ha sido creada', 'alert-danger')
                 else:
-                    school = School(name=nameSchool, shift=shift, generation=generation, code=code)
+                    school = School(name=name_school, shift=shift, generation=generation, code=code, enable=1)
                     db.session.add(school)
                     db.session.commit()
                     flash('Escuela registrada satisfactoriamente','alert-success')
@@ -121,7 +121,7 @@ def register_events():
                 if data_event is not None:
                     flash('Este evento ya ha sido creado', 'alert-danger')
                 else:
-                    event = Event(idSchool = school, eventName = event_name)
+                    event = Event(idSchool = school, eventName = event_name, enable=1)
                     db.session.add(event)
                     db.session.commit()
                     flash('Evento creado satisfactoriamente','alert-success') 

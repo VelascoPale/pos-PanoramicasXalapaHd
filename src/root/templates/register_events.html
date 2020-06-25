@@ -37,7 +37,9 @@
                         <select name="school" class="custom-select" id="inputGroupSelect01">
                             <option value="0">Elige la escuela...</option>
                             {% for school in schools %}
+                            {% if school.enable == 1 %}
                                 <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+                            {% endif %}
                             {% endfor %}
                         </select>
                     </div>
@@ -62,6 +64,7 @@
                     <td>Id</td>
                     <td>Id escuela</td>
                     <td>Nombre del evento</td>
+                    <td>Habilitado</td>
                     <td>Acciones</td>
                 </tr>
             </thead>
@@ -71,6 +74,8 @@
                     <td>{{ event.idEvent }}</td>
                     <td>{{ event.idSchool }}</td>
                     <td>{{ event.eventName }}</td>
+                    <td>{{ event.enable }}</td>
+                    
                     
                     <td>
 
