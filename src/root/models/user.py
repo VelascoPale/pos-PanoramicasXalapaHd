@@ -9,7 +9,7 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=False, unique=True)
     hashpsw = db.Column(db.String(60), nullable=False)
     permissions = db.Column(db.String(50), nullable=False)
-    school = db.relationship('School',backref='idseller')
+    orders_graduations = db.relationship('OrderGraduation',backref='idseller')
 
     def __init__(self, name, lastname, email, hashpsw, permissions):
         self.name = name

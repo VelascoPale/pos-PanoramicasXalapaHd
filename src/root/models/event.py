@@ -6,7 +6,7 @@ class Event(db.Model):
     idEvent = db.Column(db.Integer, primary_key=True, autoincrement=True)
     idSchool = db.Column(db.Integer,db.ForeignKey('schools.idSchool') ,nullable=False)
     eventName = db.Column(db.String(50), nullable=False)
-    order_graduation = db.relationship('OrderGraduation',backref='idevent')
+    order_graduations = db.relationship('OrderGraduation',backref='idevent')
 
     def __init__(self, idSchool, eventName):
         self.idSchool = idSchool

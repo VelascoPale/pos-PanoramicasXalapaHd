@@ -6,7 +6,7 @@ class OrderGraduation(db.Model):
     idOrderGraduation = db.Column(db.Integer, primary_key=True, autoincrement=True)
     idClient = db.Column(db.Integer,db.ForeignKey('clients.idClient'), nullable=False)
     idSeller = db.Column(db.Integer,db.ForeignKey('users.idSeller'),nullable=False)
-    idEvent = db.Column(db.Integer, db.ForeignKey('events.idEvent'), nullable=False)
+    idEvent = db.Column(db.Integer,db.ForeignKey('events.idEvent'), nullable=False)
     numTable = db.Column(db.String(10), nullable=False)
     numPhoto = db.Column(db.String(10), nullable=False)
     _6x9 = db.Column(db.Integer, nullable=False)
