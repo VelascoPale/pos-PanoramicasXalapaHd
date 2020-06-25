@@ -3,7 +3,7 @@ from marshmallow.validate import Length
 
 class OrderGraduationSchema(Schema):
     class Meta:
-        fields = ('idOrderGraduation', 'idClient', 'idSeller', 'idEvent', 'numTable', 'numPhoto', '_6x9', '_8x12', 'cost', 'payment')
+        fields = ('idOrderGraduation', 'idClient', 'idSeller', 'idEvent', 'numTable', 'numPhoto', '_6x9', '_8x12', 'cost', 'payment', 'status')
 
 class ParamsOrderGraduationsSchema(Schema):
     idClient = fields.Int(required=True)
@@ -15,6 +15,7 @@ class ParamsOrderGraduationsSchema(Schema):
     _8x12 = fields.Int(required=True)
     cost = field.Int(required=True)
     payment = field.Int(required=True)
+    status = field.Str(required=True, validate=Length(10))
 
 order_graduation_schema = OrderGraduationSchema()
 orders_graduations_schema = OrderGraduationSchema(many=True)

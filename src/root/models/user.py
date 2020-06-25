@@ -11,6 +11,7 @@ class User(db.Model):
     permissions = db.Column(db.String(50), nullable=False)
     orders_graduations = db.relationship('OrderGraduation',backref='idseller')
 
+
     def __init__(self, name, lastname, email, hashpsw, permissions):
         self.name = name
         self.lastname = lastname

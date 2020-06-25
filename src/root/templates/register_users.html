@@ -24,7 +24,7 @@
     <!-- create form for add members -->
     <div class="col-11 col-lg-4 row mt-4 justify-content-center text-center">
         <div class="card card-body bg-secondary" style="border-radius: 10px;">
-            <form action="" method="POST" class="form-signin ">
+            <form action="/register/user" method="POST" class="form-signin ">
                 <div>
 
                     <h1 class="h3 mb-3 font-weight-normal">Datos del usuario</h1>
@@ -32,16 +32,16 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                     <input type="text" name="name" autocomplete="off" id="inputName" class="form-control"
-                        placeholder="Nombre(s)" required autofocus>
+                        placeholder="Nombre(s)" autofocus>
 
                     <input type="text" name="lastname" autocomplete="off" id="inputLastnames" class="form-control mt-3"
-                        placeholder="Apellidos" required>
+                        placeholder="Apellidos" >
 
                     <input type="email" name="email" autocomplete="off" id="inputEmail" class="form-control mt-3"
-                        placeholder="Correo electronico" required>
+                        placeholder="Correo electronico" >
 
                     <input type="password" name="password" autocomplete="off" id="inputPassword"
-                        class="form-control mt-3" placeholder="Contraseña" required>
+                        class="form-control mt-3" placeholder="Contraseña" >
 
                     <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
                 </div>

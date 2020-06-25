@@ -11,6 +11,9 @@ from ..schemas.user import user_schema, users_schema
 from ..models.school import School
 from ..schemas.school import school_schema, schools_schema
 
+from ..models.event import Event
+from ..schemas.event import event_schema, events_schema
+
 register = Blueprint("register",__name__, url_prefix='/register')
 salt = bcrypt.gensalt()
 sql = MySQL()
@@ -28,7 +31,7 @@ def register_members():
             password = bcrypt.hashpw(password,salt)
             if name != '' and lastname != '' and email != '' and password != '':
                 data_user = User.query.filter_by(name = name , lastname = lastname, email = email).first()
-                if data_user:
+                if data_user is not None:
                     flash('Este usuario ya ha sido creado', 'alert-danger')
                 else:
                     user = User(name = name, lastname = lastname, email= email, hashpsw= password, permissions=level)
@@ -83,12 +86,53 @@ def delete_member(id):
 @register.route('/school', methods=['POST', 'GET'])
 def register_schools():
     if 'name' in session and session['permissions'] == 'ADMIN':
-        return render_template('register_schools.html')
+        if request.method == 'POST':
+            name_school = (request.form['schoolName']).upper()
+            shift = (request.form['shift']).upper()
+            generation = request.form['generation']
+            code = (request.form['code']).upper()
+            if name_school != '' and shift != '#' and generation != '' and code != '':
+                data_school = School.query.filter_by(name=name_school, shift=shift, generation=generation).first()
+                if data_school is not None:
+                    flash('Esta escuela ya ha sido creada', 'alert-danger')
+                else:
+                    school = School(name=nameSchool, shift=shift, generation=generation, code=code)
+                    db.session.add(school)
+                    db.session.commit()
+                    flash('Escuela registrada satisfactoriamente','alert-success')
+            else:
+                flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
+        schools = School.query.order_by(School.idSchool).all()
+        return render_template('register_schools.html', schools=schools)
+    else:
+        return redirect(url_for('login.login_page'))
+    return render_template('register_schools.html')
 
 @register.route('/event', methods=['POST', 'GET'])
 def register_events():
     if 'name' in session and session['permissions'] == 'ADMIN':
-        return render_template('register_events.html')
+        if request.method == 'POST':
+            school = int(request.form['school'])
+            name_hall = (request.form['hallName']).upper()
+            data_school = School.query.filter_by(idSchool=school).first()
+            event_name = data_school.code + '_' + name_hall + '_' + data_school.generation
+            if school != 0 and name_hall != '':
+                data_event = Event.query.filter_by(idSchool = school, eventName = event_name).first()
+                if data_event is not None:
+                    flash('Este evento ya ha sido creado', 'alert-danger')
+                else:
+                    event = Event(idSchool = school, eventName = event_name)
+                    db.session.add(event)
+                    db.session.commit()
+                    flash('Evento creado satisfactoriamente','alert-success') 
+            else:
+                flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
+        schools = School.query.order_by(School.idSchool).all()
+        events = Event.query.order_by(Event.idEvent).all()
+        return render_template('register_events.html', events = events, schools= schools)
+    else:
+        return redirect(url_for('login.page_login'))
+    return render_template('register_events.html')
 
 @register.route('/client', methods=['POST', 'GET'])
 def register_clients():
