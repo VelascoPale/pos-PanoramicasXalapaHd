@@ -6,10 +6,12 @@ class Event(db.Model):
     idEvent = db.Column(db.Integer, primary_key=True, autoincrement=True)
     idSchool = db.Column(db.Integer,db.ForeignKey('school.idSchool') ,nullable=False)
     eventName = db.Column(db.String(50), nullable=False)
+    enable = db.Column(db.Integer, nullable=False, default=1)
 
     order_graduation = db.relationship('OrderGraduation',backref='idevent')
 
-    def __init__(self, idSchool, eventName):
+    def __init__(self, idSchool, eventName, enable):
         self.idSchool = idSchool
         self.eventName = eventName
+        self.enable = enable
 

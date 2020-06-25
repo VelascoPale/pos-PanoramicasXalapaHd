@@ -13,9 +13,10 @@ class Client(db.Model):
 
     order_graduation = db.relationship('OrderGraduation',backref='idclient')
 
-    def __init__(self, name, lastname, telephone, email, idSchool):
+    def __init__(self, name, lastname, telephone, email, idSchool, group):
         self.name = name
         self.lastname = lastname
         self.telephone = telephone
         self.email = email
         self.idSchool = idSchool
+        self.group = group
