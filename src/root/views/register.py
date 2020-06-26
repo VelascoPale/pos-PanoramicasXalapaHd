@@ -1,4 +1,4 @@
-from flask import Blueprint, session, request, url_for, flash, render_template, redirect
+from flask import Blueprint, session, request, url_for, flash, render_template, redirect, jsonify
 from flask_mysqldb import MySQL
 import bcrypt
 from sqlalchemy import update
@@ -14,7 +14,10 @@ from ..schemas.school import school_schema, schools_schema
 from ..models.event import Event
 from ..schemas.event import event_schema, events_schema
 
-register = Blueprint("register",__name__, url_prefix='/register')
+from ..models.client import Client
+from ..schemas.client import client_schema, clients_schema
+
+register = Blueprint("register",__name__, url_prefix='/dashboard/register')
 salt = bcrypt.gensalt()
 sql = MySQL()
 
@@ -96,7 +99,7 @@ def register_schools():
                 if data_school is not None:
                     flash('Esta escuela ya ha sido creada', 'alert-danger')
                 else:
-                    school = School(name=nameSchool, shift=shift, generation=generation, code=code)
+                    school = School(name=name_school, shift=shift, generation=generation, code=code, enable=1)
                     db.session.add(school)
                     db.session.commit()
                     flash('Escuela registrada satisfactoriamente','alert-success')
@@ -121,7 +124,7 @@ def register_events():
                 if data_event is not None:
                     flash('Este evento ya ha sido creado', 'alert-danger')
                 else:
-                    event = Event(idSchool = school, eventName = event_name)
+                    event = Event(idSchool = school, eventName = event_name, enable=1)
                     db.session.add(event)
                     db.session.commit()
                     flash('Evento creado satisfactoriamente','alert-success') 
@@ -134,7 +137,42 @@ def register_events():
         return redirect(url_for('login.page_login'))
     return render_template('register_events.html')
 
-@register.route('/client', methods=['POST', 'GET'])
+@register.route('/client', methods=['GET','POST'])
 def register_clients():
-    if 'name' in session and session['permissions'] == 'ADMIN':
-        return render_template('register_clients.html')
+    if 'name' in session:
+        clients = Client.query.order_by(Client.idClient).all()
+        schools = School.query.order_by(School.idSchool).all()
+        return render_template('register_clients.html', schools = schools, clients=clients)
+    else:
+        return redirect(url_for('login.page_login'))
+    return render_template('register_clients.html')
+
+@register.route('/client/add', methods=['POST'])
+def add_client():
+    if 'name' in session:
+        name = (request.form['name']).upper()
+        lastname = (request.form['lastname']).upper()
+        telephone = request.form['telephone']
+        email = (request.form['email']).lower()
+        id_school = request.form['school']
+        group = request.form['group']
+        if group != '#' and name and lastname and telephone and email and id_school:
+            data_client = Client.query.filter_by(name=name, lastname=lastname, idSchool=id_school).first()
+            if data_client is not None:
+                alert = {
+                    'text':'El cliente ya ha sido registrado',
+                    'type':'alert-danger'}
+            else:
+                client = Client(name = name, lastname = lastname, telephone=telephone, email=email, idSchool=id_school, group=group)
+                db.session.add(client)
+                db.session.commit()
+                alert = {
+                    'text':'Cliente registrado satisfactoriamente',
+                    'type':'alert-success'}
+        else:
+           alert = {
+               'text':'No has llenado todos los campos, intentalo de nuevo',
+               'type':'alert-warning'}
+       
+        clients = Client.query.order_by(Client.idClient).all()
+        return jsonify(clients_schema.dump(clients))
