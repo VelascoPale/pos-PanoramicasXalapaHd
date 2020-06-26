@@ -25,7 +25,7 @@
     <!-- create form for add event -->
     <div class="col-11 col-lg-4 row mt-4 justify-content-center">
         <div class="card card-body bg-secondary" style="border-radius: 10px;">
-            <form action="" method="POST" class="form-signin ">
+            <form action="/dashboard/register/event" method="POST" class="form-signin ">
                 <div>
 
                     <h1 class="h3 mb-3 font-weight-normal text-center">Datos del evento</h1>
@@ -33,8 +33,8 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Escuela</label>
-                        <select name="school" class="custom-select" id="inputGroupSelect01">
+                        <label >Escuela</label>
+                        <select name="school" class="custom-select">
                             <option value="0">Elige la escuela...</option>
                             {% for school in schools %}
                             {% if school.enable == 1 %}
@@ -45,8 +45,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Nombre del salón</label>
-                        <input type="text" name="hallName" class="form-control" id="exampleInputPassword1" placeholder="Texin">
+                        <label >Nombre del salón</label>
+                        <input type="text" name="hallName" class="form-control"  placeholder="Texin">
                     </div>
 
                     <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
@@ -133,7 +133,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Contraseña</label>
+                        <label >Contraseña</label>
                         <input type="password" id="idpassword" placeholder="Contraseña" name="password"
                             class="form-control">
                     </div>
