@@ -8,7 +8,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
-<div class="alert {{category}} alert-dismissible fade show mt-3" role="alert">
+<div class="alert {{category}} alert-dismissible fade show mt-3" role="alert" id='alerts'>
     {{message}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -25,46 +25,61 @@
     <!-- create form for add members -->
     <div class="col-11 col-lg-4 row mt-4 justify-content-center">
         <div class="card card-body bg-secondary" style="border-radius: 10px;">
-            <form action="" method="POST" class="form-signin ">
-                <div>
+            <h1 class="h3 mb-3 font-weight-normal text-center">Datos del cliente</h1>
+            <form action="" method="POST" id="register-form">
 
-                    <h1 class="h3 mb-3 font-weight-normal text-center">Datos del cliente</h1>
+                <input type="hidden" name="csrf_token" name="csrf_token" value="{{ csrf_token() }}">
 
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Nombre(s)</label>
-                        <input type="text" name="name" class="form-control" id="exampleInputPassword1" placeholder="Alfredo">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Apellidos</label>
-                        <input type="text" name="lastname" class="form-control" id="exampleInputPassword1" placeholder="Chacón Hampshire">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Télefono</label>
-                        <input type="text" name="telephone" class="form-control" id="exampleInputPassword1" placeholder="2281233463">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Email</label>
-                        <input type="text" name="email" class="form-control" id="exampleInputPassword1" placeholder="example@gmail.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Escuela </label>
-                        <select name="shift" class="custom-select" id="inputGroupSelect01">
-                            <option value="·">Elige la escuela...</option>
-                            <option value="matutino">Matutino</option>
-                            <option value="vespertino">Vespertino</option>
-                        </select>
-                    </div>
-
-                    <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
+                <div class="form-group">
+                    <label>Nombre(s)</label>
+                    <input type="text" name="name" class="form-control" placeholder="Alfredo" required>
                 </div>
-                <p class="mb-3 mt-4 text-muted text-center">Panoramicas Xalapa HD 2020</p>
+
+                <div class="form-group">
+                    <label>Apellidos</label>
+                    <input type="text" name="lastname" class="form-control" placeholder="Chacón Hampshire" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Télefono</label>
+                    <input type="text" name="telephone" class="form-control" placeholder="2281233463">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" name="email" class="form-control" placeholder="example@gmail.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Escuela</label>
+                    <select name="school" class="custom-select">
+                        <option value="0">Elige la escuela...</option>
+                        {% for school in schools %}
+                        {% if school.enable == 1 %}
+                        <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Grupo </label>
+                    <select name="group" class="custom-select">
+                        <option value="#">Elige el grupo...</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
+                <button style="display: none;" id="clearForm" type="button">Limpiar</button>
             </form>
+            <p class="mb-3 mt-4 text-muted text-center">Panoramicas Xalapa HD 2020</p>
         </div>
     </div>
 
@@ -82,26 +97,28 @@
                     <td>Acciones</td>
                 </tr>
             </thead>
-            <tbody>
-                {% for user in users %}
+            <tbody id="table">
+                {% for client in clients %}
                 <tr>
-                    <td>{{ user.name }}</td>
-                    <td class="no_visible">{{ user.lastname }}</td>
-                    <td class="no_visible">{{ user.email }}</td>
-                    <td class="no_visible">{{ user.permissions }}</td>
+                    <td>{{ client.name }}</td>
+                    <td class="no_visible">{{ client.lastname }}</td>
+                    <td class="no_visible">{{ client.telephone }}</td>
+                    <td class="no_visible">{{ client.email }}</td>
+                    <td class="no_visible">{{ client.idSchool }}</td>
+                    <td class="no_visible">{{ client.group }}</td>
                     <td>
 
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="edit_user('{{ user.idSeller }}','{{ user.name }}','{{ user.lastname }}','{{ user.email }}','{{ user.permissions }}')">
+                            onclick="edit_client('{{ client.idSeller }}','{{ client.name }}','{{ client.lastname }}','{{ client.email }}','{{ client.permissions }}')">
                             Editar
                         </button>
 
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        <!---<button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="delete_user('{{ user.idSeller }}','{{ user.name }}','{{ user.lastname }}','{{ user.email }}','{{ user.permissions }}')">
+                            onclick="delete_client('{{ client.idSeller }}','{{ client.name }}','{{ client.lastname }}','{{ client.email }}','{{ client.permissions }}')">
                             Eliminar
-                        </button>
+                        </button>-->
                     </td>
                 </tr>
                 {% endfor %}
@@ -113,7 +130,7 @@
 
 <!-- modal -->
 <div class="modal fade" id="exampleModalScrollable" role="dialog">
-    <div class="modal-dialog"> 
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="title_window"></h5>
@@ -125,11 +142,11 @@
                 <form action="" method="POST" id="form_update">
 
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    
+
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nombre</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre(s)"
-                            name="name" id="idname" aria-describedby="emailHelp">
+                        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre(s)" name="name"
+                            id="idname" aria-describedby="emailHelp">
                     </div>
 
                     <div class="form-group">
@@ -145,7 +162,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Contraseña</label>
+                        <label>Contraseña</label>
                         <input type="password" id="idpassword" placeholder="Contraseña" name="password"
                             class="form-control">
                     </div>
@@ -178,6 +195,8 @@
 {% block javascript %}
 
 <!-- scripts -->
-<script src="{{url_for('static', filename='js/register.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/register.js')}}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/asinc-registerClients.js')}}"></script>
 
 {% endblock %}

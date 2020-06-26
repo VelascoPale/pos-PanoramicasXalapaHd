@@ -1,7 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block menu %}
-
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+        <a class="nav-link" href="/escuelas"> Escuelas <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/graduaciones"> Graduaciones </a>
+    </li>
+</ul>
 {% endblock %}
 
 {% block body %}
@@ -18,47 +25,35 @@
 {% endif %}
 {% endwith %}
 
-<h1 class="text-center mt-4">Registrar escuelas</h1>
+<h1 class="text-center mt-4">Registrar usuarios</h1>
 
 <div class="row justify-content-center">
 
-    <!-- create form for add schools -->
-    <div class="col-11 col-lg-4 row mt-4 justify-content-center text-left">
+    <!-- create form for add members -->
+    <div class="col-11 col-lg-4 row mt-4 justify-content-center text-center">
         <div class="card card-body bg-secondary" style="border-radius: 10px;">
-            <form action="/dashboard/register/school" method="POST" class="form-signin ">
+            <form action="/register_members" method="POST" class="form-signin ">
                 <div>
 
-                    <h1 class="h3 mb-3 font-weight-normal text-center">Datos de la escuela</h1>
+                    <h1 class="h3 mb-3 font-weight-normal">Datos del usuario</h1>
 
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-                    <div class="form-group">
-                        <label >Nombre de la escuela</label>
-                        <input type="text" name="schoolName" class="form-control"  placeholder="Articulo Tercero" autofocus>
-                    </div>
+                    <input type="text" name="username" autocomplete="off" id="inputName" class="form-control"
+                        placeholder="Nombre(s)" required autofocus>
 
-                    <div class="form-group">
-                        <label >Turno </label>
-                        <select name="shift" class="custom-select" id="inputGroupSelect01">
-                            <option value="#">Elige el turno...</option>
-                            <option value="matutino">Matutino</option>
-                            <option value="vespertino">Vespertino</option>
-                        </select>
-                    </div>
+                    <input type="text" name="lastnames" autocomplete="off" id="inputLastnames" class="form-control mt-3"
+                        placeholder="Apellidos" required>
 
-                    <div class="form-group">
-                        <label >Generación </label>
-                        <input type="text" name="generation" class="form-control"  placeholder="2016-2020">
-                    </div>
+                    <input type="email" name="adress" autocomplete="off" id="inputEmail" class="form-control mt-3"
+                        placeholder="Correo electronico" required>
 
-                    <div class="form-group">
-                        <label >Código de la escuela</label>
-                        <input type="text" name="code" class="form-control"  placeholder="A3V">
-                    </div>
+                    <input type="password" name="password" autocomplete="off" id="inputPassword"
+                        class="form-control mt-3" placeholder="Contraseña" required>
 
                     <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
                 </div>
-                <p class="mb-3 mt-4 text-muted text-center">Panoramicas Xalapa HD 2020</p>
+                <p class="mb-3 mt-4 text-muted">Panoramicas Xalapa HD 2020</p>
             </form>
         </div>
     </div>
@@ -68,35 +63,31 @@
         <table class="table table-striped table-active table-bordered table-sm text-center">
             <thead>
                 <tr>
-                    <td>Id</td>
-                    <td>Nombre</td>
-                    <td class="no_visible">Turno</td>
-                    <td class="no_visible">Generacion</td>
-                    <td class="no_visible">Código</td>
-                    <td class="no_visible">Habilitado</td>
+                    <td>Nombre(s)</td>
+                    <td class="no_visible">Apellidos</td>
+                    <td class="no_visible">Correo</td>
+                    <td class="no_visible">Cargo</td>
                     <td>Acciones</td>
                 </tr>
             </thead>
             <tbody>
-                {% for school in schools %}
+                {% for user in users %}
                 <tr>
-                    <td>{{ school.idSchool }}</td>
-                    <td>{{ school.name }}</td>
-                    <td class="no_visible">{{ school.shift }}</td>
-                    <td class="no_visible">{{ school.generation }}</td>
-                    <td class="no_visible">{{ school.code }}</td>
-                    <td class="no_visible">{{ school.enable }}</td>
+                    <td>{{ user.1 }}</td>
+                    <td class="no_visible">{{ user.2 }}</td>
+                    <td class="no_visible">{{ user.3 }}</td>
+                    <td class="no_visible">{{ user.5 }}</td>
                     <td>
 
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="">
+                            onclick="edit_user('{{ user.0 }}','{{ user.1 }}','{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')">
                             Editar
                         </button>
 
                         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="">
+                            onclick="delete_user('{{ user.0 }}','{{ user.1 }}','{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')">
                             Eliminar
                         </button>
                     </td>
@@ -110,7 +101,7 @@
 
 <!-- modal -->
 <div class="modal fade" id="exampleModalScrollable" role="dialog">
-    <div class="modal-dialog"> 
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="title_window"></h5>
@@ -119,14 +110,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/dashboard/register/school" method="POST" id="form_update">
+                <form action="/update_member" method="POST" id="form_update">
 
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nombre</label>
                         <input type="text" class="form-control" autocomplete="off" placeholder="Nombre(s)"
-                            name="name" id="idname" aria-describedby="emailHelp">
+                            name="username" id="idname" aria-describedby="emailHelp">
                     </div>
 
                     <div class="form-group">
@@ -138,11 +129,11 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Correo electronico</label>
                         <input type="email" class="form-control" autocomplete="off" placeholder="Correo electronico"
-                            name="email" id="idadress" aria-describedby="emailHelp">
+                            name="adress" id="idadress" aria-describedby="emailHelp">
                     </div>
 
                     <div class="form-group">
-                        <label >Contraseña</label>
+                        <label for="exampleInputPassword1">Contraseña</label>
                         <input type="password" id="idpassword" placeholder="Contraseña" name="password"
                             class="form-control">
                     </div>
@@ -160,6 +151,8 @@
                             checked="">
                         <label class="custom-control-label h6" for="idadmin">Administrador</label>
                     </div>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -175,6 +168,6 @@
 {% block javascript %}
 
 <!-- scripts -->
-<script src="{{url_for('static', filename='js/register.js')}}"></script>
+<script src="{{url_for('static', filename='js/users.js')}}"></script>
 
 {% endblock %}

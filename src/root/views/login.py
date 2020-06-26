@@ -21,7 +21,7 @@ def page_login():
 @login.route('/login', methods = ['POST'])
 def validate():
     if request.method == 'POST':
-        email = request.form['adress']
+        email = (request.form['adress']).lower()
         password = request.form['password'].encode('utf-8')
         session_data = User.query.filter_by(email=email).first()
         #cur = sql.connection.cursor()

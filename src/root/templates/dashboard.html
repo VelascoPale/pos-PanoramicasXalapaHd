@@ -30,7 +30,9 @@
               <select name="event_selected" class="form-control">
                 <option value="0">Elige el evento...</option>
                   {% for event in events %}
+                  {% if event.enable == 1 %}
                   <option value="{{event.IdEvent}}">{{event.eventName}}</option>
+                  {% endif %}
                   {% endfor %}
               </select>
               <button class="btn btn-primary mt-4" type="submit">Ir al evento</button>
