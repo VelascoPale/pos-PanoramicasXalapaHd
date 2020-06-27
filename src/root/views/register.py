@@ -247,5 +247,5 @@ def add_client():
                'text':'No has llenado todos los campos, intentalo de nuevo',
                'type':'alert-warning'}
        
-        clients = Client.query.order_by(Client.idClient).all()
-        return jsonify(clients_schema.dump(clients))
+        clients = Client.query.all()
+        return jsonify(alert, clients_schema.dump(clients))

@@ -13,9 +13,9 @@ class ParamsOrderGraduationsSchema(Schema):
     numPhoto = fields.Str(required=True, validate=Length(50))
     _6x9 = fields.Int(required=True)
     _8x12 = fields.Int(required=True)
-    cost = field.Int(required=True)
-    payment = field.Int(required=True)
-    status = field.Str(required=True, validate=Length(10))
+    cost = fields.Int(required=True)
+    payment = fields.Int(required=True)
+    status = fields.Str(required=True, validate=Length(10))
 
 order_graduation_schema = OrderGraduationSchema()
 orders_graduations_schema = OrderGraduationSchema(many=True)

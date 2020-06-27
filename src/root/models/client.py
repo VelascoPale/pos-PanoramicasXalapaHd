@@ -10,6 +10,7 @@ class Client(db.Model):
     email = db.Column(db.String(50))  # esta tambien
     idSchool = db.Column(db.Integer,db.ForeignKey('schools.idSchool'), nullable=False)
     group = db.Column(db.String(1))
+    
     orders_graduation = db.relationship('OrderGraduation',backref='idclient')
 
 

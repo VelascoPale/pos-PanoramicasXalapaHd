@@ -1,14 +1,6 @@
 {% extends 'layout.html' %}
 
 {% block menu %}
-<ul class="navbar-nav mr-auto">
-    <li class="nav-item active">
-        <a class="nav-link" href="/escuelas"> Escuelas <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/graduaciones"> Graduaciones </a>
-    </li>
-</ul>
 {% endblock %}
 
 {% block body %}
@@ -16,7 +8,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
-<div class="alert {{category}} alert-dismissible fade show mt-3 col-12" role="alert">
+<div class="alert {{category}} alert-dismissible fade show mt-3 fixed-bottom col-6 col-lg-6" role="alert">
     {{message}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
