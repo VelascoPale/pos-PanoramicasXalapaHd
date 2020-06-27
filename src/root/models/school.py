@@ -9,6 +9,7 @@ class School(db.Model):
     generation  = db.Column(db.String(10), nullable=False)
     code  = db.Column(db.String(10), nullable=False) #code defined for panoramicas xalapa hd
     enable = db.Column(db.Integer, nullable=False, default=1)
+    
     event = db.relationship('Event',backref='idschool')
     client = db.relationship('Client',backref='idschool')
 

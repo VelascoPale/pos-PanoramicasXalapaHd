@@ -1,19 +1,21 @@
 from flask import Blueprint, render_template, redirect, url_for, session, jsonify, flash, request
 from flask_mysqldb import MySQL
 
-graduaciones = Blueprint("graduaciones",__name__)
+from sqlalchemy import asc, desc
+
+from ..models import db
+from ..models.order_graduation import OrderGraduation
+from ..schemas.order_graduation import order_graduation_schema, orders_graduations_schema
+
+graduaciones = Blueprint("graduaciones",__name__, url_prefix='/dashboard/event')
 sql = MySQL()
 
 # form_client_grd page
-@graduaciones.route('/form_graduaciones')
+@graduaciones.route('/form')
 def form_graduaciones():
     if 'name' in session:
         table = request.args.get('event')
-        cur = sql.connection.cursor()
-        consult_sql =  " SELECT * FROM {0} WHERE 1 ORDER BY name ASC"
-        cur.execute(consult_sql.format(table))
-        data = cur.fetchall()
-        cur.close()
+        data = OrderGraduation.query.filter_by(idEvent = table).order_by(OrderGraduation.idClient.asc())
         return render_template('form_graduaciones.html', event = table, data = data)
     else:
         return redirect(url_for('login.page_login'))

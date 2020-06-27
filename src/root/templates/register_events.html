@@ -8,7 +8,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
-<div class="alert {{category}} alert-dismissible fade show mt-3 fixed-bottom col-6 col-lg-6" role="alert">
+<div class="alert {{category}} alert-dismissible fade show mt-3 fixed-bottom col-6 col-lg-6 fade show" role="alert">
     {{message}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -62,7 +62,7 @@
             <thead>
                 <tr>
                     <td>Id</td>
-                    <td>Id escuela</td>
+                    <td>Escuela</td>
                     <td>Nombre del evento</td>
                     <td>Habilitado</td>
                     <td>Acciones</td>
@@ -72,7 +72,7 @@
                 {% for event in events %}
                 <tr>
                     <td>{{ event.idEvent }}</td>
-                    <td>{{ event.idSchool }}</td>
+                    <td>{{ event.idschool.name }}</td>
                     <td>{{ event.eventName }}</td>
                     <td>{{ event.enable }}</td>
                     

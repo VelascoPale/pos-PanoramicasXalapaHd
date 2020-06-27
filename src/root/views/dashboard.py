@@ -1,4 +1,4 @@
-from flask import Blueprint, session, render_template, redirect, url_for, request
+from flask import Blueprint, session, render_template, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 
 dashboard = Blueprint("dashboard",__name__)
@@ -15,3 +15,13 @@ def render_dashboard():
         return render_template('dashboard.html', events=events)
     else:
         return redirect(url_for('login.login_page'))
+
+@dashboard.route('/dashboard/event', methods=['POST'])
+def select_event():
+    event = request.form['event']
+    if event != '#':
+        print(event)
+        return redirect(url_for('graduaciones.form_graduaciones', event=event))
+    else:
+        flash('Selecciona un evento valido', 'alert-warning')
+        return redirect(url_for('dashboard.render_dashboard'))
