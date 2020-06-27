@@ -46,7 +46,7 @@
 
                     <div class="form-group">
                         <label >Nombre del salón</label>
-                        <input type="text" name="hallName" class="form-control"  placeholder="Texin">
+                        <input type="text" name="hallName" class="form-control"  placeholder="Texin" autofocus>
                     </div>
 
                     <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
@@ -81,13 +81,13 @@
 
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="">
+                            onclick="edit_event('{{ event.idEvent }}','{{ event.eventName }}')">
                             Editar
                         </button>
 
                         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="">
+                            onclick="delete_event('{{ event.idEvent }}','{{ event.eventName }}')">
                             Eliminar
                         </button>
                     </td>
@@ -115,27 +115,9 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nombre</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre(s)"
-                            name="name" id="idname" aria-describedby="emailHelp">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Apellido</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Apellidos"
-                            name="lastname" id="idlastname" aria-describedby="emailHelp">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Correo electronico</label>
-                        <input type="email" class="form-control" autocomplete="off" placeholder="Correo electronico"
-                            name="email" id="idadress" aria-describedby="emailHelp">
-                    </div>
-
-                    <div class="form-group">
-                        <label >Contraseña</label>
-                        <input type="password" id="idpassword" placeholder="Contraseña" name="password"
-                            class="form-control">
+                        <label for="exampleInputEmail1">Nombre del salon</label>
+                        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre del salon"
+                            name="hallName" id="idhallName" aria-describedby="emailHelp">
                     </div>
 
                     <p>Permisos del usuario</p>

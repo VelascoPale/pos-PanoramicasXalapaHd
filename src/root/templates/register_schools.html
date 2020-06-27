@@ -90,13 +90,13 @@
 
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="">
+                            onclick="edit_school('{{ school.idSchool }}','{{ school.name }}','{{ school.shift }}','{{ school.generation }}','{{ school.code }}')">
                             Editar
                         </button>
 
                         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable"
-                            onclick="">
+                            onclick="delete_school('{{ school.idSchool }}','{{ school.name }}','{{ school.shift }}','{{ school.generation }}','{{ school.code }}')">
                             Eliminar
                         </button>
                     </td>
@@ -123,29 +123,30 @@
 
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Nombre</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre(s)"
-                            name="name" id="idname" aria-describedby="emailHelp">
+                   <div class="form-group">
+                        <label >Nombre de la escuela</label>
+                        <input type="text" name="schoolName" id="idschoolName"class="form-control"  placeholder="Articulo Tercero" autofocus>
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Apellido</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Apellidos"
-                            name="lastname" id="idlastname" aria-describedby="emailHelp">
+                        <label >Turno </label>
+                        <select name="shift" class="custom-select" id="inputGroupSelect01">
+                            <option value="#">Elige el turno...</option>
+                            <option value="matutino">Matutino</option>
+                            <option value="vespertino">Vespertino</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Correo electronico</label>
-                        <input type="email" class="form-control" autocomplete="off" placeholder="Correo electronico"
-                            name="email" id="idadress" aria-describedby="emailHelp">
+                        <label >Generación </label>
+                        <input type="text" name="generation" id="idgeneration" class="form-control"  placeholder="2016-2020">
                     </div>
 
                     <div class="form-group">
-                        <label >Contraseña</label>
-                        <input type="password" id="idpassword" placeholder="Contraseña" name="password"
-                            class="form-control">
+                        <label >Código de la escuela</label>
+                        <input type="text" name="code" id="idcode" class="form-control"  placeholder="A3V">
                     </div>
+
 
                     <p>Permisos del usuario</p>
 

@@ -86,6 +86,9 @@ def delete_member(id):
     flash('Usuario eliminado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_members'))
 
+
+# funcion for insert schools
+
 @register.route('/school', methods=['POST', 'GET'])
 def register_schools():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -110,6 +113,41 @@ def register_schools():
     else:
         return redirect(url_for('login.login_page'))
     return render_template('register_schools.html')
+
+# funcion for update schools
+
+@register.route('/school/patch/<id>', methods=['POST'])
+def update_school(id):
+    name_school = (request.form['schoolName']).upper()
+    shift = (request.form['shift']).upper()
+    generation = request.form['generation']
+    code = (request.form['code']).upper()
+    enable= int(1)
+
+    school_update = School.query.get(id)
+    school_update.name = name_school
+    school_update.shift = shift
+    school_update.generation = generation
+    school_update.code = code
+    school_update.enable = enable
+    db.session.commit()
+
+    flash('Escuela actualizada satisfactoriamente', 'alert-success')
+    return redirect(url_for('register.register_schools'))
+
+# funcion for delete schools
+
+@register.route('/school/delete/<id>', methods=['GET','POST'])
+def delete_school(id):
+    school_delete = School.query.filter_by(idSchool=int(id)).first()
+    db.session.delete(school_delete)
+    db.session.commit()
+
+    flash('Escuela eliminada satisfactoriamente', 'alert-success')
+    return redirect(url_for('register.register_schools'))
+
+
+# funcion for insert events
 
 @register.route('/event', methods=['POST', 'GET'])
 def register_events():
@@ -137,6 +175,39 @@ def register_events():
         return redirect(url_for('login.page_login'))
     return render_template('register_events.html')
 
+# funcion for update events
+
+@register.route('/event/patch/<id>', methods=['POST','GET'])
+def update_event(id):
+    school = int(request.form['school'])
+    name_hall = (reques.form['hallName']).upper()
+    data_school = School.query.filter_by(idSchool=school).first()
+    event_name = data_school.code + '_' +  name_hall + '_' + data_school.generation
+    enable= int(1)
+
+    event_update = Event.query.get(id)
+    event_update.idSchool = school
+    event_update.eventName = event_name
+    event_update.enable = enable
+    db.session.commit()
+
+    flash('Evento actualizado satisfactoriamente', 'alert-success')
+    return(redirect(url_for('register.register_events')))
+
+
+# funcion for delete events
+
+@register.route('/event/delete/<id>', methods=['GET','POST'])
+def delete_event(id):
+    event_delete = Event.query.filter_by(idEvent=int(id)).first()
+    db.session.delete(event_delete)
+    db.session.commit()
+
+    flash('Evento eliminado satisfactoriamente', 'alert-success')
+    return redirect(url_for('register.register_events'))
+
+# funcion for consult clients
+
 @register.route('/client', methods=['GET','POST'])
 def register_clients():
     if 'name' in session:
@@ -146,6 +217,8 @@ def register_clients():
     else:
         return redirect(url_for('login.page_login'))
     return render_template('register_clients.html')
+
+# funcion for insert clients
 
 @register.route('/client/add', methods=['POST'])
 def add_client():
