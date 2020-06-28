@@ -1,10 +1,10 @@
 from flask import Blueprint, session, render_template, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 
-dashboard = Blueprint("dashboard",__name__)
-
 from ..models.event import Event
 from ..schemas.event import event_schema, events_schema
+
+dashboard = Blueprint("dashboard",__name__)
  
 sql = MySQL()
 # dashboard page
@@ -20,7 +20,6 @@ def render_dashboard():
 def select_event():
     event = request.form['event']
     if event != '#':
-        print(event)
         return redirect(url_for('graduaciones.form_graduaciones', event=event))
     else:
         flash('Selecciona un evento valido', 'alert-warning')

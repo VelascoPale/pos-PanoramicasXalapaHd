@@ -1,8 +1,16 @@
 //function ajax for search clients in grd
 $(document).ready(function () {
-    var event = document.getElementById('table_name').innerHTML;
-    var table_initial = document.getElementById('table_initial');
-    var new_table = document.getElementById('new_table');
+
+    $('#form_update').submit(function(){
+        $.ajax({
+            url: '/form',
+            type: 'POST',
+            data: $('form').serialize(),
+            success: function(response){
+                console.log(response);
+            }
+        });
+    });
 
     $("#search").keyup(function () {
         $("#table").html('');

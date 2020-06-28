@@ -18,17 +18,33 @@
 {% endif %}
 {% endwith %}
 
-<h2 class="text-center mt-4" id="table_name">{{event}}</h2>
+<h2 class="text-center mt-4" id="table_name">{{event.0}}</h2>
+
+
+<!-- tabs for tables -->
+<ul class="nav nav-tabs col-12 text-center mt-4">
+
+    <li class="nav-item col-6">
+        <a class="nav-link active" data-toggle="tab" href="#clients">Clientes</a>
+    </li>
+
+    <li class="nav-item col-6">
+        <a class="nav-link" data-toggle="tab" href="#orders">Pedidos</a>
+
+    </li>
+
+</ul>
 
 <!-- options -->
-<div class="row justify-content-center form-inline col-12 mt-4">
+<div class="row justify-content-center form-inline col-12 mt-4 mb-4">
 
     <div class="col-9 col-lg-5 my-1">
         <div class="input-group input-group-sm">
             <div class="input-group-prepend">
                 <div class="input-group-text">Buscar</div>
             </div>
-            <input type="text" autocomplete="off" class="form-control" id="search" placeholder="Ingresa datos para la busqueda">
+            <input type="text" autocomplete="off" class="form-control" id="search"
+                placeholder="Ingresa datos para la busqueda">
         </div>
     </div>
 
@@ -38,49 +54,88 @@
 
 </div>
 
-<!-- create table -->
-<div class="row mt-4 justify-content-center">
-    <table class="table table-striped table-active table-bordered table-sm text-center col-11">
-        <thead>
-            <tr>
-                <td class="medium-display">Nombre</td>
-                <td class="no_visible"># de Mesa</td>
-                <td class="no_visible"># de Foto</td>
-                <td class="no_visible">6x9</td>
-                <td class="no_visible">8x12</td>
-                <td class="no_visible">Costo</td>
-                <td class="no_visible">Pagado</td>
-                <td class="medium-display">Acciones</td>
-            </tr>
-        </thead>
-        <tbody id="table">
+<!-- content -->
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active show" id="clients">
+        <!-- create table for clients -->
+        <div class="mt-4 justify-content-center">
+            <table class="table table-striped table-active table-bordered table-sm text-center col-12">
+                <thead>
+                    <tr>
+                        <td>Nombre(s)</td>
+                        <td class="no_visible">Apellidos</td>
+                        <td>Telefono</td>
+                        <td class="no_visible">Correo</td>
+                        <td>Acciones</td>
+                    </tr>
+                </thead>
+                <tbody id="table">
+                    {% set idSeller = session['id'] %}
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.name }}</td>
+                        <td class="no_visible">{{ client.lastname }}</td>
+                        <td > <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank"> {{ client.telephone }} </a> </td>
+                        <td class="no_visible">{{ client.email }}</td>
+                        <td>
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                data-target="#exampleModalScrollable"
+                                onclick="add_orderGraduation('{{idSeller}}','{{client.idClient}}','{{event.1}}','{{ client.name }}','{{ client.lastname }}')">
+                                Agregar pedido
+                            </button>
 
-            {% for client in data %}
-            <tr>
-                <td>{{ client.1 }}</td>
-                <td class="no_visible">{{ client.2 }}</td>
-                <td class="no_visible">{{ client.3 }}</td>
-                <td class="no_visible">{{ client.4 }}</td>
-                <td class="no_visible">{{ client.5 }}</td>
-                <td class="no_visible">{{ client.6 }}</td>
-                <td class="no_visible">{{ client.7 }}</td>
-                <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                        data-target="#exampleModalScrollable"
-                        onclick="edit_client_grd('{{ client.0 }}','{{ client.1 }}','{{ client.2 }}','{{ client.3 }}','{{ client.4 }}','{{ client.5 }}','{{ client.6 }}','{{ client.7 }}','{{ event }}')">
-                        Editar
-                    </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-                    <button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal"
-                        data-target="#exampleModalScrollable"
-                        onclick="delete_client_grd('{{ client.0 }}','{{ client.1 }}','{{ client.2 }}','{{ client.3 }}','{{ client.4 }}','{{ client.5 }}','{{ client.6 }}','{{ client.7 }}','{{ event }}')">
-                        Eliminar
-                    </button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="tab-pane fade" id="orders">
+        <!-- create table for orders -->
+        <div class="row mt-4 justify-content-center">
+            <table class="table table-striped table-active table-bordered table-sm text-center col-11">
+                <thead>
+                    <tr>
+                        <td class="">Nombre(s)</td>
+                        <td class="">Apellidos</td>
+                        <td class="no_visible"># de Mesa</td>
+                        <td class="no_visible"># de Foto</td>
+                        <td class="no_visible">6x9</td>
+                        <td class="no_visible">8x12</td>
+                        <td class="no_visible">Costo</td>
+                        <td class="no_visible">Pagado</td>
+                        <td class="">Acciones</td>
+                    </tr>
+                </thead>
+                <tbody id="table">
+
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.idclient.name }}</td>
+                        <td>{{ order.idclient.lastname }}</td>
+                        <td class="no_visible">{{ order.numTable }}</td>
+                        <td class="no_visible">{{ order.numPhoto }}</td>
+                        <td class="no_visible">{{ order._6x9 }}</td>
+                        <td class="no_visible">{{ order._8x12 }}</td>
+                        <td class="no_visible">{{ order.cost }}</td>
+                        <td class="no_visible">{{ order.payment }}</td>
+                        <td>
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                data-target="#exampleModalScrollable"
+                                onclick="">
+                                Editar
+                            </button>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <!-- modal add/edit/delete -->
@@ -111,35 +166,44 @@
                         <form action="" method="POST" id="form_update">
 
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="idSeller" id="idSeller" value="">
+                            <input type="hidden" name="idEvent" id="idEvent" value="">
+                            <input type="hidden" name="idClient" id="idClient" value="">
 
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Nombre</label>
+                                <label for="exampleInputEmail1">Nombre(s)</label>
                                 <input type="text" class="form-control" autocomplete="off"
-                                    placeholder="Nombre del cliente" name="name" id="id_name">
+                                    placeholder="Alfredo" name="name" id="id_name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Apellidos</label>
+                                <input type="text" class="form-control" autocomplete="off"
+                                    placeholder="Chacón Hampshire" name="lastname" id="id_lastname">
                             </div>
 
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Numero de Mesa</label>
                                     <input type="number" class="form-control" autocomplete="off"
-                                        placeholder="Numero de mesa" name="id_table" id="id_mesa">
+                                        placeholder="15" name="id_table" id="id_mesa">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Codigo de fotografia</label>
                                     <input type="text" class="form-control" autocomplete="off"
-                                        placeholder="Numero de fotografia" name="num_photo" id="id_foto">
+                                        placeholder="_DPX3452" name="num_photo" id="id_foto">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">6x9</label>
-                                    <input type="number" class="form-control" placeholder="Cantidad de fotos"
+                                    <input type="number" class="form-control" placeholder="2"
                                         name="num_6x9" id="id_6x9">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">8x12</label>
-                                    <input type="number" class="form-control" placeholder="Cantidad fotos"
+                                    <input type="number" class="form-control" placeholder="2"
                                         name="num_8x12" id="id_8x12">
                                 </div>
                             </div>
@@ -147,13 +211,13 @@
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Costo total</label>
-                                    <input type="number" class="form-control" placeholder="Numero de fotografia"
+                                    <input type="number" class="form-control" placeholder="640"
                                         name="cost" id="id_cost">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Pago realizado</label>
                                     <input type="number" class="form-control" autocomplete="off"
-                                        placeholder="Numero de fotografia" name="payment" id="id_payment">
+                                        placeholder="500" name="payment" id="id_payment">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -211,7 +275,7 @@
 {% block javascript %}
 
 <!-- scripts -->
-<script src="{{url_for('static', filename='js/js-grd.js')}}"></script>
+<script src="{{url_for('static', filename='js/graduacion.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{url_for('static', filename='js/asinc-orderGraduation.js')}}"></script>
 

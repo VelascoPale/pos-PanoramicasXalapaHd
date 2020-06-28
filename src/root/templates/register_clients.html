@@ -79,8 +79,8 @@
             <thead>
                 <tr>
                     <td>Nombre(s)</td>
-                    <td>Apellidos</td>
-                    <td class="no_visible">Telefono</td>
+                    <td class="no_visible">Apellidos</td>
+                    <td >Telefono</td>
                     <td class="no_visible">Correo</td>
                     <td class="no_visible">Id escuela</td>
                     <td class="no_visible">Grupo</td>
@@ -91,8 +91,8 @@
                 {% for client in clients %}
                 <tr>
                     <td>{{ client.name }}</td>
-                    <td>{{ client.lastname }}</td>
-                    <td class="no_visible">{{ client.telephone }}</td>
+                    <td class="no_visible">{{ client.lastname }}</td>
+                    <td > <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank"> {{ client.telephone }} </a> </td>
                     <td class="no_visible">{{ client.email }}</td>
                     <td class="no_visible">{{ client.idSchool }}</td>
                     <td class="no_visible">{{ client.group }}</td>
@@ -104,11 +104,6 @@
                             Editar
                         </button>
 
-                        <!---<button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                            data-target="#exampleModalScrollable"
-                            onclick="delete_client('{{ client.idSeller }}','{{ client.name }}','{{ client.lastname }}','{{ client.email }}','{{ client.permissions }}')">
-                            Eliminar
-                        </button>-->
                     </td>
                 </tr>
                 {% endfor %}
