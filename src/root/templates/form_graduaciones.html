@@ -5,18 +5,7 @@
 
 {% block body %}
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
-<div class="alert {{category}} alert-dismissible fade show mt-3 fixed-bottom col-6 col-lg-6" role="alert">
-    {{message}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
+<div id='alerts'></div>
 
 <h2 class="text-center mt-4" id="table_name">{{event.0}}</h2>
 
@@ -69,7 +58,7 @@
                         <td>Acciones</td>
                     </tr>
                 </thead>
-                <tbody id="table">
+                <tbody id="table_client">
                     {% set idSeller = session['id'] %}
                     {% for client in clients %}
                     <tr>
@@ -80,7 +69,7 @@
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                 data-target="#exampleModalScrollable"
-                                onclick="add_orderGraduation('{{idSeller}}','{{client.idClient}}','{{event.1}}','{{ client.name }}','{{ client.lastname }}')">
+                                onclick="add_orderGraduation('{{idSeller}}','{{client.idClient}}','{{event.1}}','{{ client.name }}','{{ client.lastname }}');">
                                 Agregar pedido
                             </button>
 
@@ -109,7 +98,7 @@
                         <td class="">Acciones</td>
                     </tr>
                 </thead>
-                <tbody id="table">
+                <tbody id="table_order">
 
                     {% for order in orders %}
                     <tr>
@@ -124,7 +113,7 @@
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                 data-target="#exampleModalScrollable"
-                                onclick="">
+                                onclick="edit_orderGraduation('{{order.idclient.name}}','{{order.idclient.lastname}}','{{order.numTable}}','{{order.numPhoto}}','{{order._6x9}}','{{order._8x12}}','{{order.cost}}','{{order.payment}}','{{order.status}}');">
                                 Editar
                             </button>
 
@@ -163,7 +152,7 @@
 
                     <!-- tab for actions -->
                     <div class="tab-pane fade active show" id="data">
-                        <form action="" method="POST" id="form_update">
+                        <form action="" method="" id="form_add">
 
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="idSeller" id="idSeller" value="">
@@ -220,9 +209,19 @@
                                         placeholder="500" name="payment" id="id_payment">
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label >Estado del pedido </label>
+                                <select name="status" class="custom-select" id="select_status">
+                                    <option id="En_proceso" value="En_proceso">En proceso</option>
+                                    <option id="Impresion" value="Imprimiendo">Impresion</option>
+                                    <option id="Entregado" value="Entregado">Entregado</option>
+                                </select>
+                            </div>
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                    onclick="reset_cost();">Cancelar</button>
+                                    onclick="reset_cost();" id="close_modal">Cancelar</button>
                                 <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
                             </div>
                         </form>

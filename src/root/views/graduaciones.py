@@ -39,11 +39,12 @@ def add_client():
     num_8x12 = request.form['num_8x12']
     cost = request.form['cost']
     payment = request.form['payment']
+    status = 'En_proceso'
     if id_seller != '' and name != '' and lastname != '' and id_table != '' and num_photo != '' and num_6x9 != '' and num_8x12 != ''  and cost != '' and payment != '':
         if int(id_table) <= 125:
             if not int(payment) > int(cost):
                 if id_client != 0:
-                    new_order = OrderGraduation(idClient=id_client, idSeller=id_seller, idEvent=id_event, numTable=id_table, numPhoto=num_photo,_6x9=num_6x9,_8x12=num_8x12, cost=cost, payment=payment, status='EN PROCESO')
+                    new_order = OrderGraduation(idClient=id_client, idSeller=id_seller, idEvent=id_event, numTable=id_table, numPhoto=num_photo,_6x9=num_6x9,_8x12=num_8x12, cost=cost, payment=payment, status=status)
                     db.session.add(new_order)
                     db.session.commit()
                 alert = {
@@ -67,45 +68,52 @@ def add_client():
         }
     orders = OrderGraduation.query.filter_by(idEvent=id_event).all()
     return jsonify(alert, orders_graduations_schema.dump(orders))
-
-# function delete_client > form_graduaciones
-@graduaciones.route('/delete_client/<event>/<id>', methods = ['POST'])
-def delete_client(event, id):
-    cur = sql.connection.cursor()
-    consult_sql = 'DELETE FROM {0} WHERE id={1}'
-    cur.execute(consult_sql.format(event,id))
-    cur.close()
-    flash('Cliente eliminado satisfactoriamente', 'alert-success')
-    return redirect(url_for('graduaciones.form_graduaciones', event = event))
     
 # function update_client > edit_client_grd 
-@graduaciones.route('/update_client/<event>/<id>', methods = ['POST'])
-def update_client(event, id):
-    name = (request.form['name']).upper()
+@graduaciones.route('/form/patch', methods = ['POST '])
+def update_client():
+    id_client = request.form['idClient']
     id_table = request.form['id_table']
-    num_photo = request.form['num_photo']
+    num_photo = (request.form['num_photo']).upper()
     num_6x9 = request.form['num_6x9']
     num_8x12 = request.form['num_8x12']
     cost = request.form['cost']
     payment = request.form['payment']
-    if event != '' and name != '' and id_table != '' and num_photo != '' and num_6x9 != '' and num_8x12 != ''  and cost != '' and payment != '':
+    status = request.form['status']
+    if id_table != '' and num_photo != '' and num_6x9 != '' and num_8x12 != ''  and cost != '' and payment != '':
         if int(id_table) <= 125:
-            if not (int(payment) > int(cost)):
-                cur = sql.connection.cursor()
-                consult_sql = """UPDATE {0} SET  
-                name='{1}',
-                id_table='{2}',
-                num_photo='{3}',
-                _6x9='{4}',
-                _8x12='{5}',
-                cost='{6}',
-                payment='{7}' 
-                WHERE id = '{8}'"""
-                cur.execute(consult_sql.format(event,name,id_table,num_photo,num_6x9,num_8x12, cost, payment, id))
-                cur.close()
-                flash('Cliente actualizado correctamente', 'alert-success')
+            if not int(payment) > int(cost):
+                edit_order = OrderGraduation.query.get(id_client)
+                edit_order.numTable = id_table
+                edit_order.numPhoto = num_photo
+                edit_order._6x9 = num_6x9
+                edit_order._8x12 = num_8x12
+                edit_order.cost = cost
+                edit_order.payment = payment
+                edit_order.status = status
+                db.session.commit()
+
+                alert = {
+                    'text':'Edicion realizada correctamente',
+                    'type':'alert-success'
+                }
             else:
-                flash('El pago exede el costo del paquete', 'alert-warning')
+                alert = {
+                    'text':'El pago registrado es mayor al costo',
+                    'type':'alert-warning'
+                }
+        else:
+            alert = {
+                    'text':'Indice de mesa demasiado grande',
+                    'type':'alert-warning'
+            }
+    else:
+        alert = {
+                    'text':'No se han registrado todos los datos editar',
+                    'type':'alert-warning'
+        }
+    orders = OrderGraduation.query.filter_by(idEvent=id_event).all()
+    return jsonify(alert, orders_graduations_schema.dump(orders))
 
 # function search_client > form_client_grd
 @graduaciones.route('/search_client/<event>', methods = ['GET'])
