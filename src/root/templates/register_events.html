@@ -8,7 +8,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
-<div class="alert {{category}} alert-dismissible fade show mt-3" role="alert">
+<div class="alert {{category}} alert-dismissible fade show mt-3 fixed-bottom col-6 col-lg-6 fade show" role="alert">
     {{message}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -25,7 +25,7 @@
     <!-- create form for add event -->
     <div class="col-11 col-lg-4 row mt-4 justify-content-center">
         <div class="card card-body bg-secondary" style="border-radius: 10px;">
-            <form action="" method="POST" class="form-signin ">
+            <form action="/dashboard/register/event" method="POST" class="form-signin ">
                 <div>
 
                     <h1 class="h3 mb-3 font-weight-normal text-center">Datos del evento</h1>
@@ -33,18 +33,20 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Escuela</label>
-                        <select name="school" class="custom-select" id="inputGroupSelect01">
+                        <label >Escuela</label>
+                        <select name="school" class="custom-select">
                             <option value="0">Elige la escuela...</option>
                             {% for school in schools %}
+                            {% if school.enable == 1 %}
                                 <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+                            {% endif %}
                             {% endfor %}
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Nombre del salón</label>
-                        <input type="text" name="hallName" class="form-control" id="exampleInputPassword1" placeholder="Texin">
+                        <label >Nombre del salón</label>
+                        <input type="text" name="hallName" class="form-control"  placeholder="Texin" autofocus>
                     </div>
 
                     <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
@@ -60,33 +62,41 @@
             <thead>
                 <tr>
                     <td>Id</td>
-                    <td>Id escuela</td>
+                    <td>Escuela</td>
                     <td>Nombre del evento</td>
+                    <td>Habilitado</td>
                     <td>Acciones</td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="form_update">
                 {% for event in events %}
                 <tr>
-                    <td>{{ event.idEvent }}</td>
-                    <td>{{ event.idSchool }}</td>
-                    <td>{{ event.eventName }}</td>
+                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.idEvent }}</td>
+                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.idschool.name }}</td>
+                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.eventName }}</td>
+                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.enable }}</td>
+                    
                     
                     <td>
 
-                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                            data-target="#exampleModalScrollable"
-                            onclick="">
-                            Editar
-                        </button>
-
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                            data-target="#exampleModalScrollable"
-                            onclick="">
-                            Eliminar
-                        </button>
+                        {% if event.enable == 1 %}
+                        <a type="submit" class="btn btn-danger btn-sm" id="disable_event{{event.idEvent}}" href="/dashboard/register/event/patch/disable/{{ event.idEvent }}" style="">
+                            inhabilitar
+                        </a>
+                            <a type="submit" class="btn btn-info btn-sm" id="enable_event{{event.idEvent}}" href="/dashboard/register/event/patch/enable/{{ event.idEvent }}"  style="display: none;">
+                            habilitar
+                        </a>
+                        {% else %}
+                           <a type="submit" class="btn btn-danger btn-sm" id="disable_event{{event.idEvent}}" href="/dashboard/register/event/patch/disable/{{ event.idEvent }}" style="display: none;">
+                            inhabilitar
+                        </a>
+                          <a type="submit" class="btn btn-info btn-sm" id="enable_event{{event.idEvent}}" href="/dashboard/register/event/patch/enable/{{ event.idEvent }}"  style="">
+                            habilitar
+                        </a>
+                        {% endif %}
                     </td>
                 </tr>
+
                 {% endfor %}
             </tbody>
         </table>
@@ -110,46 +120,14 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nombre</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre(s)"
-                            name="name" id="idname" aria-describedby="emailHelp">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Apellido</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Apellidos"
-                            name="lastname" id="idlastname" aria-describedby="emailHelp">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Correo electronico</label>
-                        <input type="email" class="form-control" autocomplete="off" placeholder="Correo electronico"
-                            name="email" id="idadress" aria-describedby="emailHelp">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Contraseña</label>
-                        <input type="password" id="idpassword" placeholder="Contraseña" name="password"
-                            class="form-control">
-                    </div>
-
-                    <p>Permisos del usuario</p>
-
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="idseller" value="SELLER" name="level" class="custom-control-input"
-                            checked="">
-                        <label class="custom-control-label h6" for="idseller">Vendedor</label>
-                    </div>
-
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="idadmin" value="ADMIN" name="level" class="custom-control-input"
-                            checked="">
-                        <label class="custom-control-label h6" for="idadmin">Administrador</label>
+                        <label for="exampleInputEmail1">habilitado/inhabilitado</label>
+                        <input type="text" class="form-control" autocomplete="off" placeholder="enable/disable"
+                            name="hallName" id="idenable" aria-describedby="emailHelp">
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
+                <!---<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>--->
+                <!---<button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>-->
             </div>
             </form>
         </div>

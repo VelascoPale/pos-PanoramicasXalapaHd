@@ -1,12 +1,16 @@
 // functions for clients_grd page
-function add_client_grd(event) {
+function add_orderGraduation(idSeller,idClient, idEvent, name, lastname) {
 
     // change title of window
     document.getElementById('title_window').innerHTML = 'Agregar pedido';
     document.getElementById('btn_form').innerHTML = 'Agregar ';
 
     // update data in form 
-    document.getElementById('id_name').value = '';
+    document.getElementById('id_name').value = name;
+    document.getElementById('id_lastname').value = lastname;
+    document.getElementById('idSeller').value = idSeller;
+    document.getElementById('idClient').value = idClient;
+    document.getElementById('idEvent').value = idEvent;
     document.getElementById('id_mesa').value = '';
     document.getElementById('id_foto').value = '';
     document.getElementById('id_6x9').value = '';
@@ -15,12 +19,9 @@ function add_client_grd(event) {
     document.getElementById('id_payment').value = '';
 
     // disable inputs
-    document.getElementById('id_6x9').setAttribute('readonly','readonly');
-    document.getElementById('id_8x12').setAttribute('readonly','readonly');
+    document.getElementById('id_name').setAttribute('readonly','readonly');
+    document.getElementById('id_lastname').setAttribute('readonly','readonly');
     document.getElementById('id_cost').setAttribute('readonly','readonly');
-
-    // change url of form
-    document.getElementById('form_update').setAttribute('action', '/add_client/' + event)
 
 }
 

@@ -29,3 +29,9 @@ body{
     }
 
 }
+
+/*estilos para saber cuando una escuela o evento esta inhabilitada*/
+.disable{
+    text-decoration: line-through;
+    color:  #FF4500;
+}

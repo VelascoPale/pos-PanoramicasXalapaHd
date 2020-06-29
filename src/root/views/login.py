@@ -21,14 +21,9 @@ def page_login():
 @login.route('/login', methods = ['POST'])
 def validate():
     if request.method == 'POST':
-        email = request.form['adress']
+        email = (request.form['adress']).lower()
         password = request.form['password'].encode('utf-8')
         session_data = User.query.filter_by(email=email).first()
-        #cur = sql.connection.cursor()
-        #consult_sql = 'SELECT * FROM users WHERE adress = %s'
-        #cur.execute(consult_sql, [adress])
-        #session_data = cur.fetchall()
-        #cur.close()
         
         #test session
         if session_data is not None:
@@ -37,6 +32,7 @@ def validate():
                 session['id'] = session_data.idSeller
                 session['name'] = session_data.name
                 session['permissions'] = session_data.permissions
+                flash('Bienvenido de nuevo {}'.format(session['name'].title()),'alert-success')
                 return redirect(url_for('dashboard.render_dashboard'))
             else:
                 flash("Contraseña incorrecta, intentalo de nuevo")
