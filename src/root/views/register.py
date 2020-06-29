@@ -116,34 +116,26 @@ def register_schools():
 
 # funcion for update schools
 
-@register.route('/school/patch/<id>', methods=['POST'])
-def update_school(id):
-    name_school = (request.form['schoolName']).upper()
-    shift = (request.form['shift']).upper()
-    generation = request.form['generation']
-    code = (request.form['code']).upper()
+@register.route('/school/patch/enable/<id>', methods=['POST','GET'])
+def enable_school(id):
     enable= int(1)
-
     school_update = School.query.get(id)
-    school_update.name = name_school
-    school_update.shift = shift
-    school_update.generation = generation
-    school_update.code = code
     school_update.enable = enable
     db.session.commit()
 
-    flash('Escuela actualizada satisfactoriamente', 'alert-success')
+    flash('Escuela habilitada satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_schools'))
 
 # funcion for delete schools
 
-@register.route('/school/delete/<id>', methods=['GET','POST'])
-def delete_school(id):
-    school_delete = School.query.filter_by(idSchool=int(id)).first()
-    db.session.delete(school_delete)
+@register.route('/school/patch/disable/<id>', methods=['GET','POST'])
+def disable_school(id):
+    enable = int(0)
+    school_update = School.query.get(id)
+    school_update.enable = enable
     db.session.commit()
 
-    flash('Escuela eliminada satisfactoriamente', 'alert-success')
+    flash('Escuela inhabilitado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_schools'))
 
 
@@ -177,34 +169,27 @@ def register_events():
 
 # funcion for update events
 
-@register.route('/event/patch/<id>', methods=['POST','GET'])
-def update_event(id):
-    school = int(request.form['school'])
-    name_hall = (reques.form['hallName']).upper()
-    data_school = School.query.filter_by(idSchool=school).first()
-    event_name = data_school.code + '_' +  name_hall + '_' + data_school.generation
+@register.route('/event/patch/enable/<id>', methods=['POST','GET'])
+def enable_event(id):
     enable= int(1)
-
     event_update = Event.query.get(id)
-    event_update.idSchool = school
-    event_update.eventName = event_name
     event_update.enable = enable
     db.session.commit()
 
-    flash('Evento actualizado satisfactoriamente', 'alert-success')
+    flash('Evento habilitado satisfactoriamente', 'alert-success')
+    return(redirect(url_for('register.register_events')))
+
+@register.route('/event/patch/disable/<id>', methods=['POST','GET'])
+def disable_event(id):
+    enable= int(0)
+    event_update = Event.query.get(id)
+    event_update.enable = enable
+    db.session.commit()
+
+    flash('Evento inhabilitado satisfactoriamente', 'alert-success')
     return(redirect(url_for('register.register_events')))
 
 
-# funcion for delete events
-
-@register.route('/event/delete/<id>', methods=['GET','POST'])
-def delete_event(id):
-    event_delete = Event.query.filter_by(idEvent=int(id)).first()
-    db.session.delete(event_delete)
-    db.session.commit()
-
-    flash('Evento eliminado satisfactoriamente', 'alert-success')
-    return redirect(url_for('register.register_events'))
 
 # funcion for consult clients
 

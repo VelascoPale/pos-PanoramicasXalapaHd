@@ -81,25 +81,29 @@
             <tbody>
                 {% for school in schools %}
                 <tr>
-                    <td>{{ school.idSchool }}</td>
-                    <td>{{ school.name }}</td>
-                    <td class="no_visible">{{ school.shift }}</td>
-                    <td class="no_visible">{{ school.generation }}</td>
-                    <td class="no_visible">{{ school.code }}</td>
-                    <td class="no_visible">{{ school.enable }}</td>
+                    <td class=" {% if school.enable == 0 %} disable {% endif %}">{{ school.idSchool }}</td>
+                    <td class=" {% if school.enable == 0 %} disable {% endif %}">{{ school.name }}</td>
+                    <td class="no_visible {% if school.enable == 0 %} disable {% endif %}">{{ school.shift }}</td>
+                    <td class="no_visible {% if school.enable == 0 %} disable {% endif %}">{{ school.generation }}</td>
+                    <td class="no_visible {% if school.enable == 0 %} disable {% endif %}">{{ school.code }}</td>
+                    <td class="no_visible {% if school.enable == 0 %} disable {% endif %}">{{ school.enable }}</td>
                     <td>
 
-                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                            data-target="#exampleModalScrollable"
-                            onclick="edit_school('{{ school.idSchool }}','{{ school.name }}','{{ school.shift }}','{{ school.generation }}','{{ school.code }}')">
-                            Editar
-                        </button>
-
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                            data-target="#exampleModalScrollable"
-                            onclick="delete_school('{{ school.idSchool }}','{{ school.name }}','{{ school.shift }}','{{ school.generation }}','{{ school.code }}')">
-                            Eliminar
-                        </button>
+                        {% if school.enable == 1 %}
+                        <a type="submit" class="btn btn-danger btn-sm" id="disable_school{{school.idSchool}}" href="/dashboard/register/school/patch/disable/{{ school.idSchool }}" style="">
+                            inhabilitar
+                        </a>
+                            <a type="submit" class="btn btn-info btn-sm" id="enable_school{{school.idSchool}}" href="/dashboard/register/school/patch/enable/{{ school.idSchool }}"  style="display: none;">
+                            habilitar
+                        </a>
+                        {% else %}
+                           <a type="submit" class="btn btn-danger btn-sm" id="disable_school{{school.idSchool}}" href="/dashboard/register/school/patch/disable/{{ school.idSchool }}" style="display: none;">
+                            inhabilitar
+                        </a>
+                          <a type="submit" class="btn btn-info btn-sm" id="enable_school{{school.idSchool}}" href="/dashboard/register/school/patch/enable/{{ school.idSchool }}"  style="">
+                            habilitar
+                        </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -109,7 +113,7 @@
 
 </div>
 
-<!-- modal -->
+<!-- modal 
 <div class="modal fade" id="exampleModalScrollable" role="dialog">
     <div class="modal-dialog"> 
         <div class="modal-content">
@@ -171,7 +175,7 @@
         </div>
     </div>
 </div>
-
+--->
 {% endblock %}
 
 {% block javascript %}

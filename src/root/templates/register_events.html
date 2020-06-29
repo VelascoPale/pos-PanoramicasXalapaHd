@@ -68,30 +68,35 @@
                     <td>Acciones</td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="form_update">
                 {% for event in events %}
                 <tr>
-                    <td>{{ event.idEvent }}</td>
-                    <td>{{ event.idschool.name }}</td>
-                    <td>{{ event.eventName }}</td>
-                    <td>{{ event.enable }}</td>
+                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.idEvent }}</td>
+                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.idschool.name }}</td>
+                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.eventName }}</td>
+                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.enable }}</td>
                     
                     
                     <td>
 
-                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                            data-target="#exampleModalScrollable"
-                            onclick="edit_event('{{ event.idEvent }}','{{ event.eventName }}')">
-                            Editar
-                        </button>
-
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                            data-target="#exampleModalScrollable"
-                            onclick="delete_event('{{ event.idEvent }}','{{ event.eventName }}')">
-                            Eliminar
-                        </button>
+                        {% if event.enable == 1 %}
+                        <a type="submit" class="btn btn-danger btn-sm" id="disable_event{{event.idEvent}}" href="/dashboard/register/event/patch/disable/{{ event.idEvent }}" style="">
+                            inhabilitar
+                        </a>
+                            <a type="submit" class="btn btn-info btn-sm" id="enable_event{{event.idEvent}}" href="/dashboard/register/event/patch/enable/{{ event.idEvent }}"  style="display: none;">
+                            habilitar
+                        </a>
+                        {% else %}
+                           <a type="submit" class="btn btn-danger btn-sm" id="disable_event{{event.idEvent}}" href="/dashboard/register/event/patch/disable/{{ event.idEvent }}" style="display: none;">
+                            inhabilitar
+                        </a>
+                          <a type="submit" class="btn btn-info btn-sm" id="enable_event{{event.idEvent}}" href="/dashboard/register/event/patch/enable/{{ event.idEvent }}"  style="">
+                            habilitar
+                        </a>
+                        {% endif %}
                     </td>
                 </tr>
+
                 {% endfor %}
             </tbody>
         </table>
@@ -115,28 +120,14 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nombre del salon</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre del salon"
-                            name="hallName" id="idhallName" aria-describedby="emailHelp">
-                    </div>
-
-                    <p>Permisos del usuario</p>
-
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="idseller" value="SELLER" name="level" class="custom-control-input"
-                            checked="">
-                        <label class="custom-control-label h6" for="idseller">Vendedor</label>
-                    </div>
-
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="idadmin" value="ADMIN" name="level" class="custom-control-input"
-                            checked="">
-                        <label class="custom-control-label h6" for="idadmin">Administrador</label>
+                        <label for="exampleInputEmail1">habilitado/inhabilitado</label>
+                        <input type="text" class="form-control" autocomplete="off" placeholder="enable/disable"
+                            name="hallName" id="idenable" aria-describedby="emailHelp">
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
+                <!---<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>--->
+                <!---<button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>-->
             </div>
             </form>
         </div>
