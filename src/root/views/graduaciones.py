@@ -70,7 +70,7 @@ def add_client():
     return jsonify(alert, orders_graduations_schema.dump(orders))
     
 # function update_client > edit_client_grd 
-@graduaciones.route('/form/patch', methods = ['POST '])
+@graduaciones.route('/form/patch', methods = ['POST'])
 def update_client():
     id_client = request.form['idClient']
     id_table = request.form['id_table']
