@@ -128,28 +128,50 @@
 
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Nombre</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre(s)" name="name"
-                            id="idname" aria-describedby="emailHelp">
+                   <div class="form-group">
+                    <label>Nombre(s)</label>
+                    <input type="text" name="name" class="form-control" placeholder="Alfredo" id="idname" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Apellido</label>
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Apellidos"
-                            name="lastname" id="idlastname" aria-describedby="emailHelp">
+                        <label>Apellidos</label>
+                        <input type="text" name="lastname" class="form-control" id="idlastname" placeholder="Chacón Hampshire" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Correo electronico</label>
-                        <input type="email" class="form-control" autocomplete="off" placeholder="Correo electronico"
-                            name="email" id="idadress" aria-describedby="emailHelp">
+                        <label>Télefono</label>
+                        <input type="text" name="telephone" class="form-control" id="idtelephone" placeholder="2281233463">
                     </div>
 
                     <div class="form-group">
-                        <label>Contraseña</label>
-                        <input type="password" id="idpassword" placeholder="Contraseña" name="password"
-                            class="form-control">
+                        <label>Email</label>
+                        <input type="text" name="email" class="form-control" id="idemail" placeholder="example@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Escuela</label>
+                        <select name="school" id="idschool" class="custom-select">
+                            <option value="0">Elige la escuela...</option>
+                            {% for school in schools %}
+                            {% if school.enable == 1 %}
+                            <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Grupo </label>
+                        <select name="group" id="idgroup" class="custom-select">
+                            <option value="#">Elige el grupo...</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
                     </div>
 
                     <p>Permisos del usuario</p>

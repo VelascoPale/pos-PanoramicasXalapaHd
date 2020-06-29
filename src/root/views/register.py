@@ -86,6 +86,9 @@ def delete_member(id):
     flash('Usuario eliminado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_members'))
 
+
+# funcion for insert schools
+
 @register.route('/school', methods=['POST', 'GET'])
 def register_schools():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -110,6 +113,33 @@ def register_schools():
     else:
         return redirect(url_for('login.login_page'))
     return render_template('register_schools.html')
+
+# funcion for update schools
+
+@register.route('/school/patch/enable/<id>', methods=['POST','GET'])
+def enable_school(id):
+    enable= int(1)
+    school_update = School.query.get(id)
+    school_update.enable = enable
+    db.session.commit()
+
+    flash('Escuela habilitada satisfactoriamente', 'alert-success')
+    return redirect(url_for('register.register_schools'))
+
+# funcion for delete schools
+
+@register.route('/school/patch/disable/<id>', methods=['GET','POST'])
+def disable_school(id):
+    enable = int(0)
+    school_update = School.query.get(id)
+    school_update.enable = enable
+    db.session.commit()
+
+    flash('Escuela inhabilitado satisfactoriamente', 'alert-success')
+    return redirect(url_for('register.register_schools'))
+
+
+# funcion for insert events
 
 @register.route('/event', methods=['POST', 'GET'])
 def register_events():
@@ -137,6 +167,32 @@ def register_events():
         return redirect(url_for('login.page_login'))
     return render_template('register_events.html')
 
+# funcion for update events
+
+@register.route('/event/patch/enable/<id>', methods=['POST','GET'])
+def enable_event(id):
+    enable= int(1)
+    event_update = Event.query.get(id)
+    event_update.enable = enable
+    db.session.commit()
+
+    flash('Evento habilitado satisfactoriamente', 'alert-success')
+    return(redirect(url_for('register.register_events')))
+
+@register.route('/event/patch/disable/<id>', methods=['POST','GET'])
+def disable_event(id):
+    enable= int(0)
+    event_update = Event.query.get(id)
+    event_update.enable = enable
+    db.session.commit()
+
+    flash('Evento inhabilitado satisfactoriamente', 'alert-success')
+    return(redirect(url_for('register.register_events')))
+
+
+
+# funcion for consult clients
+
 @register.route('/client', methods=['GET','POST'])
 def register_clients():
     if 'name' in session:
@@ -146,6 +202,8 @@ def register_clients():
     else:
         return redirect(url_for('login.page_login'))
     return render_template('register_clients.html')
+
+# funcion for insert clients
 
 @register.route('/client/add', methods=['POST'])
 def add_client():
