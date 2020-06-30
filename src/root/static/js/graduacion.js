@@ -2,10 +2,6 @@
 
 function add_orderGraduation(idSeller, idClient, idEvent, name, lastname) {
 
-    // change title of window
-    document.getElementById('title_window').innerHTML = 'Agregar pedido';
-    document.getElementById('btn_form').innerHTML = 'Agregar ';
-
     // update data in form 
     document.getElementById('id_name').value = name;
     document.getElementById('id_lastname').value = lastname;
@@ -27,32 +23,31 @@ function add_orderGraduation(idSeller, idClient, idEvent, name, lastname) {
     document.getElementById('En_proceso').setAttribute('selected', 'selected');
     document.getElementById('Impresion').removeAttribute('selected');
     document.getElementById('Entregado').removeAttribute('selected');
-
-    document.getElementById('form_send').id = 'form_add';
-
+    
+    
 }
 
-function edit_orderGraduation(name, lastname, id_table, num_photo, _6x9, _8x12, cost, payment, status) {
-
-    // change title of window
-    document.getElementById('title_window').innerHTML = 'Editar pedido';
-    document.getElementById('btn_form').innerHTML = 'Actualizar';
+function edit_orderGraduation(idSeller, idEvent, idClient, idOrder, name, lastname, id_table, num_photo, _6x9, _8x12, cost, payment, status) {
 
     // update data in form 
-    document.getElementById('id_name').value = name;
-    document.getElementById('id_lastname').value = lastname;
-    document.getElementById('id_mesa').value = id_table
-    document.getElementById('id_foto').value = num_photo;
-    document.getElementById('id_6x9').value = _6x9;
-    document.getElementById('id_8x12').value = _8x12;
-    document.getElementById('id_cost').value = cost;
-    document.getElementById('id_payment').value = payment;
+    document.getElementById('idSellerEdit').value = idSeller;
+    document.getElementById('idClientEdit').value = idClient;
+    document.getElementById('idEventEdit').value = idEvent;
+    document.getElementById('idOrderEdit').value = idOrder;
+    document.getElementById('id_nameEdit').value = name;
+    document.getElementById('id_lastnameEdit').value = lastname;
+    document.getElementById('id_mesaEdit').value = id_table
+    document.getElementById('id_fotoEdit').value = num_photo;
+    document.getElementById('id_6x9Edit').value = _6x9;
+    document.getElementById('id_8x12Edit').value = _8x12;
+    document.getElementById('id_costEdit').value = cost;
+    document.getElementById('id_paymentEdit').value = payment;
 
     // disable inputs
-    document.getElementById('id_name').setAttribute('readonly', 'readonly');
-    document.getElementById('id_lastname').setAttribute('readonly', 'readonly');
-    document.getElementById('id_cost').setAttribute('readonly', 'readonly');
-    document.getElementById('select_status').removeAttribute('disabled')
+    document.getElementById('id_nameEdit').setAttribute('readonly', 'readonly');
+    document.getElementById('id_lastnameEdit').setAttribute('readonly', 'readonly');
+    document.getElementById('id_costEdit').setAttribute('readonly', 'readonly');
+    document.getElementById('select_statusEdit').removeAttribute('disabled')
 
     if (status == 'En_proceso') {
         document.getElementById('Impresion').removeAttribute('selected');
@@ -66,7 +61,6 @@ function edit_orderGraduation(name, lastname, id_table, num_photo, _6x9, _8x12, 
     }
     document.getElementById(`${status}`).setAttribute('selected', 'selected');
 
-    document.getElementById('form_add').id = 'form_send';
    
 }
 

@@ -70,20 +70,23 @@ def add_client():
     return jsonify(alert, orders_graduations_schema.dump(orders))
     
 # function update_client > edit_client_grd 
-@graduaciones.route('/form/patch', methods = ['POST'])
+@graduaciones.route('/form', methods = ['PATCH'])
 def update_client():
-    id_client = request.form['idClient']
-    id_table = request.form['id_table']
-    num_photo = (request.form['num_photo']).upper()
-    num_6x9 = request.form['num_6x9']
-    num_8x12 = request.form['num_8x12']
-    cost = request.form['cost']
-    payment = request.form['payment']
-    status = request.form['status']
+    print('Metodo patch')
+    print(request.form)
+    id_event = request.form['idEventEdit']
+    id_order = request.form['idOrderEdit']
+    id_table = request.form['id_tableEdit']
+    num_photo = (request.form['num_photoEdit']).upper()
+    num_6x9 = request.form['num_6x9Edit']
+    num_8x12 = request.form['num_8x12Edit']
+    cost = request.form['costEdit']
+    payment = request.form['paymentEdit']
+    status = request.form['statusEdit']
     if id_table != '' and num_photo != '' and num_6x9 != '' and num_8x12 != ''  and cost != '' and payment != '':
         if int(id_table) <= 125:
             if not int(payment) > int(cost):
-                edit_order = OrderGraduation.query.get(id_client)
+                edit_order = OrderGraduation.query.filter_by(idOrderGraduation = id_order).first()
                 edit_order.numTable = id_table
                 edit_order.numPhoto = num_photo
                 edit_order._6x9 = num_6x9
@@ -92,7 +95,6 @@ def update_client():
                 edit_order.payment = payment
                 edit_order.status = status
                 db.session.commit()
-
                 alert = {
                     'text':'Edicion realizada correctamente',
                     'type':'alert-success'
@@ -112,7 +114,7 @@ def update_client():
                     'text':'No se han registrado todos los datos editar',
                     'type':'alert-warning'
         }
-    orders = OrderGraduation.query.filter_by(idEvent=id_event).all()
+    orders = OrderGraduation.query.filter_by(idEvent = id_event).all()
     return jsonify(alert, orders_graduations_schema.dump(orders))
 
 # function search_client > form_client_grd
