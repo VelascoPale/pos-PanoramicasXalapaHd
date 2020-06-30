@@ -25,6 +25,6 @@ class OrderGraduation(db.Model):
         self._8x12 = _8x12
         self.cost = cost
         self.payment = payment
-        self.seller = seller
+        self.idSeller = idSeller
         self.status = status
 

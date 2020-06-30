@@ -31,7 +31,7 @@
                 <option value="#">Elige el evento...</option>
                   {% for event in events %}
                   {% if event.enable == 1 %}
-                  <option value="{{event.idEvent}}">{{event.eventName}}</option>
+                  <option value="{{event.eventName}},{{event.idEvent}}">{{event.eventName}}</option>
                   {% endif %}
                   {% endfor %}
               </select>
