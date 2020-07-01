@@ -24,7 +24,6 @@ function add_orderGraduation(idSeller, idClient, idEvent, name, lastname) {
     document.getElementById('Impresion').removeAttribute('selected');
     document.getElementById('Entregado').removeAttribute('selected');
     
-    
 }
 
 function edit_orderGraduation(idSeller, idEvent, idClient, idOrder, name, lastname, id_table, num_photo, _6x9, _8x12, cost, payment, status) {
@@ -62,6 +61,14 @@ function edit_orderGraduation(idSeller, idEvent, idClient, idOrder, name, lastna
     document.getElementById(`${status}`).setAttribute('selected', 'selected');
 
    
+}
+
+function addClientOrder(){
+    document.getElementById('form_add').reset();
+    document.getElementById('idClient').value = 0;
+
+    document.getElementById('id_name').removeAttribute('readonly');
+    document.getElementById('id_lastname').removeAttribute('readonly');
 }
 
 // functions of support

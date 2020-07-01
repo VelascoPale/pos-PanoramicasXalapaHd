@@ -38,7 +38,7 @@
     </div>
 
     <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal"
-        data-target="#addOrder">Agregar
+        data-target="#addOrder" onclick="addClientOrder();">Agregar
     </button>
 
 </div>
@@ -63,8 +63,8 @@
                     {% set idSeller = session['id'] %}
                     {% for client in clients %}
                     <tr>
-                        <td>{{ client.name }}</td>
-                        <td class="no_visible">{{ client.lastname }}</td>
+                        <td id="idName{{client.idClient}}">{{ client.name }}</td>
+                        <td id="idLast{{client.idClient}}" class="no_visible">{{ client.lastname }}</td>
                         <td> <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank">
                                 {{ client.telephone }} </a> </td>
                         <td class="no_visible">{{ client.email }}</td>
@@ -148,9 +148,9 @@
                         <form action="" method="" id="form_add">
 
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="idSeller" id="idSeller" value="">
-                            <input type="hidden" name="idEvent" id="idEvent" value="">
-                            <input type="hidden" name="idClient" id="idClient" value="">
+                            <input type="hidden" name="idSeller" id="idSeller" value="{{session['id']}}">
+                            <input type="hidden" name="idEvent" id="idEvent" value="{{event.1}}">
+                            <input type="hidden"  name="idClient" id="idClient" value="">
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Nombre(s)</label>

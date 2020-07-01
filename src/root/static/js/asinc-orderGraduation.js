@@ -8,6 +8,7 @@ $(document).ready(function () {
             data: $('form').serialize(),
             success: function (response) {
                 $("#table_order").html('');
+                $("#table_client").html('');
                 var output;
                 var alert;
                 response.forEach(function each(item, index) {
@@ -20,12 +21,28 @@ $(document).ready(function () {
                         alert += '</button>';
                         alert += '</div>';
                         $('#alerts').html(alert);
-                    } else {
+                    } else if(index == 1) {
+                        item.forEach(client => {
+                            console.log(client);
+                            output += "<tr>";
+                            output += "<td id='idName"+ client['idClient'] +"'>" + client['name'] + "</td>";
+                            output += "<td id='idLast"+ client['idClient'] +"' class='no_visible'>" + client['lastname'] + "</td>";
+                            output += "<td>" + client['telephone'] + "</td>";
+                            output += "<td>" + client['email'] + "</td>";
+                            output += "<td>";
+                            output += '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder">Agregar pedido</button>';
+                            output += "</td>";
+                            output += "</tr>";
+                        });
+                        $('#table_client').html(output);
+                        output = '';
+                    }else if(index == 2){
                         item.forEach(order => {
                             console.log(order);
+                            
                             output += "<tr>";
-                            output += "<td>" + order['idClient'] + "</td>";
-                            output += "<td>" + order['idClient'] + "</td>";
+                            output += "<td>" + document.getElementById('idName' + order['idClient']).innerHTML + "</td>";
+                            output += "<td>" + document.getElementById('idLast' + order['idClient']).innerHTML + "</td>";
                             output += "<td class='no_visible'>" + order['numTable'] + "</td>";
                             output += "<td class='no_visible'>" + order['numPhoto'] + "</td>";
                             output += "<td class='no_visible'>" + order['_6x9'] + "</td>";
@@ -36,8 +53,10 @@ $(document).ready(function () {
                             output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder" onclick="edit_orderGraduation('${order['idSeller']}','${order['idEvent']}','${order['idClient']}','${order['idOrderGraduation']}','${order['idClient']}','${order['idClient']}','${order['numTable']}','${order['numPhoto']}','${order['_6x9']}','${order['_8x12']}','${order['cost']}','${order['payment']}','${order['status']}');">Editar</button>`;
                             output += "</td>";
                             output += "</tr>";
-                            $('#table_order').html(output);
+                            document.getElementById('idSeller').innerHTML=order['idSeller'];
                         });
+                        document.getElementById('form_add').reset();
+                        $('#table_order').html(output);
                     }
                 });
 
@@ -74,8 +93,8 @@ $(document).ready(function () {
                         item.forEach(order => {
                             console.log(order);
                             output += "<tr>";
-                            output += "<td>" + order['idClient'] + "</td>";
-                            output += "<td>" + order['idClient'] + "</td>";
+                            output += "<td>" + document.getElementById('idName' + order['idClient']).innerHTML + "</td>";
+                            output += "<td>" + document.getElementById('idLast' + order['idClient']).innerHTML + "</td>";
                             output += "<td class='no_visible'>" + order['numTable'] + "</td>";
                             output += "<td class='no_visible'>" + order['numPhoto'] + "</td>";
                             output += "<td class='no_visible'>" + order['_6x9'] + "</td>";
