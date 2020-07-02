@@ -38,13 +38,14 @@
     </div>
 
     <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal"
-        data-target="#exampleModalScrollable" onclick="add_client_grd('{{ event }}')">Agregar
+        data-target="#addOrder" onclick="addClientOrder();">Agregar
     </button>
 
 </div>
 
 <!-- content -->
 <div id="myTabContent" class="tab-content">
+
     <div class="tab-pane fade active show" id="clients">
         <!-- create table for clients -->
         <div class="mt-4 justify-content-center">
@@ -62,13 +63,14 @@
                     {% set idSeller = session['id'] %}
                     {% for client in clients %}
                     <tr>
-                        <td>{{ client.name }}</td>
-                        <td class="no_visible">{{ client.lastname }}</td>
-                        <td > <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank"> {{ client.telephone }} </a> </td>
+                        <td id="idName{{client.idClient}}">{{ client.name }}</td>
+                        <td id="idLast{{client.idClient}}" class="no_visible">{{ client.lastname }}</td>
+                        <td> <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank">
+                                {{ client.telephone }} </a> </td>
                         <td class="no_visible">{{ client.email }}</td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                                data-target="#exampleModalScrollable"
+                                data-target="#addOrder"
                                 onclick="add_orderGraduation('{{idSeller}}','{{client.idClient}}','{{event.1}}','{{ client.name }}','{{ client.lastname }}');">
                                 Agregar pedido
                             </button>
@@ -99,7 +101,7 @@
                     </tr>
                 </thead>
                 <tbody id="table_order">
-
+                    {% set idSeller = session['id'] %}
                     {% for order in orders %}
                     <tr>
                         <td>{{ order.idclient.name }}</td>
@@ -112,8 +114,8 @@
                         <td class="no_visible">{{ order.payment }}</td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                                data-target="#exampleModalScrollable"
-                                onclick="edit_orderGraduation('{{order.idclient.name}}','{{order.idclient.lastname}}','{{order.numTable}}','{{order.numPhoto}}','{{order._6x9}}','{{order._8x12}}','{{order.cost}}','{{order.payment}}','{{order.status}}');">
+                                data-target="#editOrder"
+                                onclick="edit_orderGraduation('{{idSeller}}','{{order.idEvent}}','{{order.idClient}}','{{order.idOrderGraduation}}','{{order.idclient.name}}','{{order.idclient.lastname}}','{{order.numTable}}','{{order.numPhoto}}','{{order._6x9}}','{{order._8x12}}','{{order.cost}}','{{order.payment}}','{{order.status}}');">
                                 Editar
                             </button>
 
@@ -127,26 +129,17 @@
 
 </div>
 
-<!-- modal add/edit/delete -->
-<div class="modal fade" id="exampleModalScrollable" role="dialog">
+<!-- modal addOrder -->
+<div class="modal fade" id="addOrder" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title_window"></h5>
+                <h5 class="modal-title" id="title_window">Agregar pedido</h5>
                 <button type="button" class="close" onclick="reset_cost();" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-
-                <ul class="nav nav-tabs nav-justified mb-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#data">Datos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#cost">Costo</a>
-                    </li>
-                </ul>
 
                 <div id="myTabContent" class="tab-content">
 
@@ -155,14 +148,14 @@
                         <form action="" method="" id="form_add">
 
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="idSeller" id="idSeller" value="">
-                            <input type="hidden" name="idEvent" id="idEvent" value="">
-                            <input type="hidden" name="idClient" id="idClient" value="">
+                            <input type="hidden" name="idSeller" id="idSeller" value="{{session['id']}}">
+                            <input type="hidden" name="idEvent" id="idEvent" value="{{event.1}}">
+                            <input type="hidden"  name="idClient" id="idClient" value="">
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Nombre(s)</label>
-                                <input type="text" class="form-control" autocomplete="off"
-                                    placeholder="Alfredo" name="name" id="id_name">
+                                <input type="text" class="form-control" autocomplete="off" placeholder="Alfredo"
+                                    name="name" id="id_name">
                             </div>
 
                             <div class="form-group">
@@ -174,55 +167,70 @@
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Numero de Mesa</label>
-                                    <input type="number" class="form-control" autocomplete="off"
-                                        placeholder="15" name="id_table" id="id_mesa">
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="15"
+                                        name="id_table" id="id_mesa">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Codigo de fotografia</label>
-                                    <input type="text" class="form-control" autocomplete="off"
-                                        placeholder="_DPX3452" name="num_photo" id="id_foto">
+                                    <input type="text" class="form-control" autocomplete="off" placeholder="_DPX3452"
+                                        name="num_photo" id="id_foto">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">6x9</label>
-                                    <input type="number" class="form-control" placeholder="2"
-                                        name="num_6x9" id="id_6x9">
+                                    <input type="number" class="form-control" placeholder="2" name="num_6x9"
+                                        id="id_6x9">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">8x12</label>
-                                    <input type="number" class="form-control" placeholder="2"
-                                        name="num_8x12" id="id_8x12">
+                                    <input type="number" class="form-control" placeholder="2" name="num_8x12"
+                                        id="id_8x12">
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="btn-group col-6" role="group" aria-label="Basic example">
+                                    <button type="button" onclick="rest_6x9();"
+                                        class="btn btn-warning btn-md col"><strong>-</strong></button>
+                                    <button type="button" onclick="sum_6x9();"
+                                        class="btn btn-success btn-md col"><strong>+</strong></button>
+                                </div>
+                                <div class="btn-group col-6" role="group" aria-label="Basic example">
+                                    <button type="button" onclick="rest_8x12();" class="btn col btn-warning btn-md"
+                                        id="button_restar_8x12"><strong>-</strong></button>
+                                    <button type="button" onclick="sum_8x12();" class="btn col btn-success btn-md"
+                                        id="button_sumar_8x12"><strong>+</strong></button>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Costo total</label>
-                                    <input type="number" class="form-control" placeholder="640"
-                                        name="cost" id="id_cost">
+                                    <input type="number" class="form-control" placeholder="640" name="cost"
+                                        id="id_cost">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Pago realizado</label>
-                                    <input type="number" class="form-control" autocomplete="off"
-                                        placeholder="500" name="payment" id="id_payment">
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="500"
+                                        name="payment" id="id_payment">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label >Estado del pedido </label>
+                                <label>Estado del pedido </label>
                                 <select name="status" class="custom-select" id="select_status">
-                                    <option id="En_proceso" value="En_proceso">En proceso</option>
-                                    <option id="Impresion" value="Imprimiendo">Impresion</option>
-                                    <option id="Entregado" value="Entregado">Entregado</option>
+                                    <option value="En_proceso">En proceso</option>
+                                    <option value="Imprimiendo">Impresion</option>
+                                    <option value="Entregado">Entregado</option>
                                 </select>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                    onclick="reset_cost();" id="close_modal">Cancelar</button>
-                                <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
+                                    onclick="reset_cost();" id="close_modalAdd">Cancelar</button>
+                                <button type="submit" class="btn btn-primary"> Agregar </button>
                             </div>
                         </form>
                     </div>
@@ -235,25 +243,14 @@
                                 <label for="exampleInputEmail1">6x9</label>
                                 <input type="text" class="form-control" placeholder="Cantidad de fotos" id="_6x9"
                                     value="0" onchange="calculate_cost();" readonly>
-                                <div class="btn-group mt-4 col-12" role="group" aria-label="Basic example">
-                                    <button type="button" onclick="rest_6x9();"
-                                        class="btn btn-warning btn-md col"><strong>-</strong></button>
-                                    <button type="button" onclick="sum_6x9();"
-                                        class="btn btn-success btn-md col"><strong>+</strong></button>
-                                </div>
+
 
                             </div>
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">8x12</label>
                                 <input type="number" class="form-control" placeholder="Cantidad fotos" id="_8x12"
                                     value="0" onchange="calculate_cost();" readonly>
-                                <div class="btn-group mt-4 col-12" role="group" aria-label="Basic example">
-                                    <button type="button" onclick="rest_8x12();" class="btn col btn-warning btn-md"
-                                        id="button_restar_8x12"><strong>-</strong></button>
-                                    <button type="button" onclick="sum_8x12();" class="btn col btn-success btn-md"
-                                        id="button_sumar_8x12"><strong>+</strong></button>
-                                </div>
-
+                                
                             </div>
                         </div>
 
@@ -262,6 +259,146 @@
                         </div>
 
                     </div>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal editOrder -->
+<div class="modal fade" id="editOrder" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title_windowEdit">Editar pedido</h5>
+                <button type="button" class="close" onclick="reset_cost();" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div id="myTabContent" class="tab-content">
+
+                    <!-- tab for actions -->
+                    <div class="tab-pane fade active show" id="data">
+                        <form action="" method="" id="form_send">
+
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="idSellerEdit" id="idSellerEdit" value="">
+                            <input type="hidden" name="idEventEdit" id="idEventEdit" value="">
+                            <input type="hidden" name="idClientEdit" id="idClientEdit" value="">
+                            <input type="hidden" name="idOrderEdit" id="idOrderEdit" value="">
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Nombre(s)</label>
+                                <input type="text" class="form-control" autocomplete="off" placeholder="Alfredo"
+                                    name="nameEdit" id="id_nameEdit">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Apellidos</label>
+                                <input type="text" class="form-control" autocomplete="off"
+                                    placeholder="Chacón Hampshire" name="lastnameEdit" id="id_lastnameEdit">
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="exampleInputEmail1">Numero de Mesa</label>
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="15"
+                                        name="id_tableEdit" id="id_mesaEdit">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="exampleInputEmail1">Codigo de fotografia</label>
+                                    <input type="text" class="form-control" autocomplete="off" placeholder="_DPX3452"
+                                        name="num_photoEdit" id="id_fotoEdit">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="exampleInputEmail1">6x9</label>
+                                    <input type="number" class="form-control" placeholder="2" name="num_6x9Edit"
+                                        id="id_6x9Edit">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="exampleInputEmail1">8x12</label>
+                                    <input type="number" class="form-control" placeholder="2" name="num_8x12Edit"
+                                        id="id_8x12Edit">
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="btn-group col-6" role="group" aria-label="Basic example">
+                                    <button type="button" onclick="rest_6x9();"
+                                        class="btn btn-warning btn-md col"><strong>-</strong></button>
+                                    <button type="button" onclick="sum_6x9();"
+                                        class="btn btn-success btn-md col"><strong>+</strong></button>
+                                </div>
+                                <div class="btn-group col-6" role="group" aria-label="Basic example">
+                                    <button type="button" onclick="rest_8x12();" class="btn col btn-warning btn-md"
+                                        id="button_restar_8x12"><strong>-</strong></button>
+                                    <button type="button" onclick="sum_8x12();" class="btn col btn-success btn-md"
+                                        id="button_sumar_8x12"><strong>+</strong></button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="exampleInputEmail1">Costo total</label>
+                                    <input type="number" class="form-control" placeholder="640" name="costEdit"
+                                        id="id_costEdit">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="exampleInputEmail1">Pago realizado</label>
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="500"
+                                        name="paymentEdit" id="id_paymentEdit">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Estado del pedido </label>
+                                <select name="statusEdit" class="custom-select" id="select_statusEdit">
+                                    <option id="En_proceso" value="En_proceso">En proceso</option>
+                                    <option id="Impresion" value="Imprimiendo">Impresion</option>
+                                    <option id="Entregado" value="Entregado">Entregado</option>
+                                </select>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    onclick="reset_cost();" id="close_modalEdit">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- tab calculate cost -->
+                    <div class="tab-pane fade" id="cost">
+
+                        <div class="row mt-3">
+                            <div class="form-group col">
+                                <label for="exampleInputEmail1">6x9</label>
+                                <input type="text" class="form-control" placeholder="Cantidad de fotos" id="_6x9"
+                                    value="0" onchange="calculate_cost();" readonly>
+
+
+                            </div>
+                            <div class="form-group col">
+                                <label for="exampleInputEmail1">8x12</label>
+                                <input type="number" class="form-control" placeholder="Cantidad fotos" id="_8x12"
+                                    value="0" onchange="calculate_cost();" readonly>
+                                
+                            </div>
+                        </div>
+
+                        <div class="col mt-2">
+                            <h5 class="text-center" id="cost_ind">El costo total es de: $ 0</h5>
+                        </div>
+
+                    </div>
+                    
                 </div>
 
             </div>

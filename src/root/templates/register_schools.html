@@ -91,17 +91,18 @@
 
                         {% if school.enable == 1 %}
                         <a type="submit" class="btn btn-danger btn-sm" id="disable_school{{school.idSchool}}" href="/dashboard/register/school/patch/disable/{{ school.idSchool }}" style="">
-                            inhabilitar
+                            Inhabilitar
                         </a>
                             <a type="submit" class="btn btn-info btn-sm" id="enable_school{{school.idSchool}}" href="/dashboard/register/school/patch/enable/{{ school.idSchool }}"  style="display: none;">
-                            habilitar
+                            Habilitar
                         </a>
                         {% else %}
                            <a type="submit" class="btn btn-danger btn-sm" id="disable_school{{school.idSchool}}" href="/dashboard/register/school/patch/disable/{{ school.idSchool }}" style="display: none;">
-                            inhabilitar
+                            Inhabilitar
+
                         </a>
                           <a type="submit" class="btn btn-info btn-sm" id="enable_school{{school.idSchool}}" href="/dashboard/register/school/patch/enable/{{ school.idSchool }}"  style="">
-                            habilitar
+                            Habilitar
                         </a>
                         {% endif %}
                     </td>
