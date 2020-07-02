@@ -60,8 +60,6 @@ function delete_user(id, name, lastname, adress, level) {
     document.getElementById('form_update').setAttribute('action', '/dashboard/register/user/delete/' + id);
 }
 
-
-
 ////function for update school
 function edit_school(id, name, shift, generation, code, level){
 
@@ -124,25 +122,18 @@ function delete_school(id, name, shift, generation, code, level) {
     document.getElementById('form_update').setAttribute('action', '/dashboard/register/school/delete/' + id);
 }
 
-
-
-function edit_client(id, name , lastname, telephone, group){
+//////// fucntions for update clients
+function edit_client(id, name , lastname, email, telephone, idschool, group){
     document.getElementById('title_window').innerHTML = 'Editar cliente';
 
     // update data in form 
+    document.getElementById('idclient').value = id;
     document.getElementById('idname').value = name;
     document.getElementById('idlastname').value = lastname;
+    document.getElementById('idemail').value = email;
     document.getElementById('idtelephone').value = telephone;
     document.getElementById('idgroup').value = group;
-
-      // check radius 
-    if (level == 'SELLER') {
-        // change propierties
-        document.getElementById('idseller').checked = true;
-    } else {
-        document.getElementById('idadmin').checked = true;
-    }
-
+    document.getElementById('idschool').value = idschool;
 
     // desactivate inputs
     document.getElementById('idname').disabled = false;
@@ -150,9 +141,6 @@ function edit_client(id, name , lastname, telephone, group){
     document.getElementById('idtelephone').disabled = false;
     document.getElementById('idgroup').disabled = false;
 
-
-    // change url of form
-    document.getElementById('form_update').setAttribute('action', '/dashboard/register/client/patch/' + id);
-
 }
+
 

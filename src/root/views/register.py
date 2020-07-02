@@ -21,7 +21,7 @@ register = Blueprint("register",__name__, url_prefix='/dashboard/register')
 salt = bcrypt.gensalt()
 sql = MySQL()
 
-# function register_members
+# function register_users
 @register.route('/user', methods=['POST','GET'])
 def register_members():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -86,9 +86,7 @@ def delete_member(id):
     flash('Usuario eliminado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_members'))
 
-
-# funcion for insert schools
-
+# funcion for add schools
 @register.route('/school', methods=['POST', 'GET'])
 def register_schools():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -115,7 +113,6 @@ def register_schools():
     return render_template('register_schools.html')
 
 # funcion for update schools
-
 @register.route('/school/patch/enable/<id>', methods=['POST','GET'])
 def enable_school(id):
     enable= int(1)
@@ -127,7 +124,6 @@ def enable_school(id):
     return redirect(url_for('register.register_schools'))
 
 # funcion for delete schools
-
 @register.route('/school/patch/disable/<id>', methods=['GET','POST'])
 def disable_school(id):
     enable = int(0)
@@ -138,9 +134,7 @@ def disable_school(id):
     flash('Escuela inhabilitado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_schools'))
 
-
 # funcion for insert events
-
 @register.route('/event', methods=['POST', 'GET'])
 def register_events():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -150,9 +144,9 @@ def register_events():
             data_school = School.query.filter_by(idSchool=school).first()
             event_name = data_school.code + '_' + name_hall + '_' + data_school.generation
             if school != 0 and name_hall != '':
-                data_event = Event.query.filter_by(idSchool = school, eventName = event_name).first()
+                data_event = Event.query.filter_by(idSchool = school).first()
                 if data_event is not None:
-                    flash('Este evento ya ha sido creado', 'alert-danger')
+                    flash('La escuela ya tiene un evento registrado', 'alert-danger')
                 else:
                     event = Event(idSchool = school, eventName = event_name, enable=1)
                     db.session.add(event)
@@ -168,7 +162,6 @@ def register_events():
     return render_template('register_events.html')
 
 # funcion for update events
-
 @register.route('/event/patch/enable/<id>', methods=['POST','GET'])
 def enable_event(id):
     enable= int(1)
@@ -192,8 +185,7 @@ def disable_event(id):
 
 
 # funcion for consult clients
-
-@register.route('/client', methods=['GET','POST'])
+@register.route('/client', methods=['GET'])
 def register_clients():
     if 'name' in session:
         clients = Client.query.order_by(Client.idClient).all()
@@ -204,8 +196,7 @@ def register_clients():
     return render_template('register_clients.html')
 
 # funcion for insert clients
-
-@register.route('/client/add', methods=['POST'])
+@register.route('/client', methods=['POST'])
 def add_client():
     if 'name' in session:
         name = (request.form['name']).upper()
@@ -227,6 +218,37 @@ def add_client():
                 alert = {
                     'text':'Cliente registrado satisfactoriamente',
                     'type':'alert-success'}
+        else:
+           alert = {
+               'text':'No has llenado todos los campos, intentalo de nuevo',
+               'type':'alert-warning'}
+       
+        clients = Client.query.all()
+        return jsonify(alert, clients_schema.dump(clients))
+
+# funcion for update clients
+@register.route('/client', methods=['PATCH'])
+def update_client():
+    if 'name' in session:
+        id_client = request.form['idClientEdit']
+        name = (request.form['nameEdit']).upper()
+        lastname = (request.form['lastnameEdit']).upper()
+        telephone = request.form['telephoneEdit']
+        email = (request.form['emailEdit']).lower()
+        id_school = request.form['schoolEdit']
+        group = request.form['groupEdit']
+        if group != '#' and name and lastname and telephone and email and id_school:
+            client = Client.query.get(id_client)
+            client.name = name
+            client.lastname = lastname
+            client.telephone = telephone
+            client.email = email
+            client.idSchool = id_school
+            client.group = group
+            db.session.commit()
+            alert = {
+                'text':'Cliente actualizado satisfactoriamente',
+                'type':'alert-success'}
         else:
            alert = {
                'text':'No has llenado todos los campos, intentalo de nuevo',
