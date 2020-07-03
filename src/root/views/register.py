@@ -47,7 +47,7 @@ def register_members():
         return redirect(url_for('login.page_login'))
     return render_template('register_users.html')
 
-# function add_members > register member
+# function update_users
 @register.route('user/patch/<id>', methods = ['POST'])
 def update_member(id):
     name = (request.form['name']).upper()
@@ -75,7 +75,7 @@ def update_member(id):
     flash('Usuario actualizado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_members'))
 
-# function delete_member > register_member
+# function delete_users
 @register.route('user/delete/<id>', methods=['GET','POST'])
 def delete_member(id):
     user_delete = User.query.filter_by(idSeller = int(id)).first()
@@ -132,7 +132,7 @@ def disable_school(id):
     flash('Escuela inhabilitado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_schools'))
 
-# funcion for insert events
+# funcion for add events
 @register.route('/event', methods=['POST', 'GET'])
 def register_events():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -159,7 +159,7 @@ def register_events():
         return redirect(url_for('login.page_login'))
     return render_template('register_events.html')
 
-# funcion for update events
+# funcion for enable/disable events
 @register.route('/event/patch/enable/<id>', methods=['POST','GET'])
 def enable_event(id):
     enable= int(1)
@@ -180,9 +180,7 @@ def disable_event(id):
     flash('Evento inhabilitado satisfactoriamente', 'alert-success')
     return(redirect(url_for('register.register_events')))
 
-
-
-# funcion for consult clients
+# page clients
 @register.route('/client', methods=['GET'])
 def register_clients():
     if 'name' in session:
@@ -193,7 +191,7 @@ def register_clients():
         return redirect(url_for('login.page_login'))
     return render_template('register_clients.html')
 
-# funcion for insert clients
+# funcion for add clients
 @register.route('/client', methods=['POST'])
 def add_client():
     if 'name' in session:
@@ -254,3 +252,12 @@ def update_client():
        
         clients = Client.query.all()
         return jsonify(alert, clients_schema.dump(clients))
+
+@register.route('/client/<school>/<group>', methods=['GET'])
+def filter_by_school(school, group):
+    if 'name'in session:
+        if int(school) > 0 and group != 'Z':
+            data_clients = Client.query.filter_by(idSchool=school, group=group).all()
+        else:
+            data_clients = Client.query.all()
+        return jsonify(clients_schema.dump(data_clients))

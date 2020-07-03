@@ -29,24 +29,9 @@
             data-target="#formClients">Agregar
         </button>
 
-        <select class="input-group " name="query" id="">
-            <option value="0">Escuela</option>
-            {% for school in schools %}
-            {% if school.enable == 1 %}
-            <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
-            {% endif %}
-            {% endfor %}
-        </select>
-        <select class="input-group " name="query" id="" onchange="console.log('cambio');">
-            <option value="">Grupo</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-            <option value="E">E</option>
-            <option value="F">F</option>
-            <option value="G">G</option>
-        </select>
+
+
+
     </div>
 
     <!-- create table -->
@@ -58,8 +43,28 @@
                     <td class="no_visible">Apellidos</td>
                     <td>Telefono</td>
                     <td class="no_visible">Correo</td>
-                    <td class="no_visible">Id escuela</td>
-                    <td class="no_visible">Grupo</td>
+                    <td class="no_visible">
+                        <select class="input-group " name="query" id="filter_school">
+                            <option value="0">Escuela</option>
+                            {% for school in schools %}
+                            {% if school.enable == 1 %}
+                            <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="no_visible">
+                        <select class="input-group " name="query" id="filter_group">
+                            <option value="Z">Grupo</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
+                    </td>
                     <td>Acciones</td>
                 </tr>
             </thead>
@@ -71,7 +76,7 @@
                     <td> <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank">
                             {{ client.telephone }} </a> </td>
                     <td class="no_visible">{{ client.email }}</td>
-                    <td class="no_visible">{{ client.idSchool }}</td>
+                    <td class="no_visible">{{ client.idschool.name }}</td>
                     <td class="no_visible">{{ client.group }}</td>
                     <td>
 
@@ -118,7 +123,8 @@
 
                     <div class="form-group">
                         <label>Télefono</label>
-                        <input type="text" maxlength="10" name="telephone" class="form-control" placeholder="2281233463">
+                        <input type="text" maxlength="10" name="telephone" class="form-control"
+                            placeholder="2281233463">
                     </div>
 
                     <div class="form-group">
