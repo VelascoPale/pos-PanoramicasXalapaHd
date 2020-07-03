@@ -1,5 +1,4 @@
 from flask import Blueprint, session, request, url_for, flash, render_template, redirect, jsonify
-from flask_mysqldb import MySQL
 import bcrypt
 from sqlalchemy import update
 
@@ -19,7 +18,6 @@ from ..schemas.client import client_schema, clients_schema
 
 register = Blueprint("register",__name__, url_prefix='/dashboard/register')
 salt = bcrypt.gensalt()
-sql = MySQL()
 
 # function register_users
 @register.route('/user', methods=['POST','GET'])

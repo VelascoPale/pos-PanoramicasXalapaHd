@@ -48,7 +48,7 @@ $(document).ready(function () {
         event.preventDefault();
         ajax_client();
         document.getElementById('form_client').reset();
-        document.getElementById('close_modalEdit').click();
+        document.getElementById('close_modal').click();
         
     });
 
@@ -99,7 +99,7 @@ $(document).ready(function () {
     $('#form_update_client').submit(function(event){
         event.preventDefault();
         ajax_updateClient();
-        document.getElementById('form_client').reset();
+        document.getElementById('form_update_client').reset();
         document.getElementById('close_modalEdit').click();
     });
 });

@@ -25,9 +25,28 @@
             </div>
         </div>
 
-        <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal" data-target="#formClients">Agregar
+        <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal"
+            data-target="#formClients">Agregar
         </button>
 
+        <select class="input-group " name="query" id="">
+            <option value="0">Escuela</option>
+            {% for school in schools %}
+            {% if school.enable == 1 %}
+            <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+        <select class="input-group " name="query" id="" onchange="console.log('cambio');">
+            <option value="">Grupo</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+        </select>
     </div>
 
     <!-- create table -->
@@ -94,20 +113,17 @@
 
                     <div class="form-group">
                         <label>Apellidos</label>
-                        <input type="text" name="lastname" class="form-control" 
-                            placeholder="Chacón Hampshire" required>
+                        <input type="text" name="lastname" class="form-control" placeholder="Chacón Hampshire" required>
                     </div>
 
                     <div class="form-group">
                         <label>Télefono</label>
-                        <input type="text" name="telephone" class="form-control" 
-                            placeholder="2281233463">
+                        <input type="text" maxlength="10" name="telephone" class="form-control" placeholder="2281233463">
                     </div>
 
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" name="email" class="form-control" 
-                            placeholder="example@gmail.com">
+                        <input type="email" name="email" class="form-control" placeholder="example@gmail.com">
                     </div>
 
                     <div class="form-group">
@@ -137,8 +153,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit"  class="btn btn-primary"> Agregar </button>
+                <button type="button" id="close_modal" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary"> Agregar </button>
             </div>
             </form>
         </div>
@@ -163,7 +179,8 @@
 
                     <div class="form-group">
                         <label>Nombre(s)</label>
-                        <input type="text" name="nameEdit" class="form-control" placeholder="Alfredo" id="idname" required>
+                        <input type="text" name="nameEdit" class="form-control" placeholder="Alfredo" id="idname"
+                            required>
                     </div>
 
                     <div class="form-group">
@@ -174,7 +191,7 @@
 
                     <div class="form-group">
                         <label>Télefono</label>
-                        <input type="text" name="telephoneEdit" class="form-control" id="idtelephone"
+                        <input type="text" maxlength="10" name="telephoneEdit" class="form-control" id="idtelephone"
                             placeholder="2281233463">
                     </div>
 
@@ -211,7 +228,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="close_modalEdit" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary" id="close_modalEdit"
+                    data-dismiss="modal">Cancelar</button>
                 <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
             </div>
             </form>
