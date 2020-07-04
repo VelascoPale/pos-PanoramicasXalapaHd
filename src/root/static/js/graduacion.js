@@ -1,10 +1,10 @@
 // functions for clients_grd page
 
-function add_orderGraduation(idSeller, idClient, idEvent, name, lastname) {
+function add_orderGraduation(idSeller, idClient, idEvent, idclientname, idclientlastname) {
 
     // update data in form 
-    document.getElementById('id_name').value = name;
-    document.getElementById('id_lastname').value = lastname;
+    document.getElementById('id_name').value = idclientname;
+    document.getElementById('id_lastname').value = idclientlastname;
     document.getElementById('idSeller').value = idSeller;
     document.getElementById('idClient').value = idClient;
     document.getElementById('idEvent').value = idEvent;
@@ -26,15 +26,15 @@ function add_orderGraduation(idSeller, idClient, idEvent, name, lastname) {
     
 }
 
-function edit_orderGraduation(idSeller, idEvent, idClient, idOrder, name, lastname, id_table, num_photo, _6x9, _8x12, cost, payment, status) {
+function edit_orderGraduation(idSeller, idEvent, idClient, idOrder, idclientname, idclientlastname, id_table, num_photo, _6x9, _8x12, cost, payment, status) {
 
     // update data in form 
     document.getElementById('idSellerEdit').value = idSeller;
     document.getElementById('idClientEdit').value = idClient;
     document.getElementById('idEventEdit').value = idEvent;
     document.getElementById('idOrderEdit').value = idOrder;
-    document.getElementById('id_nameEdit').value = name;
-    document.getElementById('id_lastnameEdit').value = lastname;
+    document.getElementById('id_nameEdit').value = idclientname;
+    document.getElementById('id_lastnameEdit').value = idclientlastname;
     document.getElementById('id_mesaEdit').value = id_table
     document.getElementById('id_fotoEdit').value = num_photo;
     document.getElementById('id_6x9Edit').value = _6x9;

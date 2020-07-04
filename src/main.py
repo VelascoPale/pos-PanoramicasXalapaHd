@@ -11,4 +11,4 @@ app = create_app(environment)
 if __name__ == "__main__":
     csrf.init_app(app)
 
-    app.run(port = "3000")
+    app.run(port = "3000",debug=True)
