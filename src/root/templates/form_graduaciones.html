@@ -30,6 +30,7 @@
     
 
     <div class="col-9 col-lg-5 my-1">
+<<<<<<< HEAD
         <div class="input-group">
             <select class="input-group boton btn btn-secondary" name="query" id="filter_sales" onchange="filter_sales();">
                 <option value="/{{event.1}}/all">Todas las ventas</option>
@@ -37,6 +38,15 @@
             </select>
             <input type="text" class="form-control" placeholder="Ingresa datos para la busqueda">
           </div>
+=======
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Buscar</div>
+            </div>
+            <input type="text" autocomplete="off" class="form-control" id="search_client"
+                placeholder="Ingresa datos para la busqueda" >
+        </div>
+>>>>>>> 3edbdac2462daa4634acff5b30b7693e35dcb386
     </div>
 
     <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal"
@@ -106,8 +116,8 @@
                     {% set idSeller = session['id'] %}
                     {% for order in orders %}
                     <tr>
-                        <td>{{ order.idclient.name }}</td>
-                        <td>{{ order.idclient.lastname }}</td>
+                        <td id="idfilter_name">{{ order.idclient.name }}</td>
+                        <td id="idfilter_lastname">{{ order.idclient.lastname }}</td>
                         <td class="no_visible">{{ order.numTable }}</td>
                         <td class="no_visible">{{ order.numPhoto }}</td>
                         <td class="no_visible">{{ order._6x9 }}</td>
@@ -416,5 +426,6 @@
 <script src="{{url_for('static', filename='js/graduacion.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{url_for('static', filename='js/asinc-orderGraduation.js')}}"></script>
+<script src="{{url_for('static', filename='js/asinc-registerClients.js')}}"></script>
 
 {% endblock %}

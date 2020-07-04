@@ -145,8 +145,10 @@ def update_client():
     orders = OrderGraduation.query.filter_by(idEvent=id_event).all()
     return jsonify(alert, orders_graduations_schema.dump(orders))
 
+
+
 # function search_client > form_client_grd
-@graduaciones.route('/search_client/<event>', methods = ['GET'])
+'''@graduaciones.route('/search_client/<event>', methods = ['GET'])
 def search_client(event):
     search = request.args.get('text')
     print(search)
@@ -164,3 +166,10 @@ def search_client(event):
         cur.close()
     return jsonify(data)
     return redirect(url_for('graduaciones.form_graduaciones', event = event))
+
+# function search_client > form_client_grd
+@graduaciones.route('/form/<name>', methods = ['GET'])
+def search_client(name):
+    search_client = Client.query.filter_by(name=name).all()
+    return jsonify(clients_schema.dump(search_client))
+    '''

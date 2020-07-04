@@ -118,7 +118,9 @@ $(document).ready(function () {
         ajax_editOrder();
         document.getElementById('close_modalEdit').click();
     });
+    
 
+     
     /*    $("#search").keyup(function () {
             $("#table").html('');
             var search = document.getElementById('search').value;
