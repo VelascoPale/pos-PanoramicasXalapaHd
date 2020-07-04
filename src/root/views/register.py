@@ -262,4 +262,15 @@ def filter_by_school(school, group):
             data_clients = Client.query.filter_by(idSchool=school).all()
         else:
             data_clients = Client.query.all()
+        print(data_clients)
         return jsonify(clients_schema.dump(data_clients))
+
+@register.route('/client/<name>', methods=['GET'])
+def search_client(name):
+    if 'name' in session:
+        if name != '':
+            search_client = Client.query.filter_by(name=name).first()
+            print(search_client)
+        else:
+            search_client = Client.query.all()
+        return jsonify(clients_schema.dump(search_client))
