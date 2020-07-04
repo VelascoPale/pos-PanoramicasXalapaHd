@@ -109,11 +109,10 @@ $(document).ready(function () {
                 method: "GET",
                 url: '/dashboard/register/client/search',
                 data: {text:document.getElementById('search_client').value},
-                success: function (responde) {
+                success: function (response) {
                     $("#table").html('');
                     var output;
-                    responde.forEach(client => {
-                        console.log(client)
+                    response.forEach(client => {
                         output += "<tr>";
                         output += "<td>" + client['name'] + "</td>";
                         output += "<td class='no_visible'>" + client['lastname'] + "</td>";

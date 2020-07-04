@@ -270,12 +270,13 @@ def search_client():
     if 'name' in session:
         tag = request.args.get('text')
         if tag != '':
-            search = "%{}%".format(tag)
+            search = "{}%".format(tag)
             search_client = Client.query.filter(Client.name.like(search)).all()
             print(search_client)
         else:
             search_client = Client.query.all()
         return jsonify(clients_schema.dump(search_client))
+
 
 '''
 @graduaciones.route('/search_client/<event>', methods = ['GET'])
