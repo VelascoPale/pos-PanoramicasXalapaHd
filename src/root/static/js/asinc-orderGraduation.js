@@ -119,7 +119,34 @@ $(document).ready(function () {
         document.getElementById('close_modalEdit').click();
     });
     
-
+     $("#search_client").keyup(function () {
+            var name = document.getElementById('search_client').value;
+            $.ajax({
+                method: "GET",
+                url: '/dashboard/register/client/search',
+                data: {text:document.getElementById('search_client').value},
+                success: function (responde) {
+                    $("#table_client").html('');
+                    $("#table_order").html('');
+                    var output;
+                    responde.forEach(client => {
+                        console.log(client)
+                        output += "<tr>";
+                        output += "<td id='idName" + client['idClient'] + "'>" + client['name'] + "</td>";
+                        output += "<td id='idLast" + client['idClient'] + "'>" + client['lastname'] + "</td>";
+                        output += "<td class='no_visible'>" + client['telephone'] + "</td>";
+                        output += "<td class='no_visible'> " + client['email'] + "</td>";
+                        output += "<td>";
+                        output += '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder">Agregar pedido</button>';
+                        output += "</td>";
+                        output += "</tr>";
+                    
+                    });
+                    $('#table_client').html(output);
+                    $('#table_order').html(output);
+                }
+            });
+        });
      
     /*    $("#search").keyup(function () {
             $("#table").html('');
