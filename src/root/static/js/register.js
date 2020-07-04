@@ -140,6 +140,7 @@ function edit_client(id, name , lastname, email, telephone, idschool, group){
     document.getElementById('idlastname').disabled = false;
     document.getElementById('idtelephone').disabled = false;
     document.getElementById('idgroup').disabled = false;
+    document.getElementById('idschool').disabled = true;
 
 }
 
