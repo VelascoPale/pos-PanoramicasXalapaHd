@@ -103,15 +103,14 @@ $(document).ready(function () {
         document.getElementById('close_modalEdit').click();
     });
 
-     $("#search_client").keyup(function () {
+    $("#search_client").keyup(function () {
             var name = document.getElementById('search_client').value;
             $.ajax({
                 method: "GET",
                 url: '/dashboard/register/client/search',
                 data: {text:document.getElementById('search_client').value},
                 success: function (responde) {
-                    $("#table_client").html('');
-                    $("#table_order").html('');
+                    $("#table").html('');
                     var output;
                     responde.forEach(client => {
                         console.log(client)
@@ -120,14 +119,15 @@ $(document).ready(function () {
                         output += "<td class='no_visible'>" + client['lastname'] + "</td>";
                         output += "<td > <a href='https://wa.me/+52" + client['telephone'] + "?text=Panoramicas Xalapa'>" + client['telephone'] + "</a> </td>";
                         output += "<td class='no_visible'>" + client['email'] + "</td>";
+                        output += "<td class='no_visible'>" + client['idSchool'] + "</td>";
+                        output += "<td class='no_visible'>" + client['group'] + "</td>";
                         output += "<td>";
-                        output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['telephone']}","${client['email']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
+                        output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formUpdateClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['telephone']}","${client['email']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
                         output += "</td>";
                         output += "</tr>";
-                        
+                    
                     });
-                    $('#table_client').html(output);
-                    $('#table_order').html(output);
+                    $('#table').html(output);
                 }
             });
         });
