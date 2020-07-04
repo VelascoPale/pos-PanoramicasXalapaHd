@@ -35,12 +35,12 @@
 
                     <div class="form-group">
                         <label >Nombre de la escuela</label>
-                        <input type="text" name="schoolName" class="form-control"  placeholder="Articulo Tercero" autofocus>
+                        <input type="text" name="schoolName" class="form-control"  placeholder="Articulo Tercero" autofocus autocomplete="off">
                     </div>
 
                     <div class="form-group">
                         <label >Turno </label>
-                        <select name="shift" class="custom-select" id="inputGroupSelect01">
+                        <select name="shift" class="custom-select" >
                             <option value="#">Elige el turno...</option>
                             <option value="matutino">Matutino</option>
                             <option value="vespertino">Vespertino</option>
@@ -49,12 +49,12 @@
 
                     <div class="form-group">
                         <label >Generación </label>
-                        <input type="text" name="generation" class="form-control"  placeholder="2016-2020">
+                        <input type="text" name="generation" class="form-control"  placeholder="2016-2020" autocomplete="off">
                     </div>
 
                     <div class="form-group">
                         <label >Código de la escuela</label>
-                        <input type="text" name="code" class="form-control"  placeholder="A3V">
+                        <input type="text" name="code" class="form-control"  placeholder="A3V" autocomplete="off">
                     </div>
 
                     <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
@@ -91,17 +91,18 @@
 
                         {% if school.enable == 1 %}
                         <a type="submit" class="btn btn-danger btn-sm" id="disable_school{{school.idSchool}}" href="/dashboard/register/school/patch/disable/{{ school.idSchool }}" style="">
-                            inhabilitar
+                            Inhabilitar
                         </a>
                             <a type="submit" class="btn btn-info btn-sm" id="enable_school{{school.idSchool}}" href="/dashboard/register/school/patch/enable/{{ school.idSchool }}"  style="display: none;">
-                            habilitar
+                            Habilitar
                         </a>
                         {% else %}
                            <a type="submit" class="btn btn-danger btn-sm" id="disable_school{{school.idSchool}}" href="/dashboard/register/school/patch/disable/{{ school.idSchool }}" style="display: none;">
-                            inhabilitar
+                            Inhabilitar
+
                         </a>
                           <a type="submit" class="btn btn-info btn-sm" id="enable_school{{school.idSchool}}" href="/dashboard/register/school/patch/enable/{{ school.idSchool }}"  style="">
-                            habilitar
+                            Habilitar
                         </a>
                         {% endif %}
                     </td>

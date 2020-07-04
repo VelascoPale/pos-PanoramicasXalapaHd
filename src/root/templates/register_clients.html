@@ -12,78 +12,59 @@
 
 <div class="row justify-content-center">
 
-    <!-- create form for add members -->
-    <div class="col-11 col-lg-4 row mt-4 justify-content-center">
-        <div class="card card-body bg-secondary" style="border-radius: 10px;">
-            <h1 class="h3 mb-3 font-weight-normal text-center">Datos del cliente</h1>
-            <form action="" method="POST" id="register-form">
+    <!-- options -->
+    <div class="row justify-content-center form-inline col-12 mt-4 mb-4">
 
-                <input type="hidden" name="csrf_token" name="csrf_token" value="{{ csrf_token() }}">
-
-                <div class="form-group">
-                    <label>Nombre(s)</label>
-                    <input type="text" name="name" class="form-control" placeholder="Alfredo" required autofocus>
+        <div class="col-9 col-lg-5 my-1">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Buscar</div>
                 </div>
-
-                <div class="form-group">
-                    <label>Apellidos</label>
-                    <input type="text" name="lastname" class="form-control" placeholder="Chacón Hampshire" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Télefono</label>
-                    <input type="text" name="telephone" class="form-control" placeholder="2281233463">
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" name="email" class="form-control" placeholder="example@gmail.com">
-                </div>
-
-                <div class="form-group">
-                    <label>Escuela</label>
-                    <select name="school" class="custom-select">
-                        <option value="0">Elige la escuela...</option>
-                        {% for school in schools %}
-                        {% if school.enable == 1 %}
-                        <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Grupo </label>
-                    <select name="group" class="custom-select">
-                        <option value="#">Elige el grupo...</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                        <option value="G">G</option>
-                    </select>
-                </div>
-
-                <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Registrar</button>
-                <button style="display: none;" id="clearForm" type="button">Limpiar</button>
-            </form>
-            <p class="mb-3 mt-4 text-muted text-center">Panoramicas Xalapa HD 2020</p>
+                <input type="text" autocomplete="off" class="form-control" id="search"
+                    placeholder="Ingresa datos para la busqueda">
+            </div>
         </div>
+
+        <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal"
+            data-target="#formClients">Agregar
+        </button>
+
+
+
+
     </div>
 
     <!-- create table -->
-    <div class="col-11 col-lg-7 mt-4 justify-content-center">
+    <div class="col-11 col-lg-11 mt-4 justify-content-center">
         <table class="table table-striped table-active table-bordered table-sm text-center">
             <thead>
                 <tr>
                     <td>Nombre(s)</td>
                     <td class="no_visible">Apellidos</td>
-                    <td >Telefono</td>
+                    <td>Telefono</td>
                     <td class="no_visible">Correo</td>
-                    <td class="no_visible">Id escuela</td>
-                    <td class="no_visible">Grupo</td>
+                    <td class="no_visible">
+                        <select class="input-group " name="query" id="filter_school" onchange="filter();">
+                            <option value="0">Escuela</option>
+                            {% for school in schools %}
+                            {% if school.enable == 1 %}
+                            <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="no_visible">
+                        <select class="input-group " name="query" id="filter_group" onchange="filter();">
+                            <option value="Z">Grupo</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
+                    </td>
                     <td>Acciones</td>
                 </tr>
             </thead>
@@ -92,15 +73,16 @@
                 <tr>
                     <td>{{ client.name }}</td>
                     <td class="no_visible">{{ client.lastname }}</td>
-                    <td > <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank"> {{ client.telephone }} </a> </td>
+                    <td> <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank">
+                            {{ client.telephone }} </a> </td>
                     <td class="no_visible">{{ client.email }}</td>
-                    <td class="no_visible">{{ client.idSchool }}</td>
+                    <td class="no_visible">{{ client.idschool.name }}</td>
                     <td class="no_visible">{{ client.group }}</td>
                     <td>
 
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                            data-target="#exampleModalScrollable"
-                            onclick="edit_client('{{ client.idSeller }}','{{ client.name }}','{{ client.lastname }}','{{ client.email }}','{{ client.permissions }}')">
+                            data-target="#formUpdateClients"
+                            onclick="edit_client('{{ client.idClient }}','{{ client.name }}','{{ client.lastname }}','{{ client.email }}','{{ client.telephone}}','{{client.idSchool}}','{{client.group}}')">
                             Editar
                         </button>
 
@@ -113,44 +95,46 @@
 
 </div>
 
-<!-- modal -->
-<div class="modal fade" id="exampleModalScrollable" role="dialog">
+<!-- modal add -->
+<div class="modal fade" id="formClients" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title_window"></h5>
+                <h5 class="modal-title">Agregar cliente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST" id="form_update">
+                <form action="" method="POST" id="form_client">
 
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="idClient" value="">
 
-                   <div class="form-group">
-                    <label>Nombre(s)</label>
-                    <input type="text" name="name" class="form-control" placeholder="Alfredo" id="idname" required>
+                    <div class="form-group">
+                        <label>Nombre(s)</label>
+                        <input type="text" name="name" class="form-control" placeholder="Alfredo" required>
                     </div>
 
                     <div class="form-group">
                         <label>Apellidos</label>
-                        <input type="text" name="lastname" class="form-control" id="idlastname" placeholder="Chacón Hampshire" required>
+                        <input type="text" name="lastname" class="form-control" placeholder="Chacón Hampshire" required>
                     </div>
 
                     <div class="form-group">
                         <label>Télefono</label>
-                        <input type="text" name="telephone" class="form-control" id="idtelephone" placeholder="2281233463">
+                        <input type="text" maxlength="10" name="telephone" class="form-control"
+                            placeholder="2281233463">
                     </div>
 
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="text" name="email" class="form-control" id="idemail" placeholder="example@gmail.com">
+                        <input type="email" name="email" class="form-control" placeholder="example@gmail.com">
                     </div>
 
                     <div class="form-group">
                         <label>Escuela</label>
-                        <select name="school" id="idschool" class="custom-select">
+                        <select name="school" class="custom-select">
                             <option value="0">Elige la escuela...</option>
                             {% for school in schools %}
                             {% if school.enable == 1 %}
@@ -162,7 +146,7 @@
 
                     <div class="form-group">
                         <label>Grupo </label>
-                        <select name="group" id="idgroup" class="custom-select">
+                        <select name="group" class="custom-select">
                             <option value="#">Elige el grupo...</option>
                             <option value="A">A</option>
                             <option value="B">B</option>
@@ -173,23 +157,85 @@
                             <option value="G">G</option>
                         </select>
                     </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close_modal" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary"> Agregar </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                    <p>Permisos del usuario</p>
+<!-- modal update -->
+<div class="modal fade" id="formUpdateClients" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title_window"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="form_update_client">
 
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="idseller" value="SELLER" name="level" class="custom-control-input"
-                            checked="">
-                        <label class="custom-control-label h6" for="idseller">Vendedor</label>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="idClientEdit" id="idclient" value="">
+
+                    <div class="form-group">
+                        <label>Nombre(s)</label>
+                        <input type="text" name="nameEdit" class="form-control" placeholder="Alfredo" id="idname"
+                            required>
                     </div>
 
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="idadmin" value="ADMIN" name="level" class="custom-control-input"
-                            checked="">
-                        <label class="custom-control-label h6" for="idadmin">Administrador</label>
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <input type="text" name="lastnameEdit" class="form-control" id="idlastname"
+                            placeholder="Chacón Hampshire" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Télefono</label>
+                        <input type="text" maxlength="10" name="telephoneEdit" class="form-control" id="idtelephone"
+                            placeholder="2281233463">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="emailEdit" class="form-control" id="idemail"
+                            placeholder="example@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Escuela</label>
+                        <select name="schoolEdit" id="idschool" class="custom-select">
+                            <option value="0">Elige la escuela...</option>
+                            {% for school in schools %}
+                            {% if school.enable == 1 %}
+                            <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Grupo </label>
+                        <select name="groupEdit" id="idgroup" class="custom-select">
+                            <option value="#">Elige el grupo...</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary" id="close_modalEdit"
+                    data-dismiss="modal">Cancelar</button>
                 <button type="submit" id="btn_form" class="btn btn-primary"> Actualizar </button>
             </div>
             </form>

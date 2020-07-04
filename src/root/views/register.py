@@ -1,5 +1,4 @@
 from flask import Blueprint, session, request, url_for, flash, render_template, redirect, jsonify
-from flask_mysqldb import MySQL
 import bcrypt
 from sqlalchemy import update
 
@@ -19,9 +18,8 @@ from ..schemas.client import client_schema, clients_schema
 
 register = Blueprint("register",__name__, url_prefix='/dashboard/register')
 salt = bcrypt.gensalt()
-sql = MySQL()
 
-# function register_members
+# function register_users
 @register.route('/user', methods=['POST','GET'])
 def register_members():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -49,7 +47,7 @@ def register_members():
         return redirect(url_for('login.page_login'))
     return render_template('register_users.html')
 
-# function add_members > register member
+# function update_users
 @register.route('user/patch/<id>', methods = ['POST'])
 def update_member(id):
     name = (request.form['name']).upper()
@@ -77,7 +75,7 @@ def update_member(id):
     flash('Usuario actualizado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_members'))
 
-# function delete_member > register_member
+# function delete_users
 @register.route('user/delete/<id>', methods=['GET','POST'])
 def delete_member(id):
     user_delete = User.query.filter_by(idSeller = int(id)).first()
@@ -86,9 +84,7 @@ def delete_member(id):
     flash('Usuario eliminado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_members'))
 
-
-# funcion for insert schools
-
+# funcion for add schools
 @register.route('/school', methods=['POST', 'GET'])
 def register_schools():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -115,7 +111,6 @@ def register_schools():
     return render_template('register_schools.html')
 
 # funcion for update schools
-
 @register.route('/school/patch/enable/<id>', methods=['POST','GET'])
 def enable_school(id):
     enable= int(1)
@@ -127,7 +122,6 @@ def enable_school(id):
     return redirect(url_for('register.register_schools'))
 
 # funcion for delete schools
-
 @register.route('/school/patch/disable/<id>', methods=['GET','POST'])
 def disable_school(id):
     enable = int(0)
@@ -138,9 +132,7 @@ def disable_school(id):
     flash('Escuela inhabilitado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_schools'))
 
-
-# funcion for insert events
-
+# funcion for add events
 @register.route('/event', methods=['POST', 'GET'])
 def register_events():
     if 'name' in session and session['permissions'] == 'ADMIN':
@@ -150,9 +142,9 @@ def register_events():
             data_school = School.query.filter_by(idSchool=school).first()
             event_name = data_school.code + '_' + name_hall + '_' + data_school.generation
             if school != 0 and name_hall != '':
-                data_event = Event.query.filter_by(idSchool = school, eventName = event_name).first()
+                data_event = Event.query.filter_by(idSchool = school).first()
                 if data_event is not None:
-                    flash('Este evento ya ha sido creado', 'alert-danger')
+                    flash('La escuela ya tiene un evento registrado', 'alert-danger')
                 else:
                     event = Event(idSchool = school, eventName = event_name, enable=1)
                     db.session.add(event)
@@ -167,8 +159,7 @@ def register_events():
         return redirect(url_for('login.page_login'))
     return render_template('register_events.html')
 
-# funcion for update events
-
+# funcion for enable/disable events
 @register.route('/event/patch/enable/<id>', methods=['POST','GET'])
 def enable_event(id):
     enable= int(1)
@@ -189,11 +180,8 @@ def disable_event(id):
     flash('Evento inhabilitado satisfactoriamente', 'alert-success')
     return(redirect(url_for('register.register_events')))
 
-
-
-# funcion for consult clients
-
-@register.route('/client', methods=['GET','POST'])
+# page clients
+@register.route('/client', methods=['GET'])
 def register_clients():
     if 'name' in session:
         clients = Client.query.order_by(Client.idClient).all()
@@ -203,9 +191,8 @@ def register_clients():
         return redirect(url_for('login.page_login'))
     return render_template('register_clients.html')
 
-# funcion for insert clients
-
-@register.route('/client/add', methods=['POST'])
+# funcion for add clients
+@register.route('/client', methods=['POST'])
 def add_client():
     if 'name' in session:
         name = (request.form['name']).upper()
@@ -234,3 +221,80 @@ def add_client():
        
         clients = Client.query.all()
         return jsonify(alert, clients_schema.dump(clients))
+
+# funcion for update clients
+@register.route('/client', methods=['PATCH'])
+def update_client():
+    if 'name' in session:
+        id_client = request.form['idClientEdit']
+        name = (request.form['nameEdit']).upper()
+        lastname = (request.form['lastnameEdit']).upper()
+        telephone = request.form['telephoneEdit']
+        email = (request.form['emailEdit']).lower()
+        id_school = request.form['schoolEdit']
+        group = request.form['groupEdit']
+        if group != '#' and name and lastname and telephone and email and id_school:
+            client = Client.query.get(id_client)
+            client.name = name
+            client.lastname = lastname
+            client.telephone = telephone
+            client.email = email
+            client.idSchool = id_school
+            client.group = group
+            db.session.commit()
+            alert = {
+                'text':'Cliente actualizado satisfactoriamente',
+                'type':'alert-success'}
+        else:
+           alert = {
+               'text':'No has llenado todos los campos, intentalo de nuevo',
+               'type':'alert-warning'}
+       
+        clients = Client.query.all()
+        return jsonify(alert, clients_schema.dump(clients))
+
+@register.route('/client/<school>/<group>', methods=['GET'])
+def filter_by_school(school, group):
+    if 'name'in session:
+        if int(school) > 0 and group != 'Z':
+            data_clients = Client.query.filter_by(idSchool=school, group=group).all()
+        elif int(school) > 0:
+            data_clients = Client.query.filter_by(idSchool=school).all()
+        else:
+            data_clients = Client.query.all()
+        print(data_clients)
+        return jsonify(clients_schema.dump(data_clients))
+
+@register.route('/client/search', methods=['GET'])
+def search_client():
+    if 'name' in session:
+        tag = request.args.get('text')
+        if tag != '':
+            search = "%{}%".format(tag)
+            search_client = Client.query.filter(Client.name.like(search)).all()
+            print(search_client)
+
+        else:
+            search_client = Client.query.all()
+        return jsonify(clients_schema.dump(search_client))
+
+'''
+@graduaciones.route('/search_client/<event>', methods = ['GET'])
+def search_client(event):
+    search = request.args.get('text')
+    print(search)
+    if search != '':
+    cur = sql.connection.cursor()
+    consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' OR id_table = '{1}' OR num_photo = '{1}'  "
+    cur.execute(consult_sql.format(event, search))
+    data = cur.fetchall()
+    cur.close()
+    else:
+    cur = sql.connection.cursor()
+    consult_sql = " SELECT * FROM {0}"
+    cur.execute(consult_sql.format(event))
+    data = cur.fetchall()
+    cur.close()
+    return jsonify(data)
+    return redirect(url_for('graduaciones.form_graduaciones', event = event))
+'''

@@ -13,7 +13,7 @@ class OrderGraduation(db.Model):
     _8x12 = db.Column(db.Integer, nullable=False)
     cost = db.Column(db.Integer, nullable=False)
     payment = db.Column(db.Integer, nullable=False)
-    status= db.Column(db.String(10), nullable=False, default='EN PROCESO')
+    status= db.Column(db.String(10), nullable=False)
     
     def __init__(self, idClient, idSeller, idEvent, numTable, numPhoto, _6x9, _8x12, cost, payment, status):
         self.idClient = idClient

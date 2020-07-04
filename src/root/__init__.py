@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_wtf import CSRFProtect
-from flask_mysqldb import MySQL
 
 from .models import db
 from .models.client import Client 
@@ -15,13 +14,6 @@ app = Flask(__name__)
 
 # csrf
 csrf = CSRFProtect()
-
-# config_mysql
-app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'regis_clients_pano'
-sql = MySQL()
 
 def create_app(environment):
     app.config.from_object(environment)

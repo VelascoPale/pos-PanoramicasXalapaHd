@@ -81,17 +81,17 @@
 
                         {% if event.enable == 1 %}
                         <a type="submit" class="btn btn-danger btn-sm" id="disable_event{{event.idEvent}}" href="/dashboard/register/event/patch/disable/{{ event.idEvent }}" style="">
-                            inhabilitar
+                            Inhabilitar
                         </a>
                             <a type="submit" class="btn btn-info btn-sm" id="enable_event{{event.idEvent}}" href="/dashboard/register/event/patch/enable/{{ event.idEvent }}"  style="display: none;">
-                            habilitar
+                            Habilitar
                         </a>
                         {% else %}
                            <a type="submit" class="btn btn-danger btn-sm" id="disable_event{{event.idEvent}}" href="/dashboard/register/event/patch/disable/{{ event.idEvent }}" style="display: none;">
-                            inhabilitar
+                            Inhabilitar
                         </a>
                           <a type="submit" class="btn btn-info btn-sm" id="enable_event{{event.idEvent}}" href="/dashboard/register/event/patch/enable/{{ event.idEvent }}"  style="">
-                            habilitar
+                            Habilitar
                         </a>
                         {% endif %}
                     </td>

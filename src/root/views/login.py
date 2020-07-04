@@ -6,7 +6,6 @@ from ..models.user import User
 from ..schemas.user import user_schema, users_schema
 
 login = Blueprint("login",__name__)
-#sql = MySQL()
 
 # home page
 @login.route('/')
