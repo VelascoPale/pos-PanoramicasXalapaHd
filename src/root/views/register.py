@@ -270,30 +270,8 @@ def search_client():
     if 'name' in session:
         tag = request.args.get('text')
         if tag != '':
-            search = "%{}%".format(tag)
+            search = "{}%".format(tag)
             search_client = Client.query.filter(Client.name.like(search)).all()
-            print(search_client)
         else:
             search_client = Client.query.all()
         return jsonify(clients_schema.dump(search_client))
-
-'''
-@graduaciones.route('/search_client/<event>', methods = ['GET'])
-def search_client(event):
-    search = request.args.get('text')
-    print(search)
-    if search != '':
-    cur = sql.connection.cursor()
-    consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' OR id_table = '{1}' OR num_photo = '{1}'  "
-    cur.execute(consult_sql.format(event, search))
-    data = cur.fetchall()
-    cur.close()
-    else:
-    cur = sql.connection.cursor()
-    consult_sql = " SELECT * FROM {0}"
-    cur.execute(consult_sql.format(event))
-    data = cur.fetchall()
-    cur.close()
-    return jsonify(data)
-    return redirect(url_for('graduaciones.form_graduaciones', event = event))
-'''

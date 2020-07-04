@@ -132,8 +132,6 @@ $(document).ready(function () {
             });
         });
   
-   
-
 });
 
 function filter(){
