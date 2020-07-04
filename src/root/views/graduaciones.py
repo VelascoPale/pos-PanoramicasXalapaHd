@@ -26,6 +26,15 @@ def form_graduaciones():
         return redirect(url_for('login.page_login'))
     return render_template('form_graduaciones.html')
 
+@graduaciones.route('/form/<event>/<category>', methods=['GET'])
+def filter_seller(event, category):
+    if 'name' in session:
+        if category == 'my':
+            orders = OrderGraduation.query.filter_by(idEvent=event ,idSeller = session['id']).all()
+        else:
+            orders = OrderGraduation.query.filter_by(idEvent=event).all()
+        return jsonify(orders_graduations_schema.dump(orders))
+
 # function add_client > form_clients-grd
 @graduaciones.route('/form', methods = ['POST'])
 def add_client():
@@ -100,18 +109,24 @@ def update_client():
         if int(id_table) <= 125:
             if not int(payment) > int(cost):
                 edit_order = OrderGraduation.query.filter_by(idOrderGraduation = id_order).first()
-                edit_order.numTable = id_table
-                edit_order.numPhoto = num_photo
-                edit_order._6x9 = num_6x9
-                edit_order._8x12 = num_8x12
-                edit_order.cost = cost
-                edit_order.payment = payment
-                edit_order.status = status
-                db.session.commit()
-                alert = {
-                    'text':'Edicion realizada correctamente',
-                    'type':'alert-success'
-                }
+                if edit_order.idSeller == session['id']:
+                    edit_order.numTable = id_table
+                    edit_order.numPhoto = num_photo
+                    edit_order._6x9 = num_6x9
+                    edit_order._8x12 = num_8x12
+                    edit_order.cost = cost
+                    edit_order.payment = payment
+                    edit_order.status = status
+                    db.session.commit()
+                    alert = {
+                        'text':'Edicion realizada correctamente',
+                        'type':'alert-success'
+                    }
+                else:
+                    alert = {
+                        'text':'Esta venta no te pertenece',
+                        'type':'alert-warning'
+                    }
             else:
                 alert = {
                     'text':'El pago registrado es mayor al costo',

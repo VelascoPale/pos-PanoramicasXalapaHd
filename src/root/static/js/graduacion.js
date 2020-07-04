@@ -1,5 +1,4 @@
-// functions for clients_grd page
-
+// functions for clients_grd pages
 function add_orderGraduation(idSeller, idClient, idEvent, name, lastname) {
 
     // update data in form 
