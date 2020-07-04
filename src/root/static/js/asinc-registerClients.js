@@ -107,7 +107,7 @@ $(document).ready(function () {
             var name = document.getElementById('search_client').value;
             $.ajax({
                 method: "GET",
-                url: '/dashboard/register/client/'+ name,
+                url: '/dashboard/register/client',
                 data: {name},
                 success: function (responde) {
                     $("#table_client").html('');
