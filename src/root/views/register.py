@@ -258,6 +258,8 @@ def filter_by_school(school, group):
     if 'name'in session:
         if int(school) > 0 and group != 'Z':
             data_clients = Client.query.filter_by(idSchool=school, group=group).all()
+        elif int(school) > 0:
+            data_clients = Client.query.filter_by(idSchool=school).all()
         else:
             data_clients = Client.query.all()
         return jsonify(clients_schema.dump(data_clients))

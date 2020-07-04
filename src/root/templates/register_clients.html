@@ -44,7 +44,7 @@
                     <td>Telefono</td>
                     <td class="no_visible">Correo</td>
                     <td class="no_visible">
-                        <select class="input-group " name="query" id="filter_school">
+                        <select class="input-group " name="query" id="filter_school" onchange="filter();">
                             <option value="0">Escuela</option>
                             {% for school in schools %}
                             {% if school.enable == 1 %}
@@ -54,7 +54,7 @@
                         </select>
                     </td>
                     <td class="no_visible">
-                        <select class="input-group " name="query" id="filter_group">
+                        <select class="input-group " name="query" id="filter_group" onchange="filter();">
                             <option value="Z">Grupo</option>
                             <option value="A">A</option>
                             <option value="B">B</option>

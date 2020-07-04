@@ -103,33 +103,34 @@ $(document).ready(function () {
         document.getElementById('close_modalEdit').click();
     });
 
-    $('#filter_school').change(function(){
-        var school = document.getElementById('filter_school').value;
-        var group =document.getElementById('filter_group').value;
-        $.ajax({
-            url:'/dashboard/register/client/'+ school+'/'+group,
-            data: {school},group,
-            type: 'GET',
-            success: function(response){
-                console.log(response);
-                $('#table').html('');
-                var output;
-                response.forEach(client => {
-                    output += "<tr>";
-                    output += "<td>" + client['name'] + "</td>";
-                    output += "<td class='no_visible'>" + client['lastname'] + "</td>";
-                    output += "<td > <a href='https://wa.me/+52" + client['telephone'] + "?text=Panoramicas Xalapa'>" + client['telephone'] + "</a> </td>";
-                    output += "<td class='no_visible'>" + client['email'] + "</td>";
-                    output += "<td class='no_visible'>" + client['idSchool'] + "</td>";
-                    output += "<td class='no_visible'>" + client['group'] + "</td>";
-                    output += "<td>";
-                    output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['telephone']}","${client['email']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
-                    output += "</td>";
-                    output += "</tr>";
-                    $('#table').html(output);
-                });
-            }
-        });
-    });
-
 });
+
+function filter(){
+
+    var school = document.getElementById('filter_school').value;
+    var group =document.getElementById('filter_group').value;
+    
+    $.ajax({
+        url:'/dashboard/register/client/'+ school+'/'+group,
+        data: {school},group,
+        type: 'GET',
+        success: function(response){
+            $('#table').html('');
+            var output;
+            response.forEach(client => {
+                output += "<tr>";
+                output += "<td>" + client['name'] + "</td>";
+                output += "<td class='no_visible'>" + client['lastname'] + "</td>";
+                output += "<td > <a href='https://wa.me/+52" + client['telephone'] + "?text=Panoramicas Xalapa'>" + client['telephone'] + "</a> </td>";
+                output += "<td class='no_visible'>" + client['email'] + "</td>";
+                output += "<td class='no_visible'>" + client['idSchool'] + "</td>";
+                output += "<td class='no_visible'>" + client['group'] + "</td>";
+                output += "<td>";
+                output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['telephone']}","${client['email']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
+                output += "</td>";
+                output += "</tr>";
+                $('#table').html(output);
+            });
+        }
+    });
+}
