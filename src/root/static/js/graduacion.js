@@ -101,12 +101,14 @@ function calculate_cost() {
         document.getElementById('id_8x12Edit').value = _8x12;
         document.getElementById('id_6x9Edit').value = _6x9;
         document.getElementById('id_cost').value = final_cost;
+        document.getElementById('id_costEdit').value = final_cost;
     } else {
         document.getElementById('id_8x12').value = '';
         document.getElementById('id_6x9').value = '';
         document.getElementById('id_8x12Edit').value = '';
         document.getElementById('id_6x9Edit').value = '';
         document.getElementById('id_cost').value = '';
+        document.getElementById('id_costEdit').value = '';
     }
 
 
