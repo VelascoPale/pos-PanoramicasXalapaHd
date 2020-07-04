@@ -107,10 +107,11 @@ $(document).ready(function () {
             var name = document.getElementById('search_client').value;
             $.ajax({
                 method: "GET",
-                url: '/dashboard/register/client',
-                data: {name},
+                url: '/dashboard/register/client/search',
+                data: {text:document.getElementById('search_client').value},
                 success: function (responde) {
                     $("#table_client").html('');
+                    $("#table_order").html('');
                     var output;
                     responde.forEach(client => {
                         console.log(client)
@@ -126,6 +127,7 @@ $(document).ready(function () {
                         
                     });
                     $('#table_client').html(output);
+                    $('#table_order').html(output);
                 }
             });
         });
