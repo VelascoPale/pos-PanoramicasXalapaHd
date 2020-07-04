@@ -1,12 +1,11 @@
 from flask import Blueprint, session, render_template, redirect, url_for, request, flash
-from flask_mysqldb import MySQL
 
 from ..models.event import Event
 from ..schemas.event import event_schema, events_schema
 
 dashboard = Blueprint("dashboard",__name__)
  
-sql = MySQL()
+
 # dashboard page
 @dashboard.route('/dashboard')
 def render_dashboard():

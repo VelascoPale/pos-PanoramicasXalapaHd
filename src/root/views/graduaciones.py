@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, redirect, url_for, session, jsonify, flash, request
-from flask_mysqldb import MySQL
 
 from sqlalchemy import asc, desc
 
@@ -14,7 +13,6 @@ from ..models.event import Event
 from ..schemas.event import event_schema
 
 graduaciones = Blueprint("graduaciones",__name__, url_prefix='/dashboard/event')
-sql = MySQL()
 
 # form_client_grd page
 @graduaciones.route('/form')
