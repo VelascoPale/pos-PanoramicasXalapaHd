@@ -11,8 +11,8 @@ $(document).ready(function () {
                 $("#table_client").html('');
                 var output;
                 var alert;
-                var idSeller = document.getElementById('idseller').value;
-                var idEvent = document.getElementById('ideventt').value;
+                var idSeller = document.getElementById('idseller').innerHTML;
+                var idEvent = document.getElementById('ideventt').innerHTML;
                 response.forEach(function each(item, index) {
                     if (index == 0) {
                         alert = '';
