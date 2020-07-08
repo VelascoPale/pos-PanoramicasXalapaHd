@@ -272,10 +272,10 @@ def search_client():
         if tag != '':
             search = "{}%".format(tag)
             search_client = Client.query.filter(Client.name.like(search)).all()
-            print(search_client)
         else:
             search_client = Client.query.all()
         return jsonify(clients_schema.dump(search_client))
+
 
 
 '''
@@ -298,3 +298,4 @@ def search_client(event):
     return jsonify(data)
     return redirect(url_for('graduaciones.form_graduaciones', event = event))
 '''
+

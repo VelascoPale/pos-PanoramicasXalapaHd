@@ -75,6 +75,8 @@ function addClientOrder(){
 function calculate_cost() {
     var _6x9 = parseInt(document.getElementById('_6x9').value);
     var _8x12 = parseInt(document.getElementById('_8x12').value);
+    var _6x9 = parseInt(document.getElementById('_6x9Edit').value);
+    var _8x12 = parseInt(document.getElementById('_8x12Edit').value);
     var cost_6x9 = 100;
     var cost_8x12 = 200;
     var final_cost = 0;
@@ -96,11 +98,17 @@ function calculate_cost() {
     if (_6x9 > 0 || _8x12 > 0) {
         document.getElementById('id_8x12').value = _8x12;
         document.getElementById('id_6x9').value = _6x9;
+        document.getElementById('id_8x12Edit').value = _8x12;
+        document.getElementById('id_6x9Edit').value = _6x9;
         document.getElementById('id_cost').value = final_cost;
+        document.getElementById('id_costEdit').value = final_cost;
     } else {
         document.getElementById('id_8x12').value = '';
         document.getElementById('id_6x9').value = '';
+        document.getElementById('id_8x12Edit').value = '';
+        document.getElementById('id_6x9Edit').value = '';
         document.getElementById('id_cost').value = '';
+        document.getElementById('id_costEdit').value = '';
     }
 
 
@@ -111,39 +119,49 @@ function calculate_cost() {
 function reset_cost() {
     document.getElementById('_6x9').value = 0;
     document.getElementById('_8x12').value = 0;
+    document.getElementById('_6x9Edit').value = 0;
+    document.getElementById('_8x12Edit').value = 0;
     document.getElementById('cost_ind').innerHTML = 'El costo total es de: $ 0';
 }
 
 function sum_6x9() {
     var num_6x9 = parseInt(document.getElementById('_6x9').value);
+    var num_6x9 = parseInt(document.getElementById('_6x9Edit').value);
     num_6x9 += 1;
     document.getElementById('_6x9').value = num_6x9;
+    document.getElementById('_6x9Edit').value = num_6x9;
     calculate_cost();
 }
 
 function rest_6x9() {
     var num_6x9 = parseInt(document.getElementById('_6x9').value);
+    var num_6x9 = parseInt(document.getElementById('_6x9Edit').value);
     num_6x9 -= 1;
     if (num_6x9 < 0) {
         num_6x9 = 0;
     }
     document.getElementById('_6x9').value = num_6x9;
+    document.getElementById('_6x9Edit').value = num_6x9;
     calculate_cost();
 }
 
 function sum_8x12() {
     var num_8x12 = parseInt(document.getElementById('_8x12').value);
+    var num_8x12 = parseInt(document.getElementById('_8x12Edit').value);
     num_8x12 += 1;
     document.getElementById('_8x12').value = num_8x12;
+    document.getElementById('_8x12Edit').value = num_8x12;
     calculate_cost();
 }
 
 function rest_8x12() {
     var num_8x12 = parseInt(document.getElementById('_8x12').value);
+    var num_8x12 = parseInt(document.getElementById('_8x12Edit').value);
     num_8x12 -= 1;
     if (num_8x12 < 0) {
         num_8x12 = 0;
     }
     document.getElementById('_8x12').value = num_8x12;
+    document.getElementById('_8x12Edit').value = num_8x12;
     calculate_cost();
 }

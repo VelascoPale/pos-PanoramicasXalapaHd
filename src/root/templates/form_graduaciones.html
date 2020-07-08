@@ -8,7 +8,9 @@
 <div id='alerts'></div>
 
 <h2 class="text-center mt-4" id="table_name">{{event.0}}</h2>
-<h2 style="display: none;" id="ideventt">{{event.1}}</h2>
+<p style="display: none;" id="ideventt">{{event.1}}</p>
+<p style="display: none;" id="idseller">{{session['id']}}</p>
+
 
 
 <!-- tabs for tables -->
@@ -28,20 +30,21 @@
 <!-- options -->
 <div class="row justify-content-center form-inline col-12 mt-4 mb-4">
 
-    
+
 
     <div class="col-9 col-lg-5 my-1">
         <div class="input-group">
-            <select class="input-group boton btn btn-secondary" name="query" id="filter_sales" onchange="filter_sales();">
+            <select class="input-group boton btn btn-secondary" name="query" id="filter_sales"
+                onchange="filter_sales();">
                 <option value="/{{event.1}}/all">Todas las ventas</option>
                 <option value="/{{event.1}}/my">Mis ventas</option>
             </select>
             <input type="text" class="form-control" placeholder="Ingresa datos para la busqueda" id="search_client">
-          </div>
+        </div>
     </div>
 
-    <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal"
-        data-target="#addOrder" onclick="addClientOrder();">Agregar
+    <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal" data-target="#addOrder"
+        onclick="addClientOrder();">Agregar
     </button>
 
 </div>
@@ -67,8 +70,9 @@
                     {% for client in clients %}
                     <tr>
                         <td id="idName{{client.idClient}}">{{ client.name }}</td>
-                        <td id="idLast{{client.idClient}}" >{{ client.lastname }}</td>
-                        <td class="no_visible"> <a href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank">
+                        <td id="idLast{{client.idClient}}">{{ client.lastname }}</td>
+                        <td class="no_visible"> <a
+                                href="https://wa.me/+52{{client.telephone}}?text=Panoramicas Xalapa HD" target="_blank">
                                 {{ client.telephone }} </a> </td>
                         <td class="no_visible">{{ client.email }}</td>
                         <td>
@@ -153,7 +157,7 @@
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="idSeller" id="idSeller" value="{{session['id']}}">
                             <input type="hidden" name="idEvent" id="idEvent" value="{{event.1}}">
-                            <input type="hidden"  name="idClient" id="idClient" value="">
+                            <input type="hidden" name="idClient" id="idClient" value="">
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Nombre(s)</label>
@@ -183,13 +187,13 @@
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">6x9</label>
-                                    <input type="number" class="form-control" autocomplete="off" placeholder="2" name="num_6x9"
-                                        id="id_6x9">
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="2"
+                                        name="num_6x9" id="id_6x9">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">8x12</label>
-                                    <input type="number" class="form-control" autocomplete="off" placeholder="2" name="num_8x12"
-                                        id="id_8x12">
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="2"
+                                        name="num_8x12" id="id_8x12">
                                 </div>
                             </div>
 
@@ -201,23 +205,23 @@
                                         class="btn btn-success btn-md col"><strong>+</strong></button>
                                 </div>
                                 <div class="btn-group col-6" role="group" aria-label="Basic example">
-                                    <button type="button" onclick="rest_8x12();" class="btn col btn-warning btn-md"
-                                        id="button_restar_8x12"><strong>-</strong></button>
-                                    <button type="button" onclick="sum_8x12();" class="btn col btn-success btn-md"
-                                        id="button_sumar_8x12"><strong>+</strong></button>
+                                    <button type="button" onclick="rest_8x12();"
+                                        class="btn col btn-warning btn-md"><strong>-</strong></button>
+                                    <button type="button" onclick="sum_8x12();"
+                                        class="btn col btn-success btn-md"><strong>+</strong></button>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Costo total</label>
-                                    <input type="number" class="form-control" autocomplete="off" placeholder="640" name="cost"
-                                        id="id_cost">
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="640"
+                                        name="cost" id="id_cost">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Pago realizado</label>
-                                    <input type="number" class="form-control" autocomplete="off" autocomplete="off" placeholder="500"
-                                        name="payment" id="id_payment">
+                                    <input type="number" class="form-control" autocomplete="off" autocomplete="off"
+                                        placeholder="500" name="payment" id="id_payment">
                                 </div>
                             </div>
 
@@ -253,7 +257,7 @@
                                 <label for="exampleInputEmail1">8x12</label>
                                 <input type="number" class="form-control" placeholder="Cantidad fotos" id="_8x12"
                                     value="0" onchange="calculate_cost();" readonly>
-                                
+
                             </div>
                         </div>
 
@@ -262,7 +266,7 @@
                         </div>
 
                     </div>
-                    
+
                 </div>
 
             </div>
@@ -322,13 +326,13 @@
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">6x9</label>
-                                    <input type="number" class="form-control" autocomplete="off" placeholder="2" name="num_6x9Edit"
-                                        id="id_6x9Edit">
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="2"
+                                        name="num_6x9Edit" id="id_6x9Edit">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">8x12</label>
-                                    <input type="number" class="form-control" autocomplete="off" placeholder="2" name="num_8x12Edit"
-                                        id="id_8x12Edit">
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="2"
+                                        name="num_8x12Edit" id="id_8x12Edit">
                                 </div>
                             </div>
 
@@ -340,18 +344,18 @@
                                         class="btn btn-success btn-md col"><strong>+</strong></button>
                                 </div>
                                 <div class="btn-group col-6" role="group" aria-label="Basic example">
-                                    <button type="button" onclick="rest_8x12();" class="btn col btn-warning btn-md"
-                                        id="button_restar_8x12"><strong>-</strong></button>
-                                    <button type="button" onclick="sum_8x12();" class="btn col btn-success btn-md"
-                                        id="button_sumar_8x12"><strong>+</strong></button>
+                                    <button type="button" onclick="rest_8x12();"
+                                        class="btn col btn-warning btn-md button_restar_8x12"><strong>-</strong></button>
+                                    <button type="button" onclick="sum_8x12();"
+                                        class="btn col btn-success btn-md button_sumar_8x12"><strong>+</strong></button>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Costo total</label>
-                                    <input type="number" class="form-control" autocomplete="off" placeholder="640" name="costEdit"
-                                        id="id_costEdit">
+                                    <input type="number" class="form-control" autocomplete="off" placeholder="640"
+                                        name="costEdit" id="id_costEdit">
                                 </div>
                                 <div class="form-group col">
                                     <label for="exampleInputEmail1">Pago realizado</label>
@@ -383,16 +387,16 @@
                         <div class="row mt-3">
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">6x9</label>
-                                <input type="text" class="form-control" placeholder="Cantidad de fotos" id="_6x9"
+                                <input type="text" class="form-control" placeholder="Cantidad de fotos" id="_6x9Edit"
                                     value="0" onchange="calculate_cost();" readonly>
 
 
                             </div>
                             <div class="form-group col">
                                 <label for="exampleInputEmail1">8x12</label>
-                                <input type="number" class="form-control" placeholder="Cantidad fotos" id="_8x12"
+                                <input type="number" class="form-control" placeholder="Cantidad fotos" id="_8x12Edit"
                                     value="0" onchange="calculate_cost();" readonly>
-                                
+
                             </div>
                         </div>
 
@@ -401,7 +405,7 @@
                         </div>
 
                     </div>
-                    
+
                 </div>
 
             </div>

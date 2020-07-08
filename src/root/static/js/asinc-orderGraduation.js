@@ -11,6 +11,8 @@ $(document).ready(function () {
                 $("#table_client").html('');
                 var output;
                 var alert;
+                var idSeller = document.getElementById('idseller').innerHTML;
+                var idEvent = document.getElementById('ideventt').innerHTML;
                 response.forEach(function each(item, index) {
                     if (index == 0) {
                         alert = '';
@@ -29,7 +31,7 @@ $(document).ready(function () {
                             output += "<td class='no_visible'>" + client['telephone'] + "</td>";
                             output += "<td class='no_visible'> " + client['email'] + "</td>";
                             output += "<td>";
-                            output += '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder">Agregar pedido</button>';
+                            output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addOrder" onclick="add_orderGraduation('${idSeller}','${client['idClient']}','${idEvent}','${client['name']}','${client['lastname']}');">Agregar pedido</button>`;
                             output += "</td>";
                             output += "</tr>";
                         });
@@ -118,73 +120,45 @@ $(document).ready(function () {
         ajax_editOrder();
         document.getElementById('close_modalEdit').click();
     });
-    
-     $("#search_client").keyup(function () {
-            var name = document.getElementById('search_client').value;
-            $.ajax({
-                method: "GET",
-                url: '/dashboard/register/client/search',
-                data: {text:document.getElementById('search_client').value},
-                success: function (responde) {
-                    $("#table_client").html('');
-                    var output;
-                    responde.forEach(client => {
-                        console.log(client)
-                        output += "<tr>";
-                        output += "<td id='idName" + client['idClient'] + "'>" + client['name'] + "</td>";
-                        output += "<td id='idLast" + client['idClient'] + "'>" + client['lastname'] + "</td>";
-                        output += "<td class='no_visible'>" + client['telephone'] + "</td>";
-                        output += "<td class='no_visible'> " + client['email'] + "</td>";
-                        output += "<td>";
-                        output += '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder">Agregar pedido</button>';
-                        output += "</td>";
-                        output += "</tr>";
-                    
-                    });
-                    $('#table_client').html(output);
-                
-                }
-            });
+
+    $("#search_client").keyup(function () {
+        var name = document.getElementById('search_client').value;
+        $.ajax({
+            method: "GET",
+            url: '/dashboard/register/client/search',
+            data: { text: document.getElementById('search_client').value },
+            success: function (responde) {
+                $("#table_client").html('');
+                var output;
+                var idSeller = document.getElementById('idseller').innerHTML;
+                var idEvent = document.getElementById('ideventt').innerHTML;
+                responde.forEach(client => {
+                    console.log(client)
+                    output += "<tr>";
+                    output += "<td id='idName" + client['idClient'] + "'>" + client['name'] + "</td>";
+                    output += "<td id='idLast" + client['idClient'] + "'>" + client['lastname'] + "</td>";
+                    output += "<td class='no_visible'>" + client['telephone'] + "</td>";
+                    output += "<td class='no_visible'> " + client['email'] + "</td>";
+                    output += "<td>";
+                    output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addOrder" onclick="add_orderGraduation('${idSeller}','${client['idClient']}','${idEvent}','${client['name']}','${client['lastname']}');">Agregar pedido</button>`;
+                    output += "</td>";
+                    output += "</tr>";
+
+                });
+                $('#table_client').html(output);
+
+            }
         });
-     
-    /*    $("#search").keyup(function () {
-            $("#table").html('');
-            var search = document.getElementById('search').value;
-            $.ajax({
-                method: "GET",
-                url: "/search_client/" + event,
-                data: { text: document.getElementById('search').value },
-                success: function (clients) {
-                    var output;
-                    clients.forEach(client => {
-                        output += "<tr>";
-                        output += "<td>" + client[1] + "</td>";
-                        output += "<td class='no_visible'>" + client[2] + "</td>";
-                        output += "<td class='no_visible'>" + client[3] + "</td>";
-                        output += "<td class='no_visible'>" + client[4] + "</td>";
-                        output += "<td class='no_visible'>" + client[5] + "</td>";
-                        output += "<td class='no_visible'>" + client[6] + "</td>";
-                        output += "<td class='no_visible'>" + client[7] + "</td>";
-                        output += "<td>";
-                        output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#exampleModalScrollable' onclick='edit_client_grd("${client[0]}","${client[1]}","${client[2]}","${client[3]}","${client[4]}","${client[5]}","${client[6]}","${client[7]}","${event}")'>Editar</button>`;
-                        output += `<button type='button' class='btn btn-danger btn-sm ml-1' data-toggle='modal' data-target='#exampleModalScrollable' onclick='delete_client_grd("${client[0]}","${client[1]}","${client[2]}","${client[3]}","${client[4]}","${client[5]}","${client[6]}","${client[7]}","${event}")'>Eliminar</button>`;
-                        output += "</td>";
-                        output += "</tr>";
-                    });
-                    $('#table').html(output);
-                }
-            });
-        });
-    */
+    });
 
 });
 
-function filter_sales(){
+function filter_sales() {
 
     var filter = document.getElementById('filter_sales').value;
 
     $.ajax({
-        url: '/dashboard/event/form'+ filter,
+        url: '/dashboard/event/form' + filter,
         type: 'GET',
         success: function (response) {
             $('#table_order').html('');
