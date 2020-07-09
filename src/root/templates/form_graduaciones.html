@@ -8,7 +8,7 @@
 <div id='alerts'></div>
 
 <h2 class="text-center mt-4" id="table_name">{{event.0}}</h2>
-<p style="display: none;" id="ideventt">{{event.1}}</p>
+<p style="display: none;" id="tagEvent">{{event.1}}</p>
 <p style="display: none;" id="idseller">{{session['id']}}</p>
 
 
@@ -421,6 +421,5 @@
 <script src="{{url_for('static', filename='js/graduacion.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{url_for('static', filename='js/asinc-orderGraduation.js')}}"></script>
-<script src="{{url_for('static', filename='js/asinc-registerClients.js')}}"></script>
 
 {% endblock %}

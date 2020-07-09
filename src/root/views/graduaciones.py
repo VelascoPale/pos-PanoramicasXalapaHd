@@ -145,44 +145,15 @@ def update_client():
     orders = OrderGraduation.query.filter_by(idEvent=id_event).all()
     return jsonify(alert, orders_graduations_schema.dump(orders))
 
-
-
 @graduaciones.route('/form/search', methods=['GET'])
 def search_client():
     if 'name' in session:
-        tag = request.args.get('text')
+        tag = request.args.get('name')
+        event = request.args.get('event')
+        school = (Event.query.get(event)).idSchool
         if tag != '':
             search = "{}%".format(tag)
-            search_client = Client.query.filter(Client.name.like(search)).all()
-            print(search_client)
+            search_client = Client.query.filter_by(idSchool = school).filter(Client.name.like(search)).all()
         else:
-            search_client = Client.query.all()
+            search_client = Client.query.filter_by(idSchool = school).all()
         return jsonify(clients_schema.dump(search_client))
-
-
-# function search_client > form_client_grd
-'''@graduaciones.route('/search_client/<event>', methods = ['GET'])
-def search_client(event):
-    search = request.args.get('text')
-    print(search)
-    if search != '':
-        cur = sql.connection.cursor()
-        consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' OR id_table = '{1}' OR num_photo = '{1}'  "
-        cur.execute(consult_sql.format(event, search))
-        data = cur.fetchall()
-        cur.close()
-    else:
-        cur = sql.connection.cursor()
-        consult_sql = " SELECT * FROM {0}"
-        cur.execute(consult_sql.format(event))
-        data = cur.fetchall()
-        cur.close()
-    return jsonify(data)
-    return redirect(url_for('graduaciones.form_graduaciones', event = event))
-
-# function search_client > form_client_grd
-@graduaciones.route('/form/<name>', methods = ['GET'])
-def search_client(name):
-    search_client = Client.query.filter_by(name=name).all()
-    return jsonify(clients_schema.dump(search_client))
-    '''

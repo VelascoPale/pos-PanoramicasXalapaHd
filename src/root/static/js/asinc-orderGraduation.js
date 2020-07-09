@@ -12,7 +12,7 @@ $(document).ready(function () {
                 var output;
                 var alert;
                 var idSeller = document.getElementById('idseller').innerHTML;
-                var idEvent = document.getElementById('ideventt').innerHTML;
+                var idEvent = document.getElementById('tagEvent').innerHTML;
                 response.forEach(function each(item, index) {
                     if (index == 0) {
                         alert = '';
@@ -123,16 +123,17 @@ $(document).ready(function () {
 
     $("#search_client").keyup(function () {
         var name = document.getElementById('search_client').value;
+        var event = document.getElementById('tagEvent').innerHTML;
         $.ajax({
-            method: "GET",
-            url: '/dashboard/register/client/search',
-            data: { text: document.getElementById('search_client').value },
-            success: function (responde) {
+            type: "GET",
+            url: '/dashboard/event/form/search',
+            data: {event,name},
+            success: function (response) {
                 $("#table_client").html('');
                 var output;
                 var idSeller = document.getElementById('idseller').innerHTML;
-                var idEvent = document.getElementById('ideventt').innerHTML;
-                responde.forEach(client => {
+                var idEvent = document.getElementById('tagEvent').innerHTML;
+                response.forEach(client => {
                     console.log(client)
                     output += "<tr>";
                     output += "<td id='idName" + client['idClient'] + "'>" + client['name'] + "</td>";
