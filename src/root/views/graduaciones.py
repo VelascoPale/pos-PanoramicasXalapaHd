@@ -154,6 +154,34 @@ def search_client():
         if tag != '':
             search = "{}%".format(tag)
             search_client = Client.query.filter_by(idSchool = school).filter(Client.name.like(search)).all()
+            result = db.session.query(OrderGraduation, Client).outerjoin(Client, OrderGraduation.idClient == Client.idClient).filter(Client.name.like(search)).all()
+            print(result)
+            for order in result:
+                """search_order = {
+                    'idClient': order[0].idClient,
+                    'name': order[1].name,
+                    'lastname': order[1].lastname,
+                    'numTable': order[0].numTable,
+                    'numPhoto': order[0].numPhoto,
+                    '_6x9': order[0]._6x9,
+                    '_8x12': order[0]._8x12,
+                    'cost': order[0].cost,
+                    'payment': order[0].payment
+                }
+            print(search_order)"""
         else:
             search_client = Client.query.filter_by(idSchool = school).all()
+            result = db.session.query(OrderGraduation, Client).outerjoin(Client, OrderGraduation.idClient == Client.idClient).all()
+            for order in result:
+                """search_order = {
+                    'idClient': order[0].idClient,
+                    'name': order[1].name,
+                    'lastname': order[1].lastname,
+                    'numTable': order[0].numTable,
+                    'numPhoto': order[0].numPhoto,
+                    '_6x9': order[0]._6x9,
+                    '_8x12': order[0]._8x12,
+                    'cost': order[0].cost,
+                    'payment': order[0].payment
+                }"""
         return jsonify(clients_schema.dump(search_client))
