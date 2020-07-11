@@ -28,3 +28,24 @@ class OrderGraduation(db.Model):
         self.idSeller = idSeller
         self.status = status
 
+        """def get_orders(data):
+            orders = []
+            for order in data:
+                search_order = {
+                    'idSeller': order[0].idSeller,
+                    'idEvent': order[0].idEvent,
+                    'idClient': order[0].idClient,
+                    'idOrderGraduation': order[0].idOrderGraduation,
+                    'name': order[1].name,
+                    'lastname': order[1].lastname,
+                    'numTable': order[0].numTable,
+                    'numPhoto': order[0].numPhoto,
+                    '_6x9': order[0]._6x9,
+                    '_8x12': order[0]._8x12,
+                    'cost': order[0].cost,
+                    'payment': order[0].payment,
+                    'status': order[0].status
+                }
+                orders.append(search_order)
+            return orders"""
+

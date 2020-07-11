@@ -129,24 +129,48 @@ $(document).ready(function () {
             url: '/dashboard/event/form/search',
             data: { event, name },
             success: function (response) {
+                $("#table_order").html('');
                 $("#table_client").html('');
                 var output;
+                var alert;
                 var idSeller = document.getElementById('idseller').innerHTML;
                 var idEvent = document.getElementById('tagEvent').innerHTML;
-                response.forEach(client => {
-                    console.log(client)
-                    output += "<tr>";
-                    output += "<td id='idName" + client['idClient'] + "'>" + client['name'] + "</td>";
-                    output += "<td id='idLast" + client['idClient'] + "'>" + client['lastname'] + "</td>";
-                    output += "<td class='no_visible'>" + client['telephone'] + "</td>";
-                    output += "<td class='no_visible'> " + client['email'] + "</td>";
-                    output += "<td>";
-                    output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addOrder" onclick="add_orderGraduation('${idSeller}','${client['idClient']}','${idEvent}','${client['name']}','${client['lastname']}');">Agregar pedido</button>`;
-                    output += "</td>";
-                    output += "</tr>";
-
+                response.forEach(function each(item, index) {
+                    if (index == 0) {
+                        item.forEach(client => {
+                            output += "<tr>";
+                            output += "<td id='idName" + client['idClient'] + "'>" + client['name'] + "</td>";
+                            output += "<td id='idLast" + client['idClient'] + "'>" + client['lastname'] + "</td>";
+                            output += "<td class='no_visible'>" + client['telephone'] + "</td>";
+                            output += "<td class='no_visible'> " + client['email'] + "</td>";
+                            output += "<td>";
+                            output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addOrder" onclick="add_orderGraduation('${idSeller}','${client['idClient']}','${idEvent}','${client['name']}','${client['lastname']}');">Agregar pedido</button>`;
+                            output += "</td>";
+                            output += "</tr>";
+                        });
+                        $('#table_client').html(output);
+                        output = '';
+                    } else if (index == 1) {
+                        item.forEach(order => {
+                            output += "<tr>";
+                            output += "<td>" + order['name'] + "</td>";
+                            output += "<td>" + order['lastname'] + "</td>";
+                            output += "<td class='no_visible'>" + order['numTable'] + "</td>";
+                            output += "<td class='no_visible'>" + order['numPhoto'] + "</td>";
+                            output += "<td class='no_visible'>" + order['_6x9'] + "</td>";
+                            output += "<td class='no_visible'>" + order['_8x12'] + "</td>";
+                            output += "<td class='no_visible'>" + order['cost'] + "</td>";
+                            output += "<td class='no_visible'>" + order['payment'] + "</td>";
+                            output += "<td>";
+                            output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder" onclick="edit_orderGraduation('${order['idSeller']}','${order['idEvent']}','${order['idClient']}','${order['idOrderGraduation']}','${order['name']}','${order['lastname']}','${order['numTable']}','${order['numPhoto']}','${order['_6x9']}','${order['_8x12']}','${order['cost']}','${order['payment']}','${order['status']}');">Editar</button>`;
+                            output += "</td>";
+                            output += "</tr>";
+                            document.getElementById('idSeller').innerHTML = order['idSeller'];
+                        });
+                        document.getElementById('form_add').reset();
+                        $('#table_order').html(output);
+                    }
                 });
-                $('#table_client').html(output);
 
             }
         });
