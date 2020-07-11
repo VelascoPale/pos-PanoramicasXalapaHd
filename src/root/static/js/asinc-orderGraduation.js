@@ -127,7 +127,7 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: '/dashboard/event/form/search',
-            data: {event,name},
+            data: { event, name },
             success: function (response) {
                 $("#table_client").html('');
                 var output;
@@ -163,8 +163,9 @@ function filter_sales() {
         type: 'GET',
         success: function (response) {
             $('#table_order').html('');
+            var idSeller = document.getElementById('idseller').innerHTML;
             var output;
-            console.log(response);
+            var num6x9=0, num8x12=0;
             response.forEach(order => {
                 output += "<tr>";
                 output += "<td>" + document.getElementById('idName' + order['idClient']).innerHTML + "</td>";
@@ -180,7 +181,17 @@ function filter_sales() {
                 output += "</td>";
                 output += "</tr>";
                 document.getElementById('idSeller').innerHTML = order['idSeller'];
+                if(idSeller == order['idSeller']){
+                    num8x12 += order['_8x12'];
+                    num6x9 += order['_6x9'];
+                }
             });
+            output += "<tr>";
+            output += "<td colspan='4'> TOTAL DE VENTAS: </td>";
+            output += "<td class='no_visible'>" + num6x9 + "</td>";
+            output += "<td class='no_visible'>" + num8x12 + "</td>";
+            output += "<td colspan='3' class='no_visible'> </td>";
+            output += "</tr>";
             document.getElementById('form_add').reset();
             $('#table_order').html(output);
         }
