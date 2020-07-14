@@ -14,14 +14,37 @@ from ..schemas.event import event_schema
 
 graduaciones = Blueprint("graduaciones",__name__, url_prefix='/dashboard/event')
 
+def get_orders(data):
+            orders = []
+            for order in data:
+                search_order = {
+                    'idSeller': order[0].idSeller,
+                    'idEvent': order[0].idEvent,
+                    'idClient': order[0].idClient,
+                    'idOrderGraduation': order[0].idOrderGraduation,
+                    'name': order[1].name,
+                    'lastname': order[1].lastname,
+                    'numTable': order[0].numTable,
+                    'numPhoto': order[0].numPhoto,
+                    '_6x9': order[0]._6x9,
+                    '_8x12': order[0]._8x12,
+                    'cost': order[0].cost,
+                    'payment': order[0].payment,
+                    'status': order[0].status
+                }
+                orders.append(search_order)
+            return orders
+
 # form_client_grd page
 @graduaciones.route('/form')
-def form_graduaciones():
+@graduaciones.route('/form/<int:page>')
+def form_graduaciones(page=1):
     if 'name' in session:
         event = request.args.get('event').split(',')
-        clients = Client.query.filter_by(idSchool = event[1]).order_by(Client.idClient.asc())
+        idschool = Event.query.filter_by(idEvent=event[1]).first()
+        clients = Client.get_clients_per_page(page, idschool.idSchool)
         orders = OrderGraduation.query.filter_by(idEvent = event[1]).order_by(OrderGraduation.idClient.asc())
-        return render_template('form_graduaciones.html', event = event, orders = orders, clients=clients)
+        return render_template('form_graduaciones.html', event = event, orders = orders, clients=clients.items)
     else:
         return redirect(url_for('login.page_login'))
     return render_template('form_graduaciones.html')
@@ -35,7 +58,7 @@ def filter_seller(event, category):
             orders = OrderGraduation.query.filter_by(idEvent=event).all()
         return jsonify(orders_graduations_schema.dump(orders))
 
-# function add_client > form_clients-grd
+# function add_client
 @graduaciones.route('/form', methods = ['POST'])
 def add_client():
     id_seller = request.form['idSeller']
@@ -93,7 +116,7 @@ def add_client():
     orders = OrderGraduation.query.filter_by(idEvent=id_event).all()
     return jsonify(alert,clients_schema.dump(clients), orders_graduations_schema.dump(orders))
     
-# function update_client > edit_client_grd 
+# function update_client 
 @graduaciones.route('/form', methods = ['PATCH'])
 def update_client():
     id_event = request.form['idEventEdit']
@@ -145,44 +168,20 @@ def update_client():
     orders = OrderGraduation.query.filter_by(idEvent=id_event).all()
     return jsonify(alert, orders_graduations_schema.dump(orders))
 
-
-
+#function to find clients with them names
 @graduaciones.route('/form/search', methods=['GET'])
 def search_client():
     if 'name' in session:
-        tag = request.args.get('text')
+        tag = request.args.get('name')
+        event = request.args.get('event')
+        school = (Event.query.get(event)).idSchool  
         if tag != '':
             search = "{}%".format(tag)
-            search_client = Client.query.filter(Client.name.like(search)).all()
-            print(search_client)
+            search_client = Client.query.filter_by(idSchool = school).filter(Client.name.like(search)).all()
+            result = db.session.query(OrderGraduation, Client).outerjoin(Client, OrderGraduation.idClient == Client.idClient).filter(Client.name.like(search)).all()
+            orders = get_orders(result)
         else:
-            search_client = Client.query.all()
-        return jsonify(clients_schema.dump(search_client))
-
-
-# function search_client > form_client_grd
-'''@graduaciones.route('/search_client/<event>', methods = ['GET'])
-def search_client(event):
-    search = request.args.get('text')
-    print(search)
-    if search != '':
-        cur = sql.connection.cursor()
-        consult_sql = " SELECT * FROM {0} WHERE name LIKE '%{1}%' OR id_table = '{1}' OR num_photo = '{1}'  "
-        cur.execute(consult_sql.format(event, search))
-        data = cur.fetchall()
-        cur.close()
-    else:
-        cur = sql.connection.cursor()
-        consult_sql = " SELECT * FROM {0}"
-        cur.execute(consult_sql.format(event))
-        data = cur.fetchall()
-        cur.close()
-    return jsonify(data)
-    return redirect(url_for('graduaciones.form_graduaciones', event = event))
-
-# function search_client > form_client_grd
-@graduaciones.route('/form/<name>', methods = ['GET'])
-def search_client(name):
-    search_client = Client.query.filter_by(name=name).all()
-    return jsonify(clients_schema.dump(search_client))
-    '''
+            search_client = Client.query.filter_by(idSchool = school).all()
+            result = db.session.query(OrderGraduation, Client).outerjoin(Client, OrderGraduation.idClient == Client.idClient).all()
+            orders = get_orders(result) 
+        return jsonify(clients_schema.dump(search_client), orders)

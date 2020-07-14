@@ -21,3 +21,11 @@ class Client(db.Model):
         self.email = email
         self.idSchool = idSchool
         self.group = group
+
+    def get_clients_per_page(page, event=0):
+        print(event)
+        if not event != 0:
+            clients = Client.query.order_by(Client.name).paginate(page,10,False)
+        else:
+            clients = Client.query.filter_by(idSchool = event).order_by(Client.name).paginate(page,10,False)
+        return clients

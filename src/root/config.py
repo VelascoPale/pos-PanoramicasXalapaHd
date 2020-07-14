@@ -13,7 +13,11 @@ class ConfigDevelopment(Config):
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/regis_clients_pano'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+class ConfigProduction(Config):
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://panoramicashd:teamstrock12@panoramicashd.mysql.pythonanywhere-services.com/panoramicashd$regis_clients_pano'
+
 config ={
-    'development':ConfigDevelopment
+    'development':ConfigDevelopment,
+    'deploy':Config
 }
 
