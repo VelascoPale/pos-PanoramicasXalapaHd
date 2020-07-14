@@ -182,11 +182,12 @@ def disable_event(id):
 
 # page clients
 @register.route('/client', methods=['GET'])
-def register_clients():
+@register.route('/client/<int:page>', methods=['GET'])
+def register_clients(page=1):
     if 'name' in session:
-        clients = Client.query.order_by(Client.idClient).all()
+        clients = Client.get_clients_per_page(page)
         schools = School.query.order_by(School.idSchool).all()
-        return render_template('register_clients.html', schools = schools, clients=clients)
+        return render_template('register_clients.html', schools = schools, clients=clients, page=page)
     else:
         return redirect(url_for('login.page_login'))
     return render_template('register_clients.html')
@@ -219,8 +220,8 @@ def add_client():
                'text':'No has llenado todos los campos, intentalo de nuevo',
                'type':'alert-warning'}
        
-        clients = Client.query.all()
-        return jsonify(alert, clients_schema.dump(clients))
+        clients = Client.get_clients_per_page(page=1)
+        return jsonify(alert, clients_schema.dump(clients.items))
 
 # funcion for update clients
 @register.route('/client', methods=['PATCH'])
@@ -231,15 +232,13 @@ def update_client():
         lastname = (request.form['lastnameEdit']).upper()
         telephone = request.form['telephoneEdit']
         email = (request.form['emailEdit']).lower()
-        id_school = request.form['schoolEdit']
         group = request.form['groupEdit']
-        if group != '#' and name and lastname and telephone and email and id_school:
+        if group != '#' and name and lastname and telephone and email:
             client = Client.query.get(id_client)
             client.name = name
             client.lastname = lastname
             client.telephone = telephone
             client.email = email
-            client.idSchool = id_school
             client.group = group
             db.session.commit()
             alert = {
@@ -250,19 +249,21 @@ def update_client():
                'text':'No has llenado todos los campos, intentalo de nuevo',
                'type':'alert-warning'}
        
-        clients = Client.query.all()
-        return jsonify(alert, clients_schema.dump(clients))
+        clients = Client.get_clients_per_page(page=1)
+        return jsonify(alert, clients_schema.dump(clients.items))
 
 @register.route('/client/<school>/<group>', methods=['GET'])
 def filter_by_school(school, group):
     if 'name'in session:
         if int(school) > 0 and group != 'Z':
             data_clients = Client.query.filter_by(idSchool=school, group=group).all()
+            return jsonify(clients_schema.dump(data_clients))
         elif int(school) > 0:
             data_clients = Client.query.filter_by(idSchool=school).all()
+            return jsonify(clients_schema.dump(data_clients))
         else:
-            data_clients = Client.query.all()
-        return jsonify(clients_schema.dump(data_clients))
+            data_clients = Client.get_clients_per_page(page=1)
+            return jsonify(clients_schema.dump(data_clients.items))
 
 @register.route('/client/search', methods=['GET'])
 def search_client():
@@ -271,6 +272,7 @@ def search_client():
         if tag != '':
             search = "{}%".format(tag)
             search_client = Client.query.filter(Client.name.like(search)).all()
+            return jsonify(clients_schema.dump(search_client))
         else:
-            search_client = Client.query.all()
-        return jsonify(clients_schema.dump(search_client))
+            search_client = Client.get_clients_per_page(page=1)
+            return jsonify(clients_schema.dump(search_client.items))
