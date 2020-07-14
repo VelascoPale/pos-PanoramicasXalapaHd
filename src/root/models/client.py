@@ -27,5 +27,5 @@ class Client(db.Model):
         if not event != 0:
             clients = Client.query.order_by(Client.name).paginate(page,10,False)
         else:
-            clients = Client.query.filter_by(idSchool = event).order_by(Client.name).paginate(page,10,False)
+            clients = Client.query.filter_by(idSchool = event).order_by(Client.name).paginate(page,1,False)
         return clients

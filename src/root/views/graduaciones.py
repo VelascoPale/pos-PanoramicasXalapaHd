@@ -43,8 +43,8 @@ def form_graduaciones(page=1):
         event = request.args.get('event').split(',')
         idschool = Event.query.filter_by(idEvent=event[1]).first()
         clients = Client.get_clients_per_page(page, idschool.idSchool)
-        orders = OrderGraduation.query.filter_by(idEvent = event[1]).order_by(OrderGraduation.idClient.asc())
-        return render_template('form_graduaciones.html', event = event, orders = orders, clients=clients.items)
+        orders = OrderGraduation.get_orders_per_page(page, event[1])
+        return render_template('form_graduaciones.html', event = event, orders = orders, clients=clients, page=page)
     else:
         return redirect(url_for('login.page_login'))
     return render_template('form_graduaciones.html')
