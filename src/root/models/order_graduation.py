@@ -50,6 +50,6 @@ class OrderGraduation(db.Model):
             return orders"""
 
     def get_orders_per_page(page, event):
-        orders = OrderGraduation.query.filter_by(idEvent = event).paginate(page,1,False)
+        orders = OrderGraduation.query.filter_by(idEvent = event).paginate(page,10,False)
         return orders
 

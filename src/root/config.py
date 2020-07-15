@@ -15,10 +15,10 @@ class Config(object):
     SECRET_KEY = ENV_VAR
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
-    MAIL_USE_SSL = True
-    MAIL_USE_TLS = False
-    MAIL_USERNAME = 'paleta663@gmail.com'
-    MAIL_PASSWORD = PASSWORD
+    MAIL_USE_SSL = False
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = 'jorgevelasco.program@gmail.com'
+    MAIL_PASSWORD = 'teamstrock123'
 
 class ConfigDevelopment(Config):
     DEBUG = True
