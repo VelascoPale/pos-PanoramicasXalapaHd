@@ -17,11 +17,13 @@ app = Flask(__name__)
 csrf = CSRFProtect()
 
 # email
-mail = Mail()
+mail = Mail(app)
 
 def create_app(environment):
     app.config.from_object(environment)
+    
     mail.init_app(app)
+    csrf.init_app(app)
 
     app.register_blueprint(login)
     app.register_blueprint(register)

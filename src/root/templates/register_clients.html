@@ -69,6 +69,7 @@
             </thead>
             <tbody id="table">
                 {% for client in clients.items %}
+                {% if client.idschool.enable == 1  %}
                 <tr>
                     <td>{{ client.name }}</td>
                     <td class="no_visible">{{ client.lastname }}</td>
@@ -87,6 +88,7 @@
 
                     </td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>
