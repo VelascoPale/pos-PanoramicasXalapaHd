@@ -1,0 +1,171 @@
+{% extends 'layout.html'  %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert {{category}} alert-dismissible fade show mt-3 text-center fade show" role="alert">
+    {{message}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<h1 class="text-center mt-4">Servidor de correos</h1>
+
+<div class="row justify-content-center">
+
+    <!-- options -->
+    <div class="row justify-content-center form-inline col-12 mt-4 mb-4">
+        <button type="button" class="col-3 col-lg-1 btn btn-info btn-sm" data-toggle="modal"
+            data-target="#formClients">Generar correo
+        </button>
+    </div>
+
+    <!-- create table -->
+    <div class="col-11 col-lg-11 mt-4 justify-content-center">
+        <table class="table table-striped table-active table-bordered table-sm text-center">
+            <thead>
+                <tr>
+                    <td>Nombre(s)</td>
+                    <td class="no_visible">Apellidos</td>
+                    <td>Correo</td>
+                    <td class="no_visible">Escuela</td>
+                    <td class="no_visible">Grupo</td>
+                </tr>
+            </thead>
+            {% if not data %}
+            <tbody id="table">
+                {% for client in clients.items %}
+                {% if client.idschool.enable == 1 %}
+                <tr>
+                    <td>{{ client.name }}</td>
+                    <td class="no_visible">{{ client.lastname }}</td>
+                    <td>{{ client.email }}</td>
+                    <td class="no_visible">{{ client.idschool.name }}</td>
+                    <td class="no_visible">{{ client.group }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+            {% else %}
+            <tbody id="table">
+                {% for client in clients %}
+                {% if client.idschool.enable == 1 %}
+                <tr>
+                    <td>{{ client.name }}</td>
+                    <td class="no_visible">{{ client.lastname }}</td>
+                    <td>{{ client.email }}</td>
+                    <td class="no_visible">{{ client.idschool.name }}</td>
+                    <td class="no_visible">{{ client.group }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+            {% endif %}
+        </table>
+    </div>
+
+</div>
+
+<div class="row mt-2 justify-content-center">
+    <ul class="pagination" id="per_page">
+        {% if clients.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="/dashboard/emails/{{page-1}}">Anterior</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="/dashboard/emails/{{page-1}}">Anterior</a>
+        </li>
+        {% endif %}
+        {% if clients.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="/dashboard/emails/{{page+1}}">Siguiente</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="/dashboard/emails/{{page+1}}">Siguiente</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+
+<!-- modal message -->
+<div class="modal fade" id="formClients" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configuración de correo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('emails.prepare_emails')}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input type="text" name="asunt" class="form-control" placeholder="Información" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" name="title" class="form-control" placeholder="Gracias por tu preferencia!"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea type="text" rows="10" name="text" class="form-control" placeholder="Mensaje"
+                            required></textarea>
+                    </div>
+
+
+                    <hr>
+                    <div class="modal-header">
+                        <h6 class="modal-title">Destinatarios</h6>
+                    </div>
+                    <br>
+
+                    <div class="form-group">
+                        <label>Escuela </label>
+                        <select class="custom-select" name="idSchool">
+                            <option value="0">Escuela</option>
+                            {% for school in schools %}
+                            {% if school.enable == 1 %}
+                            <option value="{{school.idSchool}}">{{school.name}} {{school.generation}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Grupo </label>
+                        <select name="group" class="custom-select">
+                            <option value="Z">Grupo</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="close_modal" class="btn btn-secondary"
+                            data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary"> Preview </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block javascript %}
+    {% endblock %}

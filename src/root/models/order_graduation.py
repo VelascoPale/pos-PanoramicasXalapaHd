@@ -49,3 +49,7 @@ class OrderGraduation(db.Model):
                 orders.append(search_order)
             return orders"""
 
+    def get_orders_per_page(page, event):
+        orders = OrderGraduation.query.filter_by(idEvent = event).paginate(page,10,False)
+        return orders
+
