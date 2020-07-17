@@ -17,8 +17,8 @@ class Config(object):
     MAIL_PORT = 587
     MAIL_USE_SSL = False
     MAIL_USE_TLS = True
-    MAIL_USERNAME = 'jorgevelasco.program@gmail.com'
-    MAIL_PASSWORD = 'teamstrock123'
+    MAIL_USERNAME = '197o00237@gmail.com'
+    MAIL_PASSWORD = 'JAVIER2020'
 
 class ConfigDevelopment(Config):
     DEBUG = True
