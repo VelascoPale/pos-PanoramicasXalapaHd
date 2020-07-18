@@ -64,10 +64,14 @@ def send_emails():
     with mail.connect() as conn:
         for recipient in recipients:
             msg = Message(asunt,
-                        sender = current_app.config['MAIL_USERNAME'],
-                        recipients = [recipient])
+                          sender = ('Panoramicas Xalapa HD',current_app.config['MAIL_USERNAME']),
+                          recipients = [recipient])
             msg.html = render_template('email_confirmed.html', text=text, title= title)
             mail.send(msg)
 
-    flash('Correos enviados satisfactoriamnete','alert-succes')
+    flash('Correos enviados satisfactoriamnete','alert-success')
     return redirect(url_for('emails.render_emails'))
+
+@emails.route('/ver')
+def ver():
+    return render_template('email_confirmed.html')
