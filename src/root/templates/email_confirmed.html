@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mensaje</title>
+</head>
+
+<body style="">
+
+    <table style="width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
+
+        <tr>
+            <td>
+                <div style="background-color: #276FB1 ;height: 50px;width:100%;"></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding: 0">
+                <img src="{{url_for('static',filename='img/header.svg', _external=True)}}" style="width:50%;margin: 10px 25%;" alt="">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background-color: #ecf0f1; border-radius: 10px;">
+                <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
+                    <h2 style="margin: 0 0 7px; text-align: center;">{{title}}</h2>
+                    <br>
+                    <p style="margin: 2px; font-size: 15px">
+                        {{text}}</p>
+                    <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">
+                        Av. Ruiz Cortines 506-A Col. Guadalupe Rodriguez CP. 91055, Xalapa, Ver, Mex.
+                        <br>
+                        Contáctanos: 228 290 67 73 / 228 290 67 74 <br><br>
+                        Panoramicas Xalapa HD</p>
+                </div>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td>
+                <br><br>
+                <div style="background-color: #276FB1 ;height: 50px;width:100%;"></div>
+            </td>
+        </tr>
+
+    </table>
+
+</body>
+
+</html>

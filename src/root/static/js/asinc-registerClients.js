@@ -140,7 +140,6 @@ function filter(){
     
     $.ajax({
         url:'/dashboard/register/client/'+ school+'/'+group,
-        data: {school},group,
         type: 'GET',
         success: function(response){
             $('#table').html('');
@@ -162,7 +161,6 @@ function filter(){
         }
     });
 }
-
 
 
      

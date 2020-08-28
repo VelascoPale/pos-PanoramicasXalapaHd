@@ -31,7 +31,6 @@
 
 
 
-
     </div>
 
     <!-- create table -->
@@ -69,7 +68,8 @@
                 </tr>
             </thead>
             <tbody id="table">
-                {% for client in clients %}
+                {% for client in clients.items %}
+                {% if client.idschool.enable == 1  %}
                 <tr>
                     <td>{{ client.name }}</td>
                     <td class="no_visible">{{ client.lastname }}</td>
@@ -88,11 +88,38 @@
 
                     </td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
+</div>
+
+<div class="row mt-2 justify-content-center">
+
+    <ul class="pagination">
+
+        {% if clients.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="/dashboard/register/client/{{page-1}}">Anterior</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="/dashboard/register/client/{{page-1}}">Anterior</a>
+        </li>
+        {% endif %}
+
+        {% if clients.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="/dashboard/register/client/{{page+1}}">Siguiente</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="/dashboard/register/client/{{page+1}}">Siguiente</a>
+        </li>
+        {% endif %}
+    </ul>
 </div>
 
 <!-- modal add -->

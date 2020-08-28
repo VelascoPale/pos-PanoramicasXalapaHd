@@ -37,12 +37,14 @@ def get_orders(data):
 
 # form_client_grd page
 @graduaciones.route('/form')
-def form_graduaciones():
+@graduaciones.route('/form/<int:page>')
+def form_graduaciones(page=1):
     if 'name' in session:
         event = request.args.get('event').split(',')
-        clients = Client.query.filter_by(idSchool = event[1]).order_by(Client.idClient.asc())
-        orders = OrderGraduation.query.filter_by(idEvent = event[1]).order_by(OrderGraduation.idClient.asc())
-        return render_template('form_graduaciones.html', event = event, orders = orders, clients=clients)
+        idschool = Event.query.filter_by(idEvent=event[1]).first()
+        clients = Client.get_clients_per_page(page, idschool.idSchool)
+        orders = OrderGraduation.get_orders_per_page(page, event[1])
+        return render_template('form_graduaciones.html', event = event, orders = orders, clients=clients, page=page)
     else:
         return redirect(url_for('login.page_login'))
     return render_template('form_graduaciones.html')
