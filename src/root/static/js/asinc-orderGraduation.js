@@ -1,4 +1,5 @@
 //function ajax for search clients in grd
+
 $(document).ready(function () {
 
     function ajax_addOrder() {
@@ -90,7 +91,6 @@ $(document).ready(function () {
                         $('#alerts').html(alert);
                     } else {
                         item.forEach(order => {
-                            console.log(order);
                             output += "<tr>";
                             output += "<td>" + document.getElementById('idName' + order['idClient']).innerHTML + "</td>";
                             output += "<td>" + document.getElementById('idLast' + order['idClient']).innerHTML + "</td>";
@@ -189,33 +189,52 @@ function filter_sales() {
             $('#table_order').html('');
             var idSeller = document.getElementById('idseller').innerHTML;
             var output;
-            var num6x9=0, num8x12=0;
-            response.forEach(order => {
+            var num6x9 = 0, num8x12 = 0;
+            if (filter.endsWith('my')) {
+                response.forEach(order => {
+                    output += "<tr>";
+                    output += "<td>" + document.getElementById('idName' + order['idClient']).innerHTML + "</td>";
+                    output += "<td>" + document.getElementById('idLast' + order['idClient']).innerHTML + "</td>";
+                    output += "<td class='no_visible'>" + order['numTable'] + "</td>";
+                    output += "<td class='no_visible'>" + order['numPhoto'] + "</td>";
+                    output += "<td class='no_visible'>" + order['_6x9'] + "</td>";
+                    output += "<td class='no_visible'>" + order['_8x12'] + "</td>";
+                    output += "<td class='no_visible'>" + order['cost'] + "</td>";
+                    output += "<td class='no_visible'>" + order['payment'] + "</td>";
+                    output += "<td>";
+                    output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder" onclick="edit_orderGraduation('${order['idSeller']}','${order['idEvent']}','${order['idClient']}','${order['idOrderGraduation']}','${order['idClient']}','${order['idClient']}','${order['numTable']}','${order['numPhoto']}','${order['_6x9']}','${order['_8x12']}','${order['cost']}','${order['payment']}','${order['status']}');">Editar</button>`;
+                    output += "</td>";
+                    output += "</tr>";
+                    document.getElementById('idSeller').innerHTML = order['idSeller'];
+                    if (idSeller == order['idSeller']) {
+                        num8x12 += order['_8x12'];
+                        num6x9 += order['_6x9'];
+                    }
+                });
                 output += "<tr>";
-                output += "<td>" + document.getElementById('idName' + order['idClient']).innerHTML + "</td>";
-                output += "<td>" + document.getElementById('idLast' + order['idClient']).innerHTML + "</td>";
-                output += "<td class='no_visible'>" + order['numTable'] + "</td>";
-                output += "<td class='no_visible'>" + order['numPhoto'] + "</td>";
-                output += "<td class='no_visible'>" + order['_6x9'] + "</td>";
-                output += "<td class='no_visible'>" + order['_8x12'] + "</td>";
-                output += "<td class='no_visible'>" + order['cost'] + "</td>";
-                output += "<td class='no_visible'>" + order['payment'] + "</td>";
-                output += "<td>";
-                output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder" onclick="edit_orderGraduation('${order['idSeller']}','${order['idEvent']}','${order['idClient']}','${order['idOrderGraduation']}','${order['idClient']}','${order['idClient']}','${order['numTable']}','${order['numPhoto']}','${order['_6x9']}','${order['_8x12']}','${order['cost']}','${order['payment']}','${order['status']}');">Editar</button>`;
-                output += "</td>";
+                output += "<td colspan='4'> TOTAL DE VENTAS: </td>";
+                output += "<td class='no_visible'>" + num6x9 + "</td>";
+                output += "<td class='no_visible'>" + num8x12 + "</td>";
+                output += "<td colspan='3' class='no_visible'> </td>";
                 output += "</tr>";
-                document.getElementById('idSeller').innerHTML = order['idSeller'];
-                if(idSeller == order['idSeller']){
-                    num8x12 += order['_8x12'];
-                    num6x9 += order['_6x9'];
-                }
-            });
-            output += "<tr>";
-            output += "<td colspan='4'> TOTAL DE VENTAS: </td>";
-            output += "<td class='no_visible'>" + num6x9 + "</td>";
-            output += "<td class='no_visible'>" + num8x12 + "</td>";
-            output += "<td colspan='3' class='no_visible'> </td>";
-            output += "</tr>";
+            }else{
+                response.forEach(order => {
+                    output += "<tr>";
+                    output += "<td>" + document.getElementById('idName' + order['idClient']).innerHTML + "</td>";
+                    output += "<td>" + document.getElementById('idLast' + order['idClient']).innerHTML + "</td>";
+                    output += "<td class='no_visible'>" + order['numTable'] + "</td>";
+                    output += "<td class='no_visible'>" + order['numPhoto'] + "</td>";
+                    output += "<td class='no_visible'>" + order['_6x9'] + "</td>";
+                    output += "<td class='no_visible'>" + order['_8x12'] + "</td>";
+                    output += "<td class='no_visible'>" + order['cost'] + "</td>";
+                    output += "<td class='no_visible'>" + order['payment'] + "</td>";
+                    output += "<td>";
+                    output += `<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOrder" onclick="edit_orderGraduation('${order['idSeller']}','${order['idEvent']}','${order['idClient']}','${order['idOrderGraduation']}','${order['idClient']}','${order['idClient']}','${order['numTable']}','${order['numPhoto']}','${order['_6x9']}','${order['_8x12']}','${order['cost']}','${order['payment']}','${order['status']}');">Editar</button>`;
+                    output += "</td>";
+                    output += "</tr>";
+                    document.getElementById('idSeller').innerHTML = order['idSeller'];
+                });
+            }
             document.getElementById('form_add').reset();
             $('#table_order').html(output);
         }

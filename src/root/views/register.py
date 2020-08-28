@@ -1,6 +1,6 @@
 from flask import Blueprint, session, request, url_for, flash, render_template, redirect, jsonify
 import bcrypt
-from sqlalchemy import update
+from sqlalchemy import update, desc, asc
 
 from ..models import db
 
@@ -104,7 +104,7 @@ def register_schools():
                     flash('Escuela registrada satisfactoriamente','alert-success')
             else:
                 flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
-        schools = School.query.order_by(School.idSchool).all()
+        schools = School.query.order_by(desc(School.idSchool)).all()
         return render_template('register_schools.html', schools=schools)
     else:
         return redirect(url_for('login.login_page'))
@@ -117,7 +117,6 @@ def enable_school(id):
     school_update = School.query.get(id)
     school_update.enable = enable
     db.session.commit()
-
     flash('Escuela habilitada satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_schools'))
 
@@ -128,7 +127,6 @@ def disable_school(id):
     school_update = School.query.get(id)
     school_update.enable = enable
     db.session.commit()
-
     flash('Escuela inhabilitado satisfactoriamente', 'alert-success')
     return redirect(url_for('register.register_schools'))
 
@@ -153,7 +151,7 @@ def register_events():
             else:
                 flash('No has llenado todos los campos, intentalo de nuevo', 'alert-warning')
         schools = School.query.order_by(School.idSchool).all()
-        events = Event.query.order_by(Event.idEvent).all()
+        events = Event.query.order_by(desc(Event.idEvent)).all()
         return render_template('register_events.html', events = events, schools= schools)
     else:
         return redirect(url_for('login.page_login'))

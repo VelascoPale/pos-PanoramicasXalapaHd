@@ -61,7 +61,7 @@ function delete_user(id, name, lastname, adress, level) {
 }
 
 ////function for update school
-function edit_school(id, name, shift, generation, code, level){
+/*function edit_school(id, name, shift, generation, code, level){
 
     document.getElementById('title_window').innerHTML = 'Editar escuela';
 
@@ -121,6 +121,7 @@ function delete_school(id, name, shift, generation, code, level) {
     // change url of form
     document.getElementById('form_update').setAttribute('action', '/dashboard/register/school/delete/' + id);
 }
+*/
 
 //////// fucntions for update clients
 function edit_client(id, name , lastname, email, telephone, idschool, group){
