@@ -61,7 +61,7 @@
         <table class="table table-striped table-active table-bordered table-sm text-center">
             <thead>
                 <tr>
-                    <td>Id</td>
+                    <!-- <td>Id</td> -->
                     <td>Escuela</td>
                     <td>Nombre del evento</td>
                     <td>Habilitado</td>
@@ -71,7 +71,7 @@
             <tbody id="form_update">
                 {% for event in events %}
                 <tr>
-                    <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.idEvent }}</td>
+                    <!-- <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.idEvent }}</td> -->
                     <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.idschool.name }}</td>
                     <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.eventName }}</td>
                     <td class="{% if event.enable == 0 %} disable {% endif %}">{{ event.enable }}</td>
