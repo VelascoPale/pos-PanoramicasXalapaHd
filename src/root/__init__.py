@@ -3,10 +3,7 @@ from flask_wtf import CSRFProtect
 from flask_mail import Mail
 
 from .models import db
-from .models.client import Client
-from .models.order_graduation import OrderGraduation
-from .models.school import School
-from .models.user import User
+
 from .config import ConfigProduction
 
 from .views import login, register, graduaciones, escuelas, dashboard, emails

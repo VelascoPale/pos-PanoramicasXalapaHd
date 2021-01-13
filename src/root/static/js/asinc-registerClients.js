@@ -7,7 +7,6 @@ $(document).ready(function () {
             type:'POST',
             data:$('form').serialize(),
             success: function(response){
-                //console.log(response)
                 $("#table").html('');
                 var output;
                 var alert;
@@ -31,7 +30,7 @@ $(document).ready(function () {
                             output += "<td class='no_visible'>" + client['idSchool'] + "</td>";
                             output += "<td class='no_visible'>" + client['group'] + "</td>";
                             output += "<td>";
-                            output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['telephone']}","${client['email']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
+                            output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['email']}","${client['telephone']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
                             output += "</td>";
                             output += "</tr>";
                             $('#table').html(output);
@@ -58,7 +57,6 @@ $(document).ready(function () {
             type:'PATCH',
             data:$('form').serialize(),
             success: function(response){
-                //console.log(response)
                 $("#table").html('');
                 var output;
                 var alert;
@@ -74,7 +72,6 @@ $(document).ready(function () {
                         $('#alerts').html(alert);
                     }else{
                         item.forEach(client => {
-                            console.log(client);
                             output += "<tr>";
                             output += "<td>" + client['name'] + "</td>";
                             output += "<td class='no_visible'>" + client['lastname'] + "</td>";
@@ -83,7 +80,7 @@ $(document).ready(function () {
                             output += "<td class='no_visible'>" + client['idSchool'] + "</td>";
                             output += "<td class='no_visible'>" + client['group'] + "</td>";
                             output += "<td>";
-                            output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formUpdateClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['telephone']}","${client['email']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
+                            output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formUpdateClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['email']}","${client['telephone']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
                             output += "</td>";
                             output += "</tr>";
                             $('#table').html(output);
@@ -94,6 +91,7 @@ $(document).ready(function () {
                 
             }
         });
+        filter();
     }
 
     $('#form_update_client').submit(function(event){
@@ -137,6 +135,7 @@ function filter(){
 
     var school = document.getElementById('filter_school').value;
     var group =document.getElementById('filter_group').value;
+    //var nameSchool = ($("#filter_school option:selected").text()).slice(0, -9);  // get name of school 
     
     $.ajax({
         url:'/dashboard/register/client/'+ school+'/'+group,
@@ -153,7 +152,7 @@ function filter(){
                 output += "<td class='no_visible'>" + client['idSchool'] + "</td>";
                 output += "<td class='no_visible'>" + client['group'] + "</td>";
                 output += "<td>";
-                output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['telephone']}","${client['email']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
+                output += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#formUpdateClients' onclick='edit_client("${client['idClient']}","${client['name']}","${client['lastname']}","${client['email']}","${client['telephone']}","${client['idSchool']}","${client['group']}")'>Editar</button>`;
                 output += "</td>";
                 output += "</tr>";
                 $('#table').html(output);
@@ -161,6 +160,7 @@ function filter(){
         }
     });
 }
+
 
 
      

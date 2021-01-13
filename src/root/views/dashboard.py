@@ -4,7 +4,7 @@ from ..models.event import Event
 from ..schemas.event import event_schema, events_schema
 
 dashboard = Blueprint("dashboard",__name__)
- 
+
 
 # dashboard page
 @dashboard.route('/dashboard')
@@ -13,7 +13,7 @@ def render_dashboard():
         events = Event.query.order_by(Event.idEvent).all()
         return render_template('dashboard.html', events=events)
     else:
-        return redirect(url_for('login.login_page'))
+        return redirect(url_for('login.page_login'))
 
 @dashboard.route('/dashboard/event', methods=['POST'])
 def select_event():

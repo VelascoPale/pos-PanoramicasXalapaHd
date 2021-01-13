@@ -134,7 +134,14 @@
                 <tbody id="table_order">
                     {% set idSeller = session['id'] %}
                     {% for order in orders.items %}
-                    <tr>
+
+                    {% if order.status == 'Entregado' %}
+                    <tr class="bg-success" >
+                    {% elif order.status == 'Impresion' %}
+                    <tr class='bg-warning'>
+                    {% elif order.status == 'En_proceso' %}
+                    <tr class='bg-danger'>
+                    {% endif %}
                         <td id="idfilter_name">{{ order.idclient.name }}</td>
                         <td id="idfilter_lastname">{{ order.idclient.lastname }}</td>
                         <td class="no_visible">{{ order.numTable }}</td>
@@ -280,8 +287,8 @@
                             <div class="form-group">
                                 <label>Estado del pedido </label>
                                 <select name="status" class="custom-select" id="select_status">
-                                    <option value="En_proceso">En proceso</option>
-                                    <option value="Imprimiendo">Impresion</option>
+                                    <option value="En_proceso">Orden</option>
+                                    <option value="Impresion">Impresion</option>
                                     <option value="Entregado">Entregado</option>
                                 </select>
                             </div>
@@ -419,8 +426,8 @@
                             <div class="form-group">
                                 <label>Estado del pedido </label>
                                 <select name="statusEdit" class="custom-select" id="select_statusEdit">
-                                    <option id="En_proceso" value="En_proceso">En proceso</option>
-                                    <option id="Impresion" value="Imprimiendo">Impresion</option>
+                                    <option id="En_proceso" value="En_proceso">Orden</option>
+                                    <option id="Impresion" value="Impresion">Impresion</option>
                                     <option id="Entregado" value="Entregado">Entregado</option>
                                 </select>
                             </div>

@@ -49,18 +49,19 @@ function edit_orderGraduation(idSeller, idEvent, idClient, idOrder, idclientname
     document.getElementById('select_statusEdit').removeAttribute('disabled')
 
     if (status == 'En_proceso') {
+        document.getElementById('En_proceso').setAttribute('selected', 'selected');
         document.getElementById('Impresion').removeAttribute('selected');
         document.getElementById('Entregado').removeAttribute('selected');
     } else if (status == 'Impresion') {
+        document.getElementById('Impresion').setAttribute('selected', 'selected');
         document.getElementById('En_proceso').removeAttribute('selected');
         document.getElementById('Entregado').removeAttribute('selected');
     } else if (status == 'Entregado') {
+        document.getElementById('Entregado').setAttribute('selected', 'selected');
         document.getElementById('En_proceso').removeAttribute('selected');
         document.getElementById('Impresion').removeAttribute('selected');
     }
-    document.getElementById(`${status}`).setAttribute('selected', 'selected');
 
-   
 }
 
 function addClientOrder(){

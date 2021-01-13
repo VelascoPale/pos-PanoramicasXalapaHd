@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pymysql
 from root import create_app
 from root.config import config
@@ -11,3 +12,4 @@ app = create_app(environment)
 if __name__ == "__main__":
 
     #app.run()
+
